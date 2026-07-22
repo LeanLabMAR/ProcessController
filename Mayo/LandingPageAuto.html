@@ -152,7 +152,7 @@
                 <div class="hero-text">
                     <h3 style="color: #64748b; text-transform: uppercase; letter-spacing: 2px;">Informe Ejecutivo Mensual</h3>
                     <h1>Resultados de Capacidad y Gestión Operativa</h1>
-                    <p>Visualización integral del desempeño en Implementación, Gestión On-Time e Incidencias para las regiones de Colombia y Perú. (Enero - Abril 2026)</p>
+                    <p>Visualización integral del desempeño en Implementación, Gestión On-Time e Incidencias para las regiones de Colombia y Perú.</p>
                     <div class="hero-cards">
                         <a href="#reducciones" class="kpi-card"><i class="fa fa-minus"></i><span>Reducción</span></a>
                         <a href="#adiciones" class="kpi-card"><i class="fa-solid fa-plus"></i><span>Adición</span></a>
@@ -182,7 +182,6 @@
                     <div style="position:relative; height:350px; width:100%;"><canvas id="cv_red_apli"></canvas></div>
                     <div id="tb_red_apli" style="margin-top:20px;"></div>
                 </div>
-
                 <div class="comment-box" style="margin-top:20px;" id="ui_txt_red_aplicadas"></div>
             </div>
 
@@ -281,7 +280,7 @@
                     </div>
                     <div style="display:flex; justify-content:center; gap:15px; margin-top:20px; font-size:11px; flex-wrap: wrap;">
                         <div style="display:flex; align-items:center; gap:5px;"><div style="width:12px; height:12px; background-color:#556080;"></div> Implementados</div>
-                        <div style="display:flex; align-items:center; gap:5px;"><div style="width:12px; height:12px; background-color:#85c3c8;"></div> En progreso</div> <span style="color:#556080;" id="db.imp_per.lbl">0%</span>
+                        <div style="display:flex; align-items:center; gap:5px;"><div style="width:12px; height:12px; background-color:#85c3c8;"></div> En progreso</div> <span style="color:#556080;" id="db.imp_per.lbl"></span>
                     </div>
                 </div>
             </div>
@@ -416,6 +415,11 @@
         }
         const db = base_de_datos;
 
+        // --- HERRAMIENTAS DE FORMATO ---
+        const formatMiles = (num) => Number(num).toLocaleString('es-CO'); 
+        const formatEuros = (num) => Number(num).toLocaleString('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+        const formatCOP = (num) => Number(num).toLocaleString('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 });
+
         // 2. FUNCIÓN PARA LIMPIAR DATOS DE EXCEL (Evita bloqueos por % o símbolos)
         const cleanData = (arr) => {
             if (!Array.isArray(arr)) return [];
@@ -433,9 +437,9 @@
             document.getElementById('ui_kpi_red_euros').innerText = db.config.kpi_red_euros || "-";
             document.getElementById('ui_kpi_adi_horas').innerText = db.config.kpi_adi_horas || "-";
             document.getElementById('ui_kpi_adi_euros').innerText = db.config.kpi_adi_euros || "-";
-            document.getElementById('ui_kpi_imp_col').innerText = db.config.kpi_imp_col || "-";
+            document.getElementById('ui_kpi_imp_col').innerText = db.config.kpi_imp_col + "%" || "-";
             document.getElementById('ui_kpi_imp_col_sub').innerText = db.config.kpi_imp_col_sub || "-";
-            document.getElementById('ui_kpi_imp_per').innerText = db.config.kpi_imp_per || "-";
+            document.getElementById('ui_kpi_imp_per').innerText = db.config.kpi_imp_per  + "%"|| "-";
             document.getElementById('ui_kpi_imp_per_sub').innerText = db.config.kpi_imp_per_sub || "-";
             
             const comments = ['red_aplicadas', 'red_estado', 'red_pareto', 'adi_aplicadas', 'adi_estado', 'adi_pareto', 'implementacion', 'gestion', 'inc_area', 'inc_mes', 'err_col', 'err_per', 'horas_extras'];
@@ -458,13 +462,24 @@
         try {
             if(db.red_apli && db.red_apli.mes) {
                 let trApli = `<table class="chart-data-table"><thead><tr style="background-color:#556080; color:white;"><th style="text-align:left; padding-left:10px; border:none;">Mes</th><th style="border:none;">Horas</th><th style="border:none;">CPH</th><th style="border:none;">Euros</th><th style="border:none;">COP</th></tr></thead><tbody>`;
-                db.red_apli.mes.forEach((mes, i) => { trApli += `<tr><td style="text-align:left; padding-left:10px;">${mes}</td><td>${db.red_apli.hrs[i]||0}</td><td>${db.red_apli.cph[i]||0}</td><td>${db.red_apli.eur[i]||0}</td><td>${db.red_apli.cop[i]||0}</td></tr>`; });
+                db.red_apli.mes.forEach((mes, i) => { trApli += `<tr>
+                    <td style="text-align:left; padding-left:10px;">${mes}</td>
+                    <td>${formatMiles(db.red_apli.hrs[i]||0)}</td>
+                    <td>${formatMiles(db.red_apli.cph[i]||0)}</td>
+                    <td>${formatEuros(db.red_apli.eur[i]||0)}</td>
+                    <td>${formatCOP(db.red_apli.cop[i]||0)}</td>
+                    </tr>`; });
                 document.getElementById('tb_red_apli').innerHTML = trApli + `</tbody></table>`;
             }
 
             if(db.adi_apli && db.adi_apli.mes) {
                 let taApli = `<table class="chart-data-table"><thead><tr style="background-color:#556080; color:white;"><th style="text-align:left; padding-left:10px; border:none;">Mes</th><th style="border:none;">Horas</th><th style="border:none;">CPH</th><th style="border:none;">Euros</th><th style="border:none;">COP</th></tr></thead><tbody>`;
-                db.adi_apli.mes.forEach((mes, i) => { taApli += `<tr><td style="text-align:left; padding-left:10px;">${mes}</td><td>${db.adi_apli.hrs[i]||0}</td><td>${db.adi_apli.cph[i]||0}</td><td>${db.adi_apli.eur[i]||0}</td><td>${db.adi_apli.cop[i]||0}</td></tr>`; });
+                db.adi_apli.mes.forEach((mes, i) => { taApli += `<tr><td style="text-align:left; padding-left:10px;">${mes}</td>
+                    <td>${formatMiles(db.adi_apli.hrs[i]||0)}</td>
+                    <td>${formatMiles(db.adi_apli.cph[i]||0)}</td>
+                    <td>${formatEuros(db.adi_apli.eur[i]||0)}</td>
+                    <td>${formatCOP(db.adi_apli.cop[i]||0)}</td>
+                    </tr>`; });
                 document.getElementById('tb_adi_apli').innerHTML = taApli + `</tbody></table>`;
             }
 
@@ -478,9 +493,9 @@
                 let tIncArea = `<table class="chart-data-table" style="margin-top:20px;"><thead><tr><th style="width:20%; background-color:#e2e8f0; border:none;"></th>`;
                 db.inc_area.area.forEach(a => { tIncArea += `<th>${a}</th>`; });
                 tIncArea += `</tr></thead><tbody><tr><td class="row-header"><span class="legend-box" style="background-color:#85c3c8;"></span>Casos</td>`;
-                db.inc_area.casos.forEach(c => { tIncArea += `<td>${c}</td>`; });
+                db.inc_area.casos.forEach(c => { tIncArea += `<td>${formatMiles(c||0)}</td>`; });
                 tIncArea += `</tr><tr><td class="row-header"><span class="legend-box" style="background-color:#556080;"></span>Afectadas</td>`;
-                db.inc_area.afec.forEach(a => { tIncArea += `<td>${a}</td>`; });
+                db.inc_area.afec.forEach(a => { tIncArea += `<td>${formatMiles(a||0)}</td>`; });
                 tIncArea += `</tr></tbody></table>`;
                 document.getElementById('tb_inc_area').innerHTML = tIncArea;
             }
@@ -511,7 +526,7 @@
                 tErrPer += `</tr></thead><tbody><tr><td class="row-header"><span class="legend-box" style="background-color:#556080;"></span>Cant Errores</td>`;
                 db.err_per.err.forEach(e => { tErrPer += `<td>${e}</td>`; });
                 tErrPer += `</tr><tr><td class="row-header"><span class="legend-box" style="background-color:#cbd5e1;"></span>% Errores Nómina</td>`;
-                db.err_per.pct.forEach(p => { tErrPer += `<td>${p}%</td>`; });
+                db.err_per.pct.forEach(p => { tErrPer += `<td>${formatMiles(p||0)}%</td>`; });
                 tErrPer += `</tr></tbody></table>`;
                 document.getElementById('tb_err_per').innerHTML = tErrPer;
             }
@@ -537,51 +552,241 @@
         // Solo dibujamos si las variables existen para que un error en una gráfica no rompa las demás
         // Tabla Reducciones Aplicadas - On Time
         try {
-            if(db.red_apli) new Chart(document.getElementById('cv_red_apli'), { type: 'bar', data: { labels: db.red_apli.mes, datasets: [ { label: 'Manual', data: cleanData(db.red_apli.man), backgroundColor: c_azu, datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'} } }, { label: 'Automática', data: cleanData(db.red_apli.auto), backgroundColor: c_gri, datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'} } } ] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {position: 'bottom'} } } });
+            if(db.red_apli) new Chart(document.getElementById('cv_red_apli'), { 
+                type: 'bar', 
+                data: { 
+                    labels: db.red_apli.mes, 
+                    datasets: [ { label: 'Manual', 
+                                    data: cleanData(db.red_apli.man), 
+                                    backgroundColor: c_azu, 
+                                    datalabels: { 
+                                        align: 'top', 
+                                        anchor: 'end', 
+                                        font: {weight:'bold'},
+                                        formatter: (v) => formatMiles(v)
+                                    } 
+                                }, 
+                                { label: 'Automática', 
+                                    data: cleanData(db.red_apli.auto), 
+                                    backgroundColor: c_gri, 
+                                    datalabels: { 
+                                    align: 'top', 
+                                    anchor: 'end', 
+                                    font: {weight:'bold'},
+                                    formatter: (v) => formatMiles(v)
+                                    } 
+                                } ] 
+                        }, 
+                        options: { responsive: true, 
+                            maintainAspectRatio: false,
+                            layout: {
+                        padding: {
+                            top: 30 // <--- SOLUCIÓN 1: Margen en la parte superior
+                        }
+                        }, 
+                            plugins: { legend: {position: 'bottom'} 
+                        } 
+                    } 
+                }
+            );
         } catch(e) {}
 
         // Tabla Horas de Reducción justificadas y denegadas
         try {
-            if(db.red_est) new Chart(document.getElementById('cv_red_est'), { type: 'bar', data: { labels: db.red_est.mes, datasets: [ { label: 'Approved', data: cleanData(db.red_est.app), backgroundColor: c_azu, datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'} } }, { label: 'Denied', data: cleanData(db.red_est.den), backgroundColor: c_gri, datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'} } } ] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {position: 'bottom'} } } });
+            if(db.red_est) new Chart(document.getElementById('cv_red_est'), 
+            { type: 'bar', 
+            data: { 
+                labels: db.red_est.mes, 
+                datasets: [ { label: 'Approved', 
+                data: cleanData(db.red_est.app), 
+                backgroundColor: c_azu, 
+                datalabels: { 
+                    align: 'top', 
+                    anchor: 'end', 
+                    font: {weight:'bold'},
+                    formatter: (v) => formatMiles(v)
+                    } 
+                }, 
+            { label: 'Denied', 
+            data: cleanData(db.red_est.den), 
+            backgroundColor: c_gri, 
+            datalabels: { 
+                align: 'top', 
+                anchor: 'end', 
+                font: {weight:'bold'}, 
+                formatter: (v) => formatMiles(v)
+                } 
+                } ] 
+        }, 
+            options: { responsive: true, 
+                maintainAspectRatio: false,
+                layout: {
+                        padding: {
+                            top: 30 // <--- SOLUCIÓN 1: Margen en la parte superior
+                        }
+                        }, 
+                plugins: { legend: {position: 'bottom'} } 
+                } 
+            }
+        );
         } catch(e) {}
 
         // Tabla Pareto Justificaciones Reducción On Time
         try {
             if(db.red_par) {
                 const paletaParRed = db.red_par.lbl.map((_, i) => i < 3 ? c_azu : c_gri);
-                new Chart(document.getElementById('cv_red_par'), { type: 'bar', data: { labels: db.red_par.lbl, datasets: [ { type: 'line', label: 'Porcentaje', data: cleanData(db.red_par.pct), borderColor: c_tel, backgroundColor: c_tel, borderWidth: 3, yAxisID: 'y1', datalabels: { align: 'bottom', backgroundColor: c_azu, color: 'white', borderRadius: 3, font: {weight:'bold'}, formatter: (v) => v + '%' } }, { type: 'bar', label: 'Horas', data: cleanData(db.red_par.hrs), backgroundColor: paletaParRed, yAxisID: 'y', datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'} } } ] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {display: false} }, scales: { x:{ ticks:{ maxRotation:90, minRotation:90 } }, y: { type: 'linear', position: 'left' }, y1: { type: 'linear', position: 'right', max: 110, grid: {drawOnChartArea: false} } } } });
+                new Chart(document.getElementById('cv_red_par'), 
+                { type: 'bar', 
+                data: { labels: db.red_par.lbl, 
+                    datasets: [ 
+                        { type: 'line', 
+                        label: 'Porcentaje', 
+                        data: cleanData(db.red_par.pct), 
+                        borderColor: c_tel, 
+                        backgroundColor: c_tel, 
+                        borderWidth: 3, 
+                        yAxisID: 'y1', 
+                        datalabels: { align: 'top', 
+                            backgroundColor: c_azu, 
+                            color: 'white', 
+                            borderRadius: 3, 
+                            font: {weight:'bold'}, 
+                            formatter: (v) => formatMiles(v) + '%' } 
+                        }, 
+                        { type: 'bar', 
+                        label: 'Horas', 
+                        data: cleanData(db.red_par.hrs), 
+                        backgroundColor: paletaParRed, 
+                        yAxisID: 'y', 
+                        datalabels: { 
+                            align: 'top', 
+                            anchor: 'end', 
+                            font: {weight:'bold'},
+                            formatter: (v) => formatMiles(v) 
+                        } } ] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {display: false} }, scales: { x:{ ticks:{ maxRotation:90, minRotation:90 } }, y: { type: 'linear', position: 'left' }, y1: { type: 'linear', position: 'right', max: 110, grid: {drawOnChartArea: false} } } } });
             }
         } catch(e) {}
 
         // Tabla Adiciones Aplicadas - On Time
         try {
-            if(db.adi_apli) new Chart(document.getElementById('cv_adi_apli'), { type: 'bar', data: { labels: db.adi_apli.mes, datasets: [{ label: 'Horas', data: cleanData(db.adi_apli.hrs), backgroundColor: c_azu, barPercentage: 0.5, datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'} } }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {display: false} } } });
+            if(db.adi_apli) new Chart(document.getElementById('cv_adi_apli'), 
+            { type: 'bar', 
+            data: { labels: db.adi_apli.mes, 
+                datasets: [{ label: 'Horas', 
+                data: cleanData(db.adi_apli.hrs),
+                 backgroundColor: c_azu, 
+                 barPercentage: 0.5, 
+                 datalabels: {
+                    align: 'top', 
+                    anchor: 'end', 
+                    font: {weight:'bold'},
+                    formatter: (v) => formatMiles(v) 
+                    } 
+                }] 
+            }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {display: false} } } });
         } catch(e) {}
 
         // Tabla Horas de Adición justificadas y denegadas
         try {
-            if(db.adi_est) new Chart(document.getElementById('cv_adi_est'), { type: 'bar', data: { labels: db.adi_est.mes, datasets: [ { label: 'Approved', data: cleanData(db.adi_est.app), backgroundColor: c_azu, datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'} } }, { label: 'Denied', data: cleanData(db.adi_est.den), backgroundColor: c_gri, datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'} } } ] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {position: 'bottom'} } } });
+            if(db.adi_est) new Chart(document.getElementById('cv_adi_est'), 
+            { type: 'bar', 
+            data: { labels: db.adi_est.mes, 
+                datasets: [ { label: 'Approved', 
+                data: cleanData(db.adi_est.app), 
+                backgroundColor: c_azu, 
+                datalabels: { 
+                    align: 'top', 
+                    anchor: 'end', 
+                    font: {weight:'bold'},
+                    formatter: (v) => formatMiles(v)
+                    } 
+                }, 
+                { label: 'Denied', 
+                data: cleanData(db.adi_est.den), 
+                backgroundColor: c_gri, 
+                datalabels: { 
+                    align: 'top', 
+                    anchor: 'end', 
+                    font: {weight:'bold'},
+                    formatter: (v) => formatMiles(v) 
+                    } 
+                } 
+                ] 
+            }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {position: 'bottom'} } } });
         } catch(e) {}
 
         // Tabla Pareto Justificaciones Adición On Time
         try {
             if(db.adi_par) {
                 const paletaParAdi = db.adi_par.lbl.map((_, i) => i < 3 ? c_azu : c_gri);
-                new Chart(document.getElementById('cv_adi_par'), { type: 'bar', data: { labels: db.adi_par.lbl, datasets: [ { type: 'line', label: 'Porcentaje', data: cleanData(db.adi_par.pct), borderColor: c_tel, backgroundColor: c_tel, borderWidth: 3, yAxisID: 'y1', datalabels: { align: 'bottom', backgroundColor: c_azu, color: 'white', borderRadius: 3, font: {weight:'bold'}, formatter: (v) => v + '%' } }, { type: 'bar', label: 'Horas', data: cleanData(db.adi_par.hrs), backgroundColor: paletaParAdi, yAxisID: 'y', datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'} } } ] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {display: false} }, scales: { x:{ ticks:{ maxRotation:90, minRotation:90 } }, y: { type: 'linear', position: 'left' }, y1: { type: 'linear', position: 'right', max: 110, grid: {drawOnChartArea: false} } } } });
+                new Chart(document.getElementById('cv_adi_par'), 
+                { type: 'bar', 
+                data: { labels: db.adi_par.lbl, 
+                    datasets: [ { type: 'line', 
+                    label: 'Porcentaje', 
+                    data: cleanData(db.adi_par.pct), 
+                    borderColor: c_tel, 
+                    backgroundColor: c_tel, 
+                    borderWidth: 3, 
+                    yAxisID: 'y1', 
+                    datalabels: { align: 'top', 
+                        backgroundColor: c_azu, 
+                        color: 'white', 
+                        borderRadius: 3, 
+                        font: {weight:'bold'}, 
+                        formatter: (v) => formatMiles(v) + '%' 
+                        } }, 
+                { type: 'bar', 
+                    label: 'Horas', 
+                    data: cleanData(db.adi_par.hrs), 
+                    backgroundColor: paletaParAdi, 
+                    yAxisID: 'y', 
+                    datalabels: { align: 'top', 
+                        anchor: 'end', 
+                        font: {weight:'bold'},
+                        formatter: (v) => formatMiles(v)
+                    } } ] }, 
+                    options: { responsive: true, 
+                        maintainAspectRatio: false,
+                        plugins: { legend: {display: false} }, 
+                        scales: { x:{ ticks:{ maxRotation:90, minRotation:90 } }, y: { type: 'linear', position: 'left' }, y1: { type: 'linear', position: 'right', max: 110, grid: {drawOnChartArea: false} } } } });
             }
         } catch(e) {}
 
         // Grafico circular Estado de Implementación
         try {
-            if(db.imp_col) new Chart(document.getElementById('donutCol'), { type: 'doughnut', data: { labels: db.imp_col.lbl, datasets: [{ data: val_col, label: '%', backgroundColor: [c_azu, c_tel] }] }, options: { cutout: '65%', plugins:{legend:{display:false}, datalabels:{display:false}} }});
-            if(db.imp_per) new Chart(document.getElementById('donutPer'), { type: 'doughnut', data: { labels: db.imp_per.lbl, datasets: [{ data: val_per, label: '%', backgroundColor: [c_azu, c_tel] }] }, options: { cutout: '65%', plugins:{legend:{display:false}, datalabels:{display:false}} }});
+            if(db.imp_col) new Chart(document.getElementById('donutCol'), 
+            { type: 'doughnut', 
+                data: { labels: db.imp_col.lbl, 
+                            datasets: [{ data: val_col, label: '%', 
+                            backgroundColor: [c_azu, c_tel] }] }, 
+                        options: { cutout: '65%', 
+                            plugins:{legend:{display:false}, datalabels:{display:false}} 
+                        }    
+                    }
+                );
+            if(db.imp_per) new Chart(document.getElementById('donutPer'), 
+            { type: 'doughnut', 
+            data: { labels: db.imp_per.lbl, 
+                datasets: [{ data: val_per, label: '%', 
+                    backgroundColor: [c_azu, c_tel] }] 
+                }, 
+            options: { cutout: '65%', 
+            plugins:{legend:{display:false}, datalabels:{display:false}} }});
         } catch(e) {}
 
         // Grafico lineas Gestión On Time por mes y Q
         try {
             if(db.ges_mes) new Chart(document.getElementById('cv_ges_mes'), { 
             type: 'line', 
-            data: { labels: db.ges_mes.mes, datasets: [{ label: '% Gestión', data: cleanData(db.ges_mes.val), borderColor: c_tel, backgroundColor: c_azu, borderWidth: 4, pointRadius: 5, datalabels: { align: 'top', font: {weight:'bold'}, formatter: (v) => v + '%' } }] }, 
+            data: { labels: db.ges_mes.mes, 
+                datasets: [{ label: '% Gestión', 
+                    data: cleanData(db.ges_mes.val), 
+                    borderColor: c_tel, 
+                    backgroundColor: c_azu, 
+                    borderWidth: 4, 
+                    pointRadius: 5, 
+                    datalabels: { align: 'top', font: {weight:'bold'}, formatter: (v) => formatMiles(v) + '%' } }] }, 
             options: { 
                 responsive: true, 
                 maintainAspectRatio: false, 
@@ -595,7 +800,14 @@
         });
             if(db.ges_q) new Chart(document.getElementById('cv_ges_q'), { 
             type: 'line', 
-            data: { labels: db.ges_q.q, datasets: [{ label: '% Gestión', data: cleanData(db.ges_q.val), borderColor: c_tel, backgroundColor: c_azu, borderWidth: 4, pointRadius: 5, datalabels: { align: 'top', font: {weight:'bold'}, formatter: (v) => v + '%' } }] }, 
+            data: { labels: db.ges_q.q, 
+                datasets: [{ label: '% Gestión', 
+                    data: cleanData(db.ges_q.val), 
+                    borderColor: c_tel, 
+                    backgroundColor: c_azu, 
+                    borderWidth: 4, 
+                    pointRadius: 5, 
+                    datalabels: { align: 'top', font: {weight:'bold'}, formatter: (v) => formatMiles(v) + '%' } }] }, 
             options: { 
                 responsive: true, 
                 maintainAspectRatio: false, 
@@ -611,19 +823,166 @@
 
         // Graficos Análisis de Incidencias
         try {
-            if(db.inc_area) new Chart(document.getElementById('cv_inc_area'), { type: 'bar', data: { labels: db.inc_area.area, datasets: [ { type: 'line', label: 'Afectadas', data: cleanData(db.inc_area.afec), borderColor: c_azu, backgroundColor: c_azu, borderWidth: 3, yAxisID: 'y1', datalabels: { align: 'right', backgroundColor: c_azu, color: 'white', borderRadius: 3, font: {weight:'bold'} } }, { type: 'bar', label: 'Casos', data: cleanData(db.inc_area.casos), backgroundColor: c_tel, barPercentage: 0.6, yAxisID: 'y', datalabels: { align: 'top', anchor: 'end', backgroundColor: c_tel, color: 'white', borderRadius: 3, font: {weight:'bold'} } } ] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {position: 'bottom'} }, scales: { y: { type: 'linear', position: 'left' }, y1: { type: 'linear', position: 'right', grid: {drawOnChartArea: false} } } } });
-            if(db.inc_mes) new Chart(document.getElementById('cv_inc_mes'), { type: 'line', data: { labels: db.inc_mes.mes, datasets: [{ label: 'Casos', data: cleanData(db.inc_mes.casos), borderColor: c_azu, backgroundColor: c_azu, borderWidth: 4, pointRadius: 6, datalabels: { align: 'top', font: {weight:'bold'} } }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {display: false} }, scales: { y: { suggestedMin: 0 } } } });
+            if(db.inc_area) new Chart(document.getElementById('cv_inc_area'), 
+            { type: 'bar', 
+            data: { labels: db.inc_area.area, 
+                datasets: [ 
+                    { type: 'line', 
+                    label: 'Afectadas', 
+                    data: cleanData(db.inc_area.afec), 
+                    borderColor: c_azu, 
+                    backgroundColor: c_azu, 
+                    borderWidth: 3, 
+                    yAxisID: 'y1', 
+                    datalabels: { 
+                        align: 'right', 
+                        backgroundColor: c_azu, 
+                        color: 'white', 
+                        borderRadius: 3, 
+                        font: {weight:'bold'},
+                        formatter: (v) => formatMiles(v) 
+                        } 
+                    }, 
+                    { type: 'bar', 
+                    label: 'Casos', 
+                    data: cleanData(db.inc_area.casos), 
+                    backgroundColor: c_tel, 
+                    barPercentage: 0.6, 
+                    yAxisID: 'y', 
+                    datalabels: {
+                        align: 'left', 
+                        anchor: 'end', 
+                        backgroundColor: c_tel, 
+                        color: 'white', 
+                        borderRadius: 3, 
+                        font: {weight:'bold'},
+                        formatter: (v) => formatMiles(v)
+                        } 
+                    } ] 
+                }, 
+            options: { responsive: true, 
+                maintainAspectRatio: false, 
+                plugins: { legend: {position: 'bottom'} }, 
+                scales: { y: { type: 'linear', position: 'left' }, 
+                y1: { type: 'linear', position: 'right', 
+                grid: {drawOnChartArea: false} } } } });
+            if(db.inc_mes) new Chart(document.getElementById('cv_inc_mes'), 
+            { type: 'line', 
+            data: { labels: db.inc_mes.mes, 
+                datasets: [{ label: 'Casos', 
+                data: cleanData(db.inc_mes.casos), 
+                borderColor: c_azu, 
+                backgroundColor: c_azu, 
+                borderWidth: 4, 
+                pointRadius: 6, 
+                datalabels: { align: 'top', 
+                    font: {weight:'bold'},
+                    formatter: (v) => formatMiles(v)
+                    } }] 
+                }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {display: false} }, scales: { y: { suggestedMin: 0 } } } });
         } catch(e) {}
 
         // Graficos Errores de Nómina
         try {
-            if(db.err_col) new Chart(document.getElementById('cv_err_col'), { type: 'bar', data: { labels: db.err_col.mes, datasets: [ { type: 'line', label: '% Errores', data: cleanData(db.err_col.pct), borderColor: c_tel, backgroundColor: c_azu, borderWidth: 3, yAxisID: 'y1', datalabels: { align: 'bottom', backgroundColor: c_gri, color: 'black', borderRadius: 3, font: {weight:'bold'} } }, { type: 'bar', label: 'Cant Errores', data: cleanData(db.err_col.err), backgroundColor: c_azu, barPercentage: 0.6, yAxisID: 'y', datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'} } } ] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {position: 'bottom'} }, scales: { y: { max: 3000, type: 'linear', position: 'left' }, y1: { type: 'linear', position: 'right', max: 5, grid: {drawOnChartArea: false} } } } });
-            if(db.err_per) new Chart(document.getElementById('cv_err_per'), { type: 'bar', data: { labels: db.err_per.mes, datasets: [ { type: 'line', label: '% Errores', data: cleanData(db.err_per.pct), borderColor: c_tel, backgroundColor: c_azu, borderWidth: 3, yAxisID: 'y1', datalabels: { align: 'bottom', backgroundColor: c_gri, color: 'black', borderRadius: 3, font: {weight:'bold'} } }, { type: 'bar', label: 'Cant Errores', data: cleanData(db.err_per.err), backgroundColor: c_azu, barPercentage: 0.6, yAxisID: 'y', datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'} } } ] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {position: 'bottom'} }, scales: { y: { max: 250, type: 'linear', position: 'left' }, y1: { type: 'linear', position: 'right', max: 5, grid: {drawOnChartArea: false} } } } });
+            if(db.err_col) new Chart(document.getElementById('cv_err_col'), 
+            { type: 'bar', 
+            data: { 
+                labels: db.err_col.mes, 
+                datasets: [ 
+                    { type: 'line', 
+                    label: '% Errores', 
+                    data: cleanData(db.err_col.pct), 
+                    borderColor: c_tel, 
+                    backgroundColor: c_azu, 
+                    borderWidth: 3, 
+                    yAxisID: 'y1', 
+                    datalabels: { 
+                        align: 'bottom', 
+                        backgroundColor: c_gri,
+                         color: 'black', 
+                         borderRadius: 3, 
+                         font: {weight:'bold'},
+                         formatter: (v) => formatMiles(v) +'%' 
+                        } }, 
+                    { type: 'bar', 
+                    label: 'Cant Errores', 
+                    data: cleanData(db.err_col.err), 
+                    backgroundColor: c_azu, 
+                    barPercentage: 0.6, yAxisID: 'y', 
+                    datalabels: { 
+                        align: 'top', 
+                        anchor: 'end', 
+                        font: {weight:'bold'},
+                        formatter: (v) => formatMiles(v) 
+                        } } ] }, 
+            options: { 
+                responsive: true, 
+                maintainAspectRatio: false, 
+                plugins: { legend: {position: 'bottom'} },
+                scales: { y: { max: 3000, type: 'linear', position: 'left' }, y1: { type: 'linear', position: 'right', max: 5, grid: {drawOnChartArea: false} } } } });
+            if(db.err_per) new Chart(document.getElementById('cv_err_per'), 
+            { type: 'bar', 
+            data: { 
+                labels: db.err_per.mes, 
+                datasets: [
+                    { type: 'line', 
+                    label: '% Errores', 
+                    data: cleanData(db.err_per.pct),
+                    borderColor: c_tel, 
+                    backgroundColor: c_azu, 
+                    borderWidth: 3, 
+                    yAxisID: 'y1', 
+                    datalabels: { 
+                        align: 'bottom', 
+                        backgroundColor: c_gri, 
+                        color: 'black', 
+                        borderRadius: 3, 
+                        font: {weight:'bold'},
+                        formatter: (v) => formatMiles(v) +'%'
+                        } }, 
+                    { type: 'bar', 
+                    label: 'Cant Errores', 
+                    data: cleanData(db.err_per.err), 
+                    backgroundColor: c_azu, 
+                    barPercentage: 0.6, 
+                    yAxisID: 'y', 
+                    datalabels: { 
+                        align: 'top', 
+                        anchor: 'end', 
+                        font: {weight:'bold'},
+                        formatter: (v) => formatMiles(v) 
+                        } } ] }, 
+            options: { 
+                responsive: true, 
+                maintainAspectRatio: false, 
+                plugins: { legend: {position: 'bottom'} }, 
+                scales: { y: { max: 250, type: 'linear', position: 'left' }, y1: { type: 'linear', position: 'right', max: 5, grid: {drawOnChartArea: false} } } } });
         } catch(e) {}
 
         // Graficos Control de horas extras
         try {
-            if(db.extras) new Chart(document.getElementById('cv_extras'), { type: 'bar', data: { labels: db.extras.mes, datasets: [ { type: 'line', label: 'Casos', data: cleanData(db.extras.casos), borderColor: '#cbd5e1', backgroundColor: '#cbd5e1', borderWidth: 4, yAxisID: 'y1', datalabels: { align: 'top', font: {weight:'bold'} } }, { type: 'bar', label: 'Horas', data: cleanData(db.extras.hrs), backgroundColor: c_azu, barPercentage: 0.5, yAxisID: 'y', datalabels: { display: false } } ] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {position: 'bottom'} }, scales: { y: { type: 'linear', position: 'left' }, y1: { type: 'linear', position: 'right', grid: {drawOnChartArea: false} } } } });
+            if(db.extras) new Chart(document.getElementById('cv_extras'), 
+            { type: 'bar',
+            data: { labels: db.extras.mes, datasets: [ 
+                { type: 'line', 
+                label: 'Casos',
+                data: cleanData(db.extras.casos), 
+                borderColor: '#cbd5e1', 
+                backgroundColor: '#cbd5e1', 
+                borderWidth: 4, 
+                yAxisID: 'y1', 
+                datalabels: { 
+                    align: 'top', 
+                    font: {weight:'bold'},
+                    formatter: (v) => formatMiles(v) 
+                    } }, 
+            { type: 'bar', 
+            label: 'Horas', 
+            data: cleanData(db.extras.hrs), 
+            backgroundColor: c_tel, 
+            barPercentage: 0.5, 
+            yAxisID: 'y', 
+            datalabels: { display: false } } ] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {position: 'bottom'} }, scales: { y: { type: 'linear', position: 'left' }, y1: { type: 'linear', position: 'right', grid: {drawOnChartArea: false} } } } });
         } catch(e) {}
 
     </script>
