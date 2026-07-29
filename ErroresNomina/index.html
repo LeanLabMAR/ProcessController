@@ -695,7 +695,7 @@
         }
 
         // --- STREAMING_CHUNK:Chart Configurations & Initialization... ---
-        let chartColBar, chartColLine, chartPerBar, chartPerLine;
+        let chartColBar, chartColLine, chartPerBar, chartColSubLine, chartPerLine, chartPerSubLine;;
 
         // Shared chart options for consistent styling
         const defaultBarOptions = {
@@ -850,17 +850,21 @@
             event.target.classList.remove('bg-transparent', 'text-slate-600');
             event.target.classList.add('bg-rose-600', 'text-white', 'shadow-sm');
 
-            // Update Data
-            chartPerBar.data = getPerBarDataConfig(quarter);
-            chartPerBar.update();
-            chartPerLine.data = getPerLineDataConfig(quarter);
-            chartPerLine.update();
+            // Update Data (Con validación de seguridad)
+            if (chartPerBar) { chartPerBar.data = getPerBarDataConfig(quarter); chartPerBar.update(); }
+            if (chartPerLine) { chartPerLine.data = getPerLineDataConfig(quarter); chartPerLine.update(); }
+            //if (chartPerSubLine) { chartPerSubLine.data = getSubLineDataConfig('per', quarter); chartPerSubLine.update(); }
             
             updatePerText(quarter);
             renderTable('per', quarter);
-            renderSubTable('per', quarter);
+            
+            // Verificamos si la función de subtabla existe antes de llamarla
+            if (typeof renderSubTable === "function") {
+                renderSubTable('per', quarter);
+            }
         }
 
+        // Initialize Everything on Load
         // Initialize Everything on Load
         window.onload = function() {
             // Setup COL Anual as default
@@ -870,7 +874,7 @@
             chartColLine = new Chart(ctxColLine, { type: 'line', data: getColLineDataConfig('anual'), options: defaultLineOptions });
             updateColText('anual');
             renderTable('col', 'anual');
-            renderSubTable('col', quarter); // Agrega esto para Colombia
+            renderSubTable('col', 'anual'); // ¡CORREGIDO! Antes decía "quarter"
 
             // Setup PER Anual as default
             const ctxPerBar = document.getElementById('perBarChart').getContext('2d');
@@ -879,7 +883,7 @@
             chartPerLine = new Chart(ctxPerLine, { type: 'line', data: getPerLineDataConfig('anual'), options: defaultLineOptions });
             updatePerText('anual');
             renderTable('per', 'anual');
-            renderSubTable('per', quarter); // Agrega esto para Perú
+            renderSubTable('per', 'anual'); // ¡CORREGIDO! Antes decía "quarter"
         };
     </script>
 </body>
