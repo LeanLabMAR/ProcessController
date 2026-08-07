@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consolidado Mensual Infracciones</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        window.addEventListener('error', function(e) {
+            if(e.filename && e.filename.includes('datos_dashboard.js')) {
+                alert("Error al cargar datos_dashboard.js. Verifica si la macro de Excel generó caracteres inválidos. Detalle: " + e.message);
+            }
+        });
+    </script>
+    
+    <!-- CONEXIÓN CON LOS DATOS DE EXCEL -->
+    <script src="datos_dashboard.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-dark': '#1e1c2a',
+                        'brand-purple-dark': '#382a5c',
+                        'brand-purple': '#5a547c',
+                        'brand-slate': '#7a849c',
+                        'brand-light': '#d4d8e4',
+                        'brand-accent': '#d43d6a',
+                        'brand-bg': '#e6e7eb'
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { background-color: #e6e7eb; color: #1e1c2a; }
+        
+        .pbi-table th {
+            background-color: #5a547c; color: white; padding: 10px 8px;
+            text-align: left; font-size: 0.85rem; font-weight: 600;
+            position: sticky; top: 0; z-index: 10;
+        }
+        .pbi-table td { padding: 8px; font-size: 0.85rem; border-bottom: 1px solid #d4d8e4; }
+        .pbi-table tr:nth-child(even) { background-color: #f3f4f6; }
+        .pbi-table tr:nth-child(odd) { background-color: #ffffff; }
+        .pbi-table tr:hover { background-color: #e2e8f0; transition: background-color 0.2s; }
+        
+        .card {
+            background: white; border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 2px solid #d4d8e4; padding: 16px;
+        }
+        .nav-pill {
+            background-color: #7a849c; color: white; border-radius: 9999px;
+            padding: 6px 16px; font-size: 0.9rem; font-weight: 500;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .nav-pill.active { background-color: #382a5c; box-shadow: 0 2px 4px rgba(0,0,0,0.2); transform: scale(1.05); font-weight: bold;}
+        .nav-pill:hover:not(.active) { background-color: #5a547c; }
+
+        ::-webkit-scrollbar { width: 8px; height: 10px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+    </style>
+</head>
+<body class="p-4 md:p-6 min-h-screen">
+
+    <header class="mb-6">
+        <div class="flex items-center gap-4 mb-4">
+            <i class="fa-solid fa-chart-pie text-4xl text-brand-purple-dark"></i>
+            <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-brand-dark" id="main-title">Consolidado Mensual Infracciones Colombia</h1>
+        </div>
+        
+        <!-- Pestañas de Navegación por País -->
+        <div class="flex flex-wrap gap-2 mb-6" id="country-tabs">
+            <div id="tab-colombia" class="nav-pill active" onclick="switchCountry('Colombia')">Consolidado Mensual Colombia</div>
+            <div id="tab-peru" class="nav-pill" onclick="switchCountry('Peru')">Consolidado Mensual Perú</div>
+        </div>
+    </header>
+
+    <!-- Filtros Desplegables Superiores -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-6" id="dashboard-controls">
+        <div class="md:col-span-9 grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div class="card p-3 flex flex-col justify-center">
+                <label class="block text-xs font-semibold mb-1 text-brand-slate">VP</label>
+                <select id="vpFilter" class="w-full bg-brand-purple text-white text-sm p-1.5 rounded cursor-pointer filter-select shadow-sm hover:bg-brand-purple-dark transition">
+                    <option value="Todas">Todas</option>
+                </select>
+            </div>
+            <div class="card p-3 flex flex-col justify-center">
+                <label class="block text-xs font-semibold mb-1 text-brand-slate">Client</label>
+                <select id="clientFilter" class="w-full bg-brand-purple text-white text-sm p-1.5 rounded cursor-pointer filter-select shadow-sm hover:bg-brand-purple-dark transition">
+                    <option value="Todas">Todas</option>
+                </select>
+            </div>
+            <div class="card p-3 flex flex-col justify-center">
+                <label class="block text-xs font-semibold mb-1 text-brand-slate">Tipo de Infracción</label>
+                <select id="tipoFilter" class="w-full bg-brand-purple text-white text-sm p-1.5 rounded cursor-pointer filter-select shadow-sm hover:bg-brand-purple-dark transition">
+                    <option value="Todas">Todas</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="md:col-span-3 card flex flex-col justify-center items-center bg-white border-brand-purple-dark border-l-4">
+            <h3 class="text-sm font-bold text-brand-slate mb-1 text-center uppercase tracking-wide">Total Horas Infracciones</h3>
+            <p id="kpiTotalHoras" class="text-4xl font-black text-brand-accent drop-shadow-sm">0</p>
+        </div>
+    </div>
+
+    <!-- PANEL DE SEGMENTACIÓN RÁPIDA (Botones) -->
+    <div class="card mb-6 bg-white border-brand-accent border-t-4">
+        <h2 class="font-bold text-lg mb-4 text-brand-dark border-b pb-2"><i class="fa-solid fa-hand-pointer mr-2 text-brand-purple"></i>Segmentación Rápida</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Botones Meses -->
+            <div>
+                <h3 class="text-xs font-semibold mb-3 text-brand-slate uppercase tracking-wider">Filtrar por Mes</h3>
+                <div class="flex flex-wrap gap-2" id="mes-slicer">
+                    <!-- Dinámico -->
+                </div>
+            </div>
+            
+            <!-- Botones Estados -->
+            <div>
+                <h3 class="text-xs font-semibold mb-3 text-brand-slate uppercase tracking-wider">Filtrar por Estado</h3>
+                <div class="flex flex-wrap gap-2" id="estado-slicer">
+                    <!-- Dinámico -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráfico Principal VP -->
+    <div class="card mb-6 flex flex-col">
+        <h2 class="font-bold text-lg mb-4 text-brand-dark border-b pb-2"><i class="fa-solid fa-user-tie mr-2 text-brand-purple"></i>Horas Infracción por VP</h2>
+        <div class="w-full overflow-x-auto flex-grow pb-2">
+            <div id="container-chartVP" class="relative h-72 md:h-80 transition-all duration-300">
+                <canvas id="chartVPHours"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráfico Principal Mes -->
+    <div class="card mb-6 flex flex-col">
+        <h2 class="font-bold text-lg mb-4 text-brand-dark border-b pb-2"><i class="fa-solid fa-calendar-days mr-2 text-brand-purple"></i>Horas Infracción por Mes</h2>
+        <div class="w-full overflow-x-auto flex-grow pb-2">
+            <div id="container-chartMes" class="relative h-72 md:h-80 transition-all duration-300">
+                <canvas id="chartMesHours"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Adición -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6">
+        <div class="card lg:col-span-4 overflow-hidden flex flex-col">
+            <h2 class="font-bold text-md mb-3 text-brand-dark border-b pb-2"><i class="fa-solid fa-plus-circle mr-2 text-emerald-600"></i>Adición (Hrs)</h2>
+            <div class="overflow-y-auto flex-grow" style="max-height: 400px;">
+                <table class="w-full pbi-table" id="tableAdicionCliente">
+                    <thead><tr><th>Client</th><th class="text-right">Horas</th></tr></thead>
+                    <tbody></tbody>
+                    <tfoot><tr class="font-bold bg-gray-200 text-brand-dark"><td class="p-3 border-t">Total</td><td class="p-3 border-t text-right" id="totalAdicion">0</td></tr></tfoot>
+                </table>
+            </div>
+        </div>
+        <div class="card lg:col-span-8 flex flex-col">
+            <h2 class="font-bold text-md mb-3 text-brand-dark border-b pb-2">Top Horas Adición por Client</h2>
+            <div class="w-full overflow-x-auto flex-grow pb-2">
+                <div id="container-chartAdicion" class="relative h-64 md:h-96">
+                    <canvas id="chartAdicionClient"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reducción -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6">
+        <div class="card lg:col-span-4 overflow-hidden flex flex-col">
+            <h2 class="font-bold text-md mb-3 text-brand-dark border-b pb-2"><i class="fa-solid fa-minus-circle mr-2 text-rose-600"></i>Reducción (Hrs)</h2>
+            <div class="overflow-y-auto flex-grow" style="max-height: 400px;">
+                <table class="w-full pbi-table" id="tableReduccionCliente">
+                    <thead><tr><th>Client</th><th class="text-right">Horas</th></tr></thead>
+                    <tbody></tbody>
+                    <tfoot><tr class="font-bold bg-gray-200 text-brand-dark"><td class="p-3 border-t">Total</td><td class="p-3 border-t text-right" id="totalReduccion">0</td></tr></tfoot>
+                </table>
+            </div>
+        </div>
+        <div class="card lg:col-span-8 flex flex-col">
+            <h2 class="font-bold text-md mb-3 text-brand-dark border-b pb-2">Top Horas Reducción por Client</h2>
+            <div class="w-full overflow-x-auto flex-grow pb-2">
+                <div id="container-chartReduccion" class="relative h-64 md:h-96">
+                    <canvas id="chartReduccionClient"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pareto Adición -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6">
+        <div class="card lg:col-span-5 overflow-hidden flex flex-col">
+            <h2 class="font-bold text-md mb-3 text-brand-dark border-b pb-2"><i class="fa-solid fa-list-check mr-2 text-brand-purple"></i>Justificaciones Adición</h2>
+            <div class="overflow-y-auto flex-grow" style="max-height: 400px;">
+                <table class="w-full pbi-table" id="tableJustAdicion">
+                    <thead><tr><th>Justification</th><th class="text-right">Horas</th><th class="text-right">% Pareto</th></tr></thead>
+                    <tbody></tbody>
+                    <tfoot><tr class="font-bold bg-gray-200 text-brand-dark"><td class="p-3 border-t">Total</td><td class="p-3 border-t text-right" id="totalJustAd">0</td><td></td></tr></tfoot>
+                </table>
+            </div>
+        </div>
+        <div class="card lg:col-span-7 flex flex-col">
+            <h2 class="font-bold text-md mb-3 text-brand-dark border-b pb-2">Pareto Adiciones</h2>
+            <div class="w-full overflow-x-auto flex-grow pb-2">
+                <div id="container-chartParetoAdicion" class="relative h-64 md:h-96">
+                    <canvas id="chartParetoAdicion"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pareto Reducción -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6">
+        <div class="card lg:col-span-5 overflow-hidden flex flex-col">
+            <h2 class="font-bold text-md mb-3 text-brand-dark border-b pb-2"><i class="fa-solid fa-list-check mr-2 text-brand-purple"></i>Justificaciones Reducción</h2>
+            <div class="overflow-y-auto flex-grow" style="max-height: 400px;">
+                <table class="w-full pbi-table" id="tableJustReduccion">
+                    <thead><tr><th>Justification</th><th class="text-right">Horas</th><th class="text-right">% Pareto</th></tr></thead>
+                    <tbody></tbody>
+                    <tfoot><tr class="font-bold bg-gray-200 text-brand-dark"><td class="p-3 border-t">Total</td><td class="p-3 border-t text-right" id="totalJustRed">0</td><td></td></tr></tfoot>
+                </table>
+            </div>
+        </div>
+        <div class="card lg:col-span-7 flex flex-col">
+            <h2 class="font-bold text-md mb-3 text-brand-dark border-b pb-2">Pareto Reducciones</h2>
+            <div class="w-full overflow-x-auto flex-grow pb-2">
+                <div id="container-chartParetoReduccion" class="relative h-64 md:h-96">
+                    <canvas id="chartParetoReduccion"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        Chart.register(ChartDataLabels);
+
+        let charts = {};
+        const formatNum = (num) => new Intl.NumberFormat('es-CO').format(Math.round(num));
+        const formatPerc = (num) => (Math.round(num * 100) / 100).toFixed(2) + '%';
+        
+        const colorBrand = '#5a547c';
+        const colorBrandDark = '#382a5c';
+        const colorAccent = '#d43d6a';
+        const colorHover = '#e06085';
+
+        // Lógica de navegación entre países
+        let currentCountry = 'Colombia'; // Valor por defecto
+        
+        // Variables de Segmentación Rápida
+        let activeMes = 'Todos';
+        let activeEstado = 'Todas';
+        let uniqueMonths = [];
+        let uniqueEstados = [];
+
+        // Ordenamiento Cronológico de meses
+        const monthOrder = {
+            'enero':1, 'febrero':2, 'marzo':3, 'abril':4, 'mayo':5, 'junio':6, 
+            'julio':7, 'agosto':8, 'septiembre':9, 'octubre':10, 'noviembre':11, 'diciembre':12
+        };
+        const getMonthWeight = (m) => {
+            let mLower = (m || '').toLowerCase();
+            for(let key in monthOrder) {
+                if(mLower.includes(key)) return monthOrder[key];
+            }
+            return 99;
+        };
+
+        // Función para cambiar de pestaña entre Colombia y Perú
+        function switchCountry(country) {
+            currentCountry = country;
+            
+            // Actualizar interfaz de pestañas
+            document.getElementById('tab-colombia').classList.toggle('active', country === 'Colombia');
+            document.getElementById('tab-peru').classList.toggle('active', country === 'Peru');
+            
+            // Actualizar el título principal
+            document.getElementById('main-title').innerText = `Consolidado Mensual Infracciones ${country === 'Colombia' ? 'Colombia' : 'Perú'}`;
+
+            // Resetear estados y dropdowns visuales
+            activeMes = 'Todos';
+            activeEstado = 'Todas';
+            document.getElementById('vpFilter').value = 'Todas';
+            document.getElementById('clientFilter').value = 'Todas';
+            document.getElementById('tipoFilter').value = 'Todas';
+            
+            // Re-inicializar data
+            initFilters();
+            processAndRenderData();
+        }
+
+        // Obtener el dataset correcto basado en el país seleccionado
+        function getActiveDatasets() {
+            let dataClientes = [];
+            let dataJustificaciones = [];
+            
+            if(currentCountry === 'Colombia') {
+                dataClientes = typeof colombiaClientes !== 'undefined' ? colombiaClientes : [];
+                dataJustificaciones = typeof colombiaJustificaciones !== 'undefined' ? colombiaJustificaciones : [];
+            } else {
+                dataClientes = typeof peruClientes !== 'undefined' ? peruClientes : [];
+                dataJustificaciones = typeof peruJustificaciones !== 'undefined' ? peruJustificaciones : [];
+            }
+            
+            return { dataClientes, dataJustificaciones };
+        }
+
+        function initFilters() {
+            const { dataClientes } = getActiveDatasets();
+
+            if(dataClientes.length === 0) {
+                // Limpiar pantalla visualmente si no hay data de ese país
+                renderVisuals([], [], [], [], [], []);
+                document.getElementById('kpiTotalHoras').innerText = '0';
+                document.getElementById('mes-slicer').innerHTML = '<span class="text-xs text-gray-500 italic">No hay datos disponibles</span>';
+                document.getElementById('estado-slicer').innerHTML = '<span class="text-xs text-gray-500 italic">No hay datos disponibles</span>';
+                return;
+            }
+
+            const populateSelect = (id, dataSet) => {
+                const select = document.getElementById(id);
+                select.innerHTML = '<option value="Todas">Todas</option>'; // Limpiar opciones anteriores
+                dataSet.filter(Boolean).forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item;
+                    option.textContent = item;
+                    select.appendChild(option);
+                });
+            };
+
+            const uniqueVPs = [...new Set(dataClientes.map(item => item.VP))].filter(Boolean).sort();
+            const uniqueClients = [...new Set(dataClientes.map(item => item.Client))].filter(Boolean).sort();
+            const uniqueTipos = [...new Set(dataClientes.map(item => item.Tipo))].filter(Boolean).sort();
+            
+            uniqueMonths = [...new Set(dataClientes.map(item => item.Mes))].filter(Boolean)
+                            .sort((a, b) => getMonthWeight(a) - getMonthWeight(b));
+            
+            uniqueEstados = [...new Set(dataClientes.map(item => item.Estado))].filter(Boolean).sort();
+
+            populateSelect('vpFilter', uniqueVPs);
+            populateSelect('clientFilter', uniqueClients);
+            populateSelect('tipoFilter', uniqueTipos);
+
+            renderSlicers();
+
+            // Evitar duplicar EventListeners si se inicializa varias veces
+            document.querySelectorAll('.filter-select').forEach(select => {
+                // Clonar el nodo borra los event listeners anteriores y ponemos uno nuevo
+                const newSelect = select.cloneNode(true);
+                select.parentNode.replaceChild(newSelect, select);
+                newSelect.addEventListener('change', processAndRenderData);
+            });
+        }
+
+        function renderSlicers() {
+            // Meses Slicer
+            const mesContainer = document.getElementById('mes-slicer');
+            mesContainer.innerHTML = '';
+            ['Todos', ...uniqueMonths].forEach(m => {
+                const btn = document.createElement('button');
+                btn.innerText = m;
+                if (activeMes === m) {
+                    btn.className = 'px-4 py-1.5 text-sm font-bold rounded-full bg-brand-accent text-white shadow-md transition-all transform scale-105';
+                } else {
+                    btn.className = 'px-4 py-1.5 text-sm font-medium rounded-full bg-white text-brand-slate border border-gray-300 hover:bg-gray-100 hover:text-brand-dark transition-all';
+                }
+                btn.onclick = () => { 
+                    activeMes = m; 
+                    renderSlicers(); 
+                    processAndRenderData(); 
+                };
+                mesContainer.appendChild(btn);
+            });
+
+            // Estados Slicer
+            const estadoContainer = document.getElementById('estado-slicer');
+            estadoContainer.innerHTML = '';
+            ['Todas', ...uniqueEstados].forEach(e => {
+                const btn = document.createElement('button');
+                btn.innerText = e;
+                if (activeEstado === e) {
+                    btn.className = 'px-4 py-1.5 text-sm font-bold rounded-full bg-brand-purple-dark text-white shadow-md transition-all transform scale-105';
+                } else {
+                    btn.className = 'px-4 py-1.5 text-sm font-medium rounded-full bg-white text-brand-slate border border-gray-300 hover:bg-gray-100 hover:text-brand-dark transition-all';
+                }
+                btn.onclick = () => { 
+                    activeEstado = e; 
+                    renderSlicers(); 
+                    processAndRenderData(); 
+                };
+                estadoContainer.appendChild(btn);
+            });
+        }
+
+        function processAndRenderData() {
+            const { dataClientes, dataJustificaciones } = getActiveDatasets();
+            if(dataClientes.length === 0) return;
+
+            const filterVP = document.getElementById('vpFilter').value;
+            const filterClient = document.getElementById('clientFilter').value;
+            const filterTipo = document.getElementById('tipoFilter').value;
+            const filterMes = activeMes;
+            const filterEstado = activeEstado;
+
+            const filteredClientes = dataClientes.filter(row => {
+                if(!row.VP || !row.Horas) return false; 
+
+                const passVP = filterVP === 'Todas' || row.VP === filterVP;
+                const passClient = filterClient === 'Todas' || row.Client === filterClient;
+                const passTipo = filterTipo === 'Todas' || row.Tipo === filterTipo;
+                const passMes = filterMes === 'Todos' || row.Mes === filterMes;
+                const passEstado = filterEstado === 'Todas' || row.Estado === filterEstado;
+
+                return passVP && passClient && passTipo && passMes && passEstado;
+            });
+
+            const filteredJust = dataJustificaciones.filter(row => {
+                if(!row.Mes) return false;
+                
+                const passTipo = filterTipo === 'Todas' || row.Tipo === filterTipo;
+                const passMes = filterMes === 'Todos' || row.Mes === filterMes;
+                const passEstado = filterEstado === 'Todas' || row.Estado === filterEstado;
+                
+                return passTipo && passMes && passEstado;
+            });
+            
+            const totalHoras = filteredClientes.reduce((acc, curr) => acc + (parseFloat(curr.Horas) || 0), 0);
+            document.getElementById('kpiTotalHoras').innerText = formatNum(totalHoras);
+
+            let vpData = {};
+            filteredClientes.forEach(row => {
+                vpData[row.VP] = (vpData[row.VP] || 0) + (parseFloat(row.Horas) || 0);
+            });
+            const sortedVP = Object.entries(vpData).sort((a,b) => b[1] - a[1]);
+
+            let mesData = {};
+            filteredClientes.forEach(row => {
+                mesData[row.Mes] = (mesData[row.Mes] || 0) + (parseFloat(row.Horas) || 0);
+            });
+            const sortedMes = Object.entries(mesData).sort((a,b) => getMonthWeight(a[0]) - getMonthWeight(b[0]));
+
+            let clientAdicion = {}, clientReduccion = {};
+            filteredClientes.forEach(row => {
+                const horasNum = parseFloat(row.Horas) || 0;
+                const tipo = (row.Tipo || '').toLowerCase();
+                
+                if(tipo.includes('adicion') || tipo.includes('adición')) {
+                    clientAdicion[row.Client] = (clientAdicion[row.Client] || 0) + horasNum;
+                } else if (tipo.includes('reduccion') || tipo.includes('reducción')) {
+                    clientReduccion[row.Client] = (clientReduccion[row.Client] || 0) + horasNum;
+                }
+            });
+            const sortedAdicionClient = Object.entries(clientAdicion).sort((a,b) => b[1] - a[1]);
+            const sortedReduccionClient = Object.entries(clientReduccion).sort((a,b) => b[1] - a[1]);
+
+            const calcPareto = (tipoBusqueda) => {
+                let justData = {};
+                filteredJust.filter(j => {
+                    const tipo = (j.Tipo || '').toLowerCase();
+                    return tipo.includes(tipoBusqueda.toLowerCase());
+                }).forEach(row => {
+                    justData[row.Justificacion] = (justData[row.Justificacion] || 0) + (parseFloat(row.Horas) || 0);
+                });
+                
+                let sorted = Object.entries(justData).sort((a,b) => b[1] - a[1]);
+                let total = sorted.reduce((acc, curr) => acc + curr[1], 0);
+                let cumulative = 0;
+                return sorted.map(item => {
+                    cumulative += item[1];
+                    return {
+                        justificacion: item[0],
+                        horas: item[1],
+                        pareto: total > 0 ? (cumulative / total) * 100 : 0
+                    };
+                });
+            };
+
+            renderVisuals(
+                sortedVP, 
+                sortedMes,
+                sortedAdicionClient, 
+                sortedReduccionClient, 
+                calcPareto('adicion'), 
+                calcPareto('reduccion')
+            );
+        }
+
+        function adjustCanvasContainerWidth(containerId, dataLength, pixelsPerBar = 60) {
+            const container = document.getElementById(containerId);
+            const minimumWidthRequired = dataLength * pixelsPerBar;
+            if(minimumWidthRequired > container.parentElement.clientWidth) {
+                container.style.minWidth = `${minimumWidthRequired}px`;
+            } else {
+                container.style.minWidth = '100%';
+            }
+        }
+
+        function renderTable(tbodyId, totalId, data, isPareto = false) {
+            const tbody = document.querySelector(`#${tbodyId} tbody`);
+            tbody.innerHTML = '';
+            let total = 0;
+            
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                let val1 = item[0] || item.justificacion;
+                let val2 = item[1] || item.horas;
+                total += val2;
+                
+                let html = `<td>${val1}</td><td class="text-right font-medium">${formatNum(val2)}</td>`;
+                if(isPareto) html += `<td class="text-right text-brand-slate font-medium">${formatPerc(item.pareto)}</td>`;
+                
+                tr.innerHTML = html;
+                tbody.appendChild(tr);
+            });
+            document.getElementById(totalId).innerText = formatNum(total);
+        }
+
+        function createChart(canvasId, config) {
+            if(charts[canvasId]) charts[canvasId].destroy();
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            charts[canvasId] = new Chart(ctx, config);
+        }
+
+        function renderVisuals(vpData, mesData, adClient, redClient, parAd, parRed) {
+            renderTable('tableAdicionCliente', 'totalAdicion', adClient);
+            renderTable('tableReduccionCliente', 'totalReduccion', redClient);
+            renderTable('tableJustAdicion', 'totalJustAd', parAd, true);
+            renderTable('tableJustReduccion', 'totalJustRed', parRed, true);
+
+            adjustCanvasContainerWidth('container-chartVP', vpData.length, 90);
+            adjustCanvasContainerWidth('container-chartMes', mesData.length, 90); 
+            adjustCanvasContainerWidth('container-chartAdicion', adClient.length, 70);
+            adjustCanvasContainerWidth('container-chartReduccion', redClient.length, 70);
+            adjustCanvasContainerWidth('container-chartParetoAdicion', parAd.length, 110);
+            adjustCanvasContainerWidth('container-chartParetoReduccion', parRed.length, 110);
+
+            const commonOptions = {
+                responsive: true, 
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                plugins: { 
+                    legend: { display: false }, 
+                    datalabels: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(30, 28, 42, 0.9)',
+                        titleFont: { size: 13, family: 'Inter' },
+                        bodyFont: { size: 14, family: 'Inter', weight: 'bold' },
+                        padding: 10,
+                        callbacks: { label: function(context) { return ' Horas: ' + formatNum(context.parsed.y); } }
+                    }
+                }
+            };
+
+            const commonXAxis = {
+                ticks: { autoSkip: false, maxRotation: 45, minRotation: 45, font: { size: 11, family: 'Inter' } },
+                grid: { display: false }
+            };
+
+            createChart('chartVPHours', {
+                type: 'bar',
+                data: {
+                    labels: vpData.map(d => d[0]),
+                    datasets: [{
+                        data: vpData.map(d => d[1]),
+                        backgroundColor: colorBrand,
+                        hoverBackgroundColor: colorBrandDark,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    ...commonOptions,
+                    plugins: {
+                        ...commonOptions.plugins,
+                        datalabels: {
+                            display: true, anchor: 'end', align: 'top', color: '#1e1c2a',
+                            font: { weight: 'bold', family: 'Inter' }, formatter: (val) => formatNum(val)
+                        }
+                    },
+                    scales: { y: { beginAtZero: true, grid: { borderDash: [5, 5] } }, x: commonXAxis },
+                    layout: { padding: { top: 20 } }
+                }
+            });
+
+            createChart('chartMesHours', {
+                type: 'bar',
+                data: {
+                    labels: mesData.map(d => d[0]),
+                    datasets: [{
+                        data: mesData.map(d => d[1]),
+                        backgroundColor: colorBrand,
+                        hoverBackgroundColor: colorBrandDark,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    ...commonOptions,
+                    plugins: {
+                        ...commonOptions.plugins,
+                        datalabels: {
+                            display: true, anchor: 'end', align: 'top', color: '#1e1c2a',
+                            font: { weight: 'bold', family: 'Inter' }, formatter: (val) => formatNum(val)
+                        }
+                    },
+                    scales: { y: { beginAtZero: true, grid: { borderDash: [5, 5] } }, x: commonXAxis },
+                    layout: { padding: { top: 20 } }
+                }
+            });
+
+            const barConfig = (dataArr, bgCol, hbgCol) => ({
+                type: 'bar',
+                data: {
+                    labels: dataArr.map(d => d[0]),
+                    datasets: [{
+                        data: dataArr.map(d => d[1]),
+                        backgroundColor: bgCol, hoverBackgroundColor: hbgCol, borderRadius: 4
+                    }]
+                },
+                options: {
+                    ...commonOptions,
+                    plugins: {
+                        ...commonOptions.plugins,
+                        datalabels: {
+                            display: true, anchor: 'end', align: 'top', color: '#333',
+                            font: { size: 10 }, formatter: (val) => formatNum(val)
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, grid: { borderDash: [3, 3] } },
+                        x: { ...commonXAxis, ticks: { ...commonXAxis.ticks, maxRotation: 90, minRotation: 90 } }
+                    },
+                    layout: { padding: { top: 20 } }
+                }
+            });
+
+            createChart('chartAdicionClient', barConfig(adClient, colorAccent, colorHover));
+            createChart('chartReduccionClient', barConfig(redClient, colorAccent, colorHover));
+
+            const paretoConfig = (paretoData) => ({
+                type: 'bar',
+                data: {
+                    labels: paretoData.map(d => d.justificacion),
+                    datasets: [
+                        {
+                            type: 'line', label: 'Pareto %', data: paretoData.map(d => d.pareto),
+                            borderColor: colorBrandDark, backgroundColor: colorBrandDark,
+                            borderWidth: 3, pointRadius: 4, pointHoverRadius: 6, yAxisID: 'y1',
+                            datalabels: {
+                                display: true, anchor: 'end', align: 'top',
+                                font: { weight: 'bold', size: 10 }, color: colorBrandDark,
+                                formatter: (val) => formatPerc(val)
+                            }
+                        },
+                        {
+                            type: 'bar', label: 'Horas', data: paretoData.map(d => d.horas),
+                            backgroundColor: colorAccent, hoverBackgroundColor: colorHover,
+                            borderRadius: 4, yAxisID: 'y', datalabels: { display: false }
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(30, 28, 42, 0.9)',
+                            callbacks: {
+                                label: function(context) {
+                                    if(context.datasetIndex === 0) return ' Pareto: ' + formatPerc(context.parsed.y);
+                                    return ' Horas: ' + formatNum(context.parsed.y);
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { type: 'linear', display: true, position: 'left', beginAtZero: true, grid: { borderDash: [3, 3] } },
+                        y1: { type: 'linear', display: true, position: 'right', beginAtZero: true, max: 110, grid: { drawOnChartArea: false } },
+                        x: { ...commonXAxis, ticks: { ...commonXAxis.ticks, maxRotation: 60, minRotation: 60, font: {size: 10} } }
+                    },
+                    layout: { padding: { top: 20 } }
+                }
+            });
+
+            createChart('chartParetoAdicion', paretoConfig(parAd));
+            createChart('chartParetoReduccion', paretoConfig(parRed));
+        }
+
+        window.onload = () => {
+            initFilters();
+            processAndRenderData();
+        };
+    </script>
+</body>
+</html>
