@@ -9,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <!-- Librerías de gráficas y Base de datos Excel -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <script src="datos_reporte.js"></script>
@@ -32,7 +31,7 @@
         section { padding: 60px 0; border-bottom: 1px solid #e2e8f0; }
         section:last-child { border-bottom: none; }
         h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; margin: 0; color: #1e293b; }
-        h1 { font-size: 48px; font-weight: 700; margin-bottom: 20px; line-height: 1.2; }
+        h1 { font-size: 44px; font-weight: 700; margin-bottom: 20px; line-height: 1.2; }
         h2 { font-size: 32px; font-weight: 600; margin-bottom: 40px; color: #1e3a8a; text-align: center; position: relative; }
         h2::after { content: ''; display: block; width: 60px; height: 4px; background: #0ea5e9; margin: 10px auto 0; border-radius: 2px; }
         h3 { font-size: 22px; font-weight: 600; margin-bottom: 15px; }
@@ -40,49 +39,37 @@
 
         /* HERO SECTION */
         .hero { margin-top: 20px; padding: 60px 0; background: linear-gradient(to right, #f1f5f9 50%, #ffffff 50%); display: flex; align-items: center; }
-        .hero-content { display: flex; align-items: center; gap: 50px; }
-        .hero-text { flex: 1; }
-        .hero-image { flex: 1; height: 400px; border-radius: 12px; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
-        .hero-image img { width: 100%; height: 100%; object-fit: cover; }
-        .hero-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 40px; }
-        .kpi-card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); text-align: center; border-top: 4px solid #1e3a8a; transition: transform 0.2s; text-decoration: none;}
+        .kpi-card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); text-align: center; border-top: 4px solid #1e3a8a; transition: transform 0.2s; text-decoration: none; display: block; color: #334155; }
         .kpi-card:hover { transform: translateY(-5px); }
         .kpi-card i { font-size: 20px; color: #0ea5e9; margin-bottom: 10px; }
-        .kpi-card span { font-weight: 700; color: #334155; display: block; font-size: 12px;}
+        .kpi-card span { font-weight: 700; font-size: 12px;}
 
         /* TOP KPI CARDS STRIP */
         .top-kpis-wrapper { margin-top: 110px; margin-bottom: -10px; padding: 0 5%; display: flex; justify-content: center; gap: 20px; max-width: 1200px; margin-left: auto; margin-right: auto; position: relative; z-index: 10; }
-        .top-kpi-card { background: #ffffff; border-radius: 12px; padding: 25px 20px; flex: 1; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: transform 0.3s ease; }
+        .top-kpi-card { background: #ffffff; border-radius: 12px; padding: 25px 20px; flex: 1; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: transform 0.3s ease; border: 2px solid #556080; }
         .top-kpi-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px rgba(0,0,0,0.1); }
         .top-kpi-icon { font-size: 28px; margin-bottom: 15px; color: #556080; }
         .top-kpi-title { font-family: 'Poppins', sans-serif; font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
         .top-kpi-number { font-family: 'Poppins', sans-serif; font-size: 32px; font-weight: 500; color: #1e293b; line-height: 1.1; margin-bottom: 5px; }
         .top-kpi-number2 { font-family: 'Poppins', sans-serif; font-size: 24px; font-weight: 600; color: #1e293b; line-height: 1.1; margin-bottom: 5px; }
         .top-kpi-subtitle { font-size: 11px; color: #94a3b8; }
-        
-        .kpi-border-blue { border: 2px solid #556080; }
-        .kpi-border-green { border: 2px solid #85c3c8; }
-        .kpi-border-purple { border: 2px solid #334155; }
-        .kpi-border-orange { border: 2px solid #dce0e5; }
 
-        /* CHART BOXES */
-        .chart-box { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 25px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        /* CHART BOXES (100% Ancho) */
+        .chart-box { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 25px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 40px; }
         .full-width-chart { width: 100%; margin-bottom: 40px; }
         .two-column-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 40px; }
-        .chart-text-grid { display: grid; grid-template-columns: 65% 35%; gap: 30px; margin-bottom: 40px; align-items: start; }
-
         .canvas-container { position: relative; height: 350px; width: 100%; }
-
+        
         /* SVG PIE/DONUT */
         .donut-container { position: relative; width: 220px; height: 220px; margin: 0 auto; }
-        .donut-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+        .donut-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none; }
 
         /* COMMENT BOX */
         .comment-box { background-color: #f1f5f9; border-left: 4px solid #556080; padding: 20px; border-radius: 0 8px 8px 0; margin-top: 0; font-size: 13px; color: #334155; line-height: 1.6; text-align: justify; }
         .comment-box strong { color: #1e3a8a; }
         .comment-box p { margin-top: 0; margin-bottom: 10px; }
         .comment-box li { margin-bottom: 10px; }
-
+        
         /* TABLE STYLES */
         .table-wrapper { background: white; border-radius: 8px; overflow-x: auto; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-top: 20px; }
         .styled-table { width: 100%; min-width: 1100px; border-collapse: collapse; }
@@ -93,20 +80,68 @@
         .chart-data-table th { background-color: #e5e7eb; color: #374151; padding: 8px 2px; text-align: center; border: 1px solid #d1d5db; font-weight: 600; }
         .chart-data-table td { padding: 8px 2px; text-align: center; border: 1px solid #d1d5db; color: #4b5563; }
         .row-header { text-align: left; padding-left: 10px; font-weight: bold; background-color: #f3f4f6; display: flex; align-items: center; gap: 5px; }
-        .legend-box { width: 12px; height: 12px; display: inline-block; }
+        .legend-box { width: 12px; height: 12px; display: inline-block; border-radius: 2px;}
         
         footer { background-color: #1e293b; color: white; padding: 40px 0; text-align: center; margin-top: 60px; }
+        .flag-icon { vertical-align: text-bottom; margin-right: 8px; height: 18px; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+
+        /* BANNERS DE REDIRECCIÓN (DEEP DIVE CTA) */
+        .deep-dive-cta {
+            background: linear-gradient(135deg, #1e3a8a 0%, #0ea5e9 100%);
+            border-radius: 12px;
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .deep-dive-text h4 {
+            color: #ffffff;
+            margin-bottom: 5px;
+            font-size: 20px;
+        }
+        .deep-dive-text p {
+            margin: 0;
+            font-size: 14px;
+            color: #e0f2fe;
+        }
+        .deep-dive-btn {
+            background-color: #ffffff;
+            color: #1e3a8a;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+        }
+        .deep-dive-btn:hover {
+            background-color: #f1f5f9;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        /* Ajuste responsivo para pantallas pequeñas */
+        @media (max-width: 768px) {
+            .deep-dive-cta { flex-direction: column; text-align: center; gap: 20px; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- MENÚ DE NAVEGACIÓN -->
     <nav class="nav-bar">
         <div class="nav-title">PROCESS CONTROLLER</div>
         <div class="nav-menu">
             <a href="#inicio" class="nav-item">Inicio</a>
-            <a href="#reducciones" class="nav-item">Reducciones</a>
             <a href="#adiciones" class="nav-item">Adiciones</a>
+            <a href="#reducciones" class="nav-item">Reducciones</a>
             <a href="#implementacion" class="nav-item">Implementación</a>
             <a href="#gestion" class="nav-item">Gestión</a>        
             <a href="#incidencias" class="nav-item">Incidencias</a>
@@ -117,27 +152,29 @@
 
     <!-- TOP KPI CARDS STRIP -->
     <div class="top-kpis-wrapper" id="inicio">
-        <div class="top-kpi-card kpi-border-blue">
+        <!-- Borde Rojo para Reducciones -->
+        <div class="top-kpi-card" style="border: 2px solid #ef4444;">
             <div class="top-kpi-icon"><i class="fa fa-minus"></i></div>
             <div class="top-kpi-title">REDUCCIONES APLICADAS</div>
             <div class="top-kpi-number2" id="ui_kpi_red_horas">-</div>
             <div class="top-kpi-title">Estimado x CPH Promedio</div>
             <div class="top-kpi-number" id="ui_kpi_red_euros">-</div>
         </div>
-        <div class="top-kpi-card kpi-border-green">
+        <!-- Borde Verde para Adiciones -->
+        <div class="top-kpi-card" style="border: 2px solid #22c55e;">
             <div class="top-kpi-icon"><i class="fa-solid fa-plus"></i></div>
             <div class="top-kpi-title">ADICIONES APLICADAS</div>
             <div class="top-kpi-number2" id="ui_kpi_adi_horas">-</div>
             <div class="top-kpi-title">Estimado x CPH Promedio</div>
             <div class="top-kpi-number" id="ui_kpi_adi_euros">-</div>
         </div>
-        <div class="top-kpi-card kpi-border-purple">
+        <div class="top-kpi-card" style="border: 2px solid #334155;">
             <div class="top-kpi-icon"><i class="fa-solid fa-bolt"></i></div>
             <div class="top-kpi-title">Clientes IMPLEMENTADOS COL</div>
             <div class="top-kpi-number" id="ui_kpi_imp_col">-</div>
             <div class="top-kpi-subtitle" id="ui_kpi_imp_col_sub">-</div>
         </div>
-        <div class="top-kpi-card kpi-border-orange">
+        <div class="top-kpi-card" style="border: 2px solid #dce0e5;">
             <div class="top-kpi-icon"><i class="fa-regular fa-clock"></i></div>
             <div class="top-kpi-title">Clientes IMPLEMENTADOS PER</div>
             <div class="top-kpi-number" id="ui_kpi_imp_per">-</div>
@@ -145,116 +182,162 @@
         </div>
     </div>
 
-    <!-- 1. INICIO -->
+    <!-- 1. INICIO (Sin Imagen, Diseño Flex) -->
     <section class="hero">
         <div class="main-container">
-            <div class="hero-content">
-                <div class="hero-text">
+            <div class="hero-content" style="display: flex; gap: 40px; align-items: center; justify-content: space-between;">
+                <div class="hero-text" style="flex: 1.2;">
                     <h3 style="color: #64748b; text-transform: uppercase; letter-spacing: 2px;">Informe Ejecutivo Mensual</h3>
                     <h1>Resultados de Capacidad y Gestión Operativa</h1>
-                    <p>Visualización integral del desempeño en Implementación, Gestión On-Time e Incidencias para las regiones de Colombia y Perú.</p>
-                    <div class="hero-cards">
-                        <a href="#reducciones" class="kpi-card"><i class="fa fa-minus"></i><span>Reducción</span></a>
+                    <p style="font-size: 16px; color:#4b5563;">Visualización integral del desempeño en Implementación, Gestión On-Time e Incidencias para las regiones de Colombia y Perú.</p>
+                </div>
+                <div style="flex: 1;">
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
                         <a href="#adiciones" class="kpi-card"><i class="fa-solid fa-plus"></i><span>Adición</span></a>
+                        <a href="#reducciones" class="kpi-card"><i class="fa fa-minus"></i><span>Reducción</span></a>
                         <a href="#implementacion" class="kpi-card"><i class="fa-solid fa-chart-line"></i><span>Implementación</span></a>
                         <a href="#gestion" class="kpi-card"><i class="fa-solid fa-clock"></i><span>Gestión</span></a>
                         <a href="#incidencias" class="kpi-card"><i class="fa-solid fa-triangle-exclamation"></i><span>Incidencias</span></a>
                         <a href="#errores" class="kpi-card"><i class="fa-solid fa-bug"></i><span>Errores</span></a>
-                        <a href="#horas-extras" class="kpi-card"><i class="fa-regular fa-clock"></i><span>Horas Extras</span></a>
+                        <a href="#horas-extras" class="kpi-card" style="grid-column: span 3;"><i class="fa-regular fa-clock"></i><span>Horas Extras</span></a>
                     </div>
                 </div>
-                <div class="hero-image">
-                   <img id="ui_hero_img" src="https://drive.google.com/thumbnail?id=1aZGM8NsybKf1dSyDlGzszYdAV93pRLWp&sz=w1000" alt="Dashboard Cover">
-                </div>
             </div>
         </div>
     </section>
 
-    <!-- 2. REDUCCIONES -->
-    <section id="reducciones">
-        <div class="main-container">
-            <h2>REDUCCIONES</h2>
-
-            <div class="chart-box full-width-chart">
-                <h3 style="text-align:center; color:#1e293b; margin-bottom:5px; font-weight:bold;">Reducciones Aplicadas - On Time</h3>
-                <h4 style="text-align:center; font-size:14px; margin-bottom:5px; font-weight:bold; color:#556080;">TP MAR COL - PER</h4>
-                <div style="width: 100%; overflow-x: auto;">
-                    <div style="position:relative; height:350px; width:100%;"><canvas id="cv_red_apli"></canvas></div>
-                    <div id="tb_red_apli" style="margin-top:20px;"></div>
-                </div>
-                <div class="comment-box" style="margin-top:20px;" id="ui_txt_red_aplicadas"></div>
-            </div>
-
-            <div class="chart-box full-width-chart">
-                <h3 style="text-align:center; color:#1e293b; margin-bottom:5px; font-weight:bold;">Horas de Reducción justificadas y denegadas</h3>
-                <h4 style="text-align:center; font-size:16px; margin-bottom:5px; font-weight:bold; color:#556080;">TP MAR COL - PER</h4>
-                
-                <div style="width: 100%; overflow-x: auto;">
-                    <div style="position:relative; height:350px; width:100%;"><canvas id="cv_red_est"></canvas></div>
-                </div>
-                <div class="comment-box" style="margin-top:20px;" id="ui_txt_red_estado"></div>
-            </div>
-
-            <div class="full-width-chart chart-box">
-                <h3 style="text-align:center; color:#1e293b; margin-bottom:5px; font-weight:bold;">Pareto Justificaciones Reducción On Time</h3>
-                <h4 style="text-align:center; font-size:16px; margin-bottom:5px; font-weight:bold; color:#556080;">TP MAR COL - PER</h4>
-                
-                <div style="width: 100%; overflow-x: auto;">
-                    <div style="position:relative; height:450px; width:100%;"><canvas id="cv_red_par"></canvas></div>
-                </div>
-                <div class="comment-box" style="margin-top:20px;" id="ui_txt_red_pareto"></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 3. ADICIONES -->
+    <!-- 2. ADICIONES -->
     <section id="adiciones">
         <div class="main-container">
             <h2>ADICIONES</h2>
-
+            
+            <!--<h3 style="text-align:center; color:#1e293b; margin-bottom:20px; font-weight:bold;">Adiciones Aplicadas - On Time</h3>
+            
             <div class="chart-box full-width-chart">
-                <h3 style="text-align:center; color:#1e293b; margin-bottom:5px; font-weight:bold;">Adiciones Aplicadas - On Time</h3>
-                <h4 style="text-align:center; font-size:14px; margin-bottom:5px; font-weight:bold; color:#556080;">TP MAR COL - PER</h4>
-                
-                <div style="width: 100%; overflow-x: auto;">
-                    <div style="position:relative; height:350px; width:100%;"><canvas id="cv_adi_apli"></canvas></div>
-                    <div id="tb_adi_apli" style="margin-top:20px;"></div>
-                </div>
-
-                <div class="comment-box" style="margin-top:20px;" id="ui_txt_adi_aplicadas"></div>
+                <h4 style="text-align:center; font-size:16px; margin-bottom:20px; font-weight:bold; color:black;"><img src="https://flagcdn.com/24x18/co.png" class="flag-icon" alt="COL"> COLOMBIA</h4>
+                <div class="canvas-container"><canvas id="cv_adi_apli_col"></canvas></div>
             </div>
-
+            
             <div class="chart-box full-width-chart">
-                <h3 style="text-align:center; color:#1e293b; margin-bottom:5px; font-weight:bold;">Horas de Adición justificadas y denegadas</h3>
-                <h4 style="text-align:center; font-size:16px; margin-bottom:5px; font-weight:bold; color:#556080;">TP MAR COL - PER</h4>
-                
-                <div style="width: 100%; overflow-x: auto;">
-                    <div style="position:relative; height:350px; width:100%;"><canvas id="cv_adi_est"></canvas></div>
-                </div>
-                <div class="comment-box" style="margin-top: 20px;" id="ui_txt_adi_estado"></div>
-            </div>
+                <h4 style="text-align:center; font-size:16px; margin-bottom:20px; font-weight:bold; color:black;"><img src="https://flagcdn.com/24x18/pe.png" class="flag-icon" alt="PER"> PERÚ</h4>
+                <div class="canvas-container"><canvas id="cv_adi_apli_per"></canvas></div>
+            </div>-->
 
-            <div class="full-width-chart chart-box">
-                <h3 style="text-align:center; color:#1e293b; margin-bottom:5px; font-weight:bold;">Pareto Justificaciones Adición On Time</h3>
-                <h4 style="text-align:center; font-size:16px; margin-bottom:5px; font-weight:bold; color:#556080;">TP MAR COL - PER</h4>
+            <h3 style="text-align:center; color:#1e293b; margin-bottom:20px; font-weight:bold;">Horas de Adición justificadas y denegadas</h3>
+            
+            <div class="chart-box full-width-chart">
+                <h4 style="text-align:center; font-size:16px; margin-bottom:20px; font-weight:bold; color:black;"><img src="https://flagcdn.com/24x18/co.png" class="flag-icon" alt="COL"> COLOMBIA</h4>
+                <div class="canvas-container"><canvas id="cv_adi_est_col"></canvas></div>
                 
-                <div style="width: 100%; overflow-x: auto;">
-                    <div style="position:relative; height:450px; width:100%;"><canvas id="cv_adi_par"></canvas></div>
+                <div id="tb_adi_apli_col" style="margin-top:20px; overflow-x:auto;"></div>
+            </div>
+            
+            <div class="chart-box full-width-chart">
+                <h4 style="text-align:center; font-size:16px; margin-bottom:20px; font-weight:bold; color:black;"><img src="https://flagcdn.com/24x18/pe.png" class="flag-icon" alt="PER"> PERÚ</h4>
+                <div class="canvas-container"><canvas id="cv_adi_est_per"></canvas></div>
+                
+                <div id="tb_adi_apli_per" style="margin-top:20px; overflow-x:auto;"></div>
+            </div>
+            <div class="comment-box" style="margin-top:20px; margin-bottom:40px;" id="ui_txt_adi_aplicadas"></div>
+            <div class="comment-box" style="margin-top:20px; margin-bottom:40px;" id="ui_txt_adi_estado"></div>
+
+            <!--<h3 style="text-align:center; color:#1e293b; margin-bottom:20px; font-weight:bold;">Pareto Justificaciones Adición On Time</h3>
+            
+            <div class="chart-box full-width-chart">
+                <h4 style="text-align:center; font-size:16px; margin-bottom:20px; font-weight:bold; color:black;"><img src="https://flagcdn.com/24x18/co.png" class="flag-icon" alt="COL"> COLOMBIA</h4>
+                <div class="canvas-container" style="height: 450px;"><canvas id="cv_adi_par_col"></canvas></div>
+            </div>
+            
+            <div class="chart-box full-width-chart">
+                <h4 style="text-align:center; font-size:16px; margin-bottom:20px; font-weight:bold; color:black;"><img src="https://flagcdn.com/24x18/pe.png" class="flag-icon" alt="PER"> PERÚ</h4>
+                <div class="canvas-container" style="height: 450px;"><canvas id="cv_adi_par_per"></canvas></div>
+            </div>
+            
+            <div class="comment-box" style="margin-top:20px;" id="ui_txt_adi_pareto"></div>-->
+            <!-- BANNER LINK A ADICIONES DETALLE -->
+            <div class="deep-dive-cta">
+                <div class="deep-dive-text">
+                    <h4><i class="fa-solid fa-magnifying-glass-chart"></i> Análisis Profundo de Adiciones</h4>
+                    <p>¿Necesitas auditar o validar más información sobre los tiempos adicionados? Consulta la vista extendida.</p>
                 </div>
-                <div class="comment-box" style="margin-top:20px;" id="ui_txt_adi_pareto"></div>
+                <a href="LINK_ADICIONES.html" target="_blank" class="deep-dive-btn">
+                    Abrir Landing Page <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+        
+    </section>
+
+    <!-- 3. REDUCCIONES -->
+    <section id="reducciones">
+        <div class="main-container">
+            <h2>REDUCCIONES</h2>
+            
+            <h3 style="text-align:center; color:#1e293b; margin-bottom:20px; font-weight:bold;">Reducciones Aplicadas - On Time</h3>
+            
+            <div class="chart-box full-width-chart">
+                <h4 style="text-align:center; font-size:16px; margin-bottom:20px; font-weight:bold; color:black;"><img src="https://flagcdn.com/24x18/co.png" class="flag-icon" alt="COL"> COLOMBIA</h4>
+                <div class="canvas-container"><canvas id="cv_red_apli_col"></canvas></div>
+                <div id="tb_red_apli_col" style="margin-top:20px; overflow-x:auto;"></div>
+            </div>
+            
+            <div class="chart-box full-width-chart">
+                <h4 style="text-align:center; font-size:16px; margin-bottom:20px; font-weight:bold; color:black;"><img src="https://flagcdn.com/24x18/pe.png" class="flag-icon" alt="PER"> PERÚ</h4>
+                <div class="canvas-container"><canvas id="cv_red_apli_per"></canvas></div>
+                <div id="tb_red_apli_per" style="margin-top:20px; overflow-x:auto;"></div>
+            </div>
+            
+            <div class="comment-box" style="margin-bottom:40px;" id="ui_txt_red_aplicadas"></div>
+
+            <h3 style="text-align:center; color:#1e293b; margin-bottom:20px; font-weight:bold;">Horas de Reducción justificadas y denegadas</h3>
+            
+            <div class="chart-box full-width-chart">
+                <h4 style="text-align:center; font-size:16px; margin-bottom:20px; font-weight:bold; color:black;"><img src="https://flagcdn.com/24x18/co.png" class="flag-icon" alt="COL"> COLOMBIA</h4>
+                <div class="canvas-container"><canvas id="cv_red_est_col"></canvas></div>
+            </div>
+            
+            <div class="chart-box full-width-chart">
+                <h4 style="text-align:center; font-size:16px; margin-bottom:20px; font-weight:bold; color:black;"><img src="https://flagcdn.com/24x18/pe.png" class="flag-icon" alt="PER"> PERÚ</h4>
+                <div class="canvas-container"><canvas id="cv_red_est_per"></canvas></div>
+            </div>
+            
+            <div class="comment-box" style="margin-bottom:40px;" id="ui_txt_red_estado"></div>
+
+            <h3 style="text-align:center; color:#1e293b; margin-bottom:20px; font-weight:bold;">Pareto Justificaciones Reducción On Time</h3>
+            
+            <!--<div class="chart-box full-width-chart">
+                <h4 style="text-align:center; font-size:16px; margin-bottom:20px; font-weight:bold; color:black;"><img src="https://flagcdn.com/24x18/co.png" class="flag-icon" alt="COL"> COLOMBIA</h4>
+                <div class="canvas-container" style="height: 450px;"><canvas id="cv_red_par_col"></canvas></div>
+            </div>
+            
+            <div class="chart-box full-width-chart">
+                <h4 style="text-align:center; font-size:16px; margin-bottom:20px; font-weight:bold; color:black;"><img src="https://flagcdn.com/24x18/pe.png" class="flag-icon" alt="PER"> PERÚ</h4>
+                <div class="canvas-container" style="height: 450px;"><canvas id="cv_red_par_per"></canvas></div>
+            </div>
+            
+            <div class="comment-box" id="ui_txt_red_pareto"></div>-->
+            <!-- BANNER LINK A REDUCCIONES DETALLE -->
+            <div class="deep-dive-cta">
+                <div class="deep-dive-text">
+                    <h4><i class="fa-solid fa-magnifying-glass-chart"></i> Análisis Profundo de Reducciones</h4>
+                    <p>¿Deseas profundizar en las justificaciones y penalizaciones de tiempos? Explora el panel interactivo completo.</p>
+                </div>
+                <a href="LINK_REDUCCIONES.html" target="_blank" class="deep-dive-btn">
+                    Abrir Landing Page <i class="fa-solid fa-arrow-right"></i>
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- 5. IMPLEMENTACIÓN -->
+    <!-- 4. ESTADO DE IMPLEMENTACIÓN -->
     <section id="implementacion">
         <div class="main-container">
             <h2>Estado de Implementación</h2>
             <div class="two-column-grid">
                 <!-- COLOMBIA -->
                 <div class="chart-box" style="text-align:center;">
-                    <h3 style="font-size:18px; margin-bottom:5px; color:#1e293b; font-weight:700;">Masificacion On-Time Colombia</h3>
-                    <div class="donut-container">
+                    <h3 style="font-size:18px; margin-bottom:5px; color:#1e293b; font-weight:700;"><img src="https://flagcdn.com/24x18/co.png" class="flag-icon" alt="COL"> Masificacion On-Time Colombia</h3>
+                    <div class="donut-container" style="margin-top:20px;">
                         <canvas id="donutCol"></canvas>
                         <div class="donut-text">
                             <span style="font-size:12px; color:#64748b; display:block;">Implementados</span>
@@ -262,16 +345,15 @@
                         </div>
                     </div>
                     <div style="display:flex; justify-content:center; gap:15px; margin-top:20px; font-size:11px; flex-wrap: wrap;">
-                        <div style="display:flex; align-items:center; gap:5px;"><div style="width:12px; height:12px; background-color:#556080;"></div> Implementados</div> 
-                        <!--<span style="color:#556080;" id="lbl_imp_col">0%</span>-->
+                        <div style="display:flex; align-items:center; gap:5px;"><div style="width:12px; height:12px; background-color:#7030a0;"></div> Implementados</div>
                         <div style="display:flex; align-items:center; gap:5px;"><div style="width:12px; height:12px; background-color:#85c3c8;"></div> En progreso</div>
                     </div>
                 </div>
 
                 <!-- PERU -->
                 <div class="chart-box" style="text-align:center;">
-                    <h3 style="font-size:18px; margin-bottom:5px; color:#1e293b; font-weight:700;">Masificacion On-Time Perú</h3>
-                    <div class="donut-container">
+                    <h3 style="font-size:18px; margin-bottom:5px; color:#1e293b; font-weight:700;"><img src="https://flagcdn.com/24x18/pe.png" class="flag-icon" alt="PER"> Masificacion On-Time Perú</h3>
+                    <div class="donut-container" style="margin-top:20px;">
                         <canvas id="donutPer"></canvas>
                         <div class="donut-text">
                             <span style="font-size:12px; color:#64748b; display:block;">Implementados</span>
@@ -280,7 +362,6 @@
                     </div>
                     <div style="display:flex; justify-content:center; gap:15px; margin-top:20px; font-size:11px; flex-wrap: wrap;">
                         <div style="display:flex; align-items:center; gap:5px;"><div style="width:12px; height:12px; background-color:#556080;"></div> Implementados</div>
-                        <div style="display:flex; align-items:center; gap:5px;"><div style="width:12px; height:12px; background-color:#85c3c8;"></div> En progreso</div> <span style="color:#556080;" id="db.imp_per.lbl"></span>
                     </div>
                 </div>
             </div>
@@ -295,96 +376,100 @@
         </div>
     </section>
 
-    <!-- 6. GESTIÓN OPERATIVA -->
+    <!-- 5. GESTIÓN OPERATIVA -->
     <section id="gestion">
         <div class="main-container">
             <h2>Gestión Operativa</h2>
+            
+            <h3 style="text-align:center; color:#556080; margin-bottom:20px;">Gestión On Time por mes</h3>
+            
             <div class="chart-box full-width-chart">
-                <h3 style="text-align:center; color:#1e293b; margin-bottom:5px;">Gestión On Time por mes</h3>
-                <h4 style="text-align:center; font-size:14px; margin-bottom:20px; font-weight:bold; color:#556080;">TP MAR COL - PER</h4>
-                
-                <div style="width: 100%; overflow-x: auto; position:relative; height:250px;">
-                    <canvas id="cv_ges_mes"></canvas>
-                </div>
-                
-                <br><br>
-                <h3 style="text-align:center; color:#1e293b; margin-bottom:5px;">Gestión On Time por Q</h3>
-                <h4 style="text-align:center; font-size:14px; margin-bottom:20px; font-weight:bold; color:#556080;">TP MAR COL - PER</h4>
-                
-                <div style="width: 100%; overflow-x: auto; position:relative; height:250px;">
-                    <canvas id="cv_ges_q"></canvas>
-                </div>
-                
-                <div class="comment-box" style="margin-top: 20px;" id="ui_txt_gestion"></div>
+                <h4 style="text-align:center; font-size:16px; margin-bottom:20px; font-weight:bold; color:black;"><img src="https://flagcdn.com/24x18/co.png" class="flag-icon" alt="COL"> COLOMBIA</h4>
+                <div class="canvas-container"><canvas id="cv_ges_mes_col"></canvas></div>
             </div>
+            
+            <div class="chart-box full-width-chart">
+                <h4 style="text-align:center; font-size:16px; margin-bottom:20px; font-weight:bold; color:black;"><img src="https://flagcdn.com/24x18/pe.png" class="flag-icon" alt="PER"> PERÚ</h4>
+                <div class="canvas-container"><canvas id="cv_ges_mes_per"></canvas></div>
+            </div>
+            
+            <!--<h3 style="text-align:center; color:#556080; margin-bottom:20px;">Gestión On Time por Q</h3>
+            
+            <div class="chart-box full-width-chart">
+                <h4 style="text-align:center; font-size:16px; margin-bottom:20px; font-weight:bold; color:black;"><img src="https://flagcdn.com/24x18/co.png" class="flag-icon" alt="COL"> COLOMBIA</h4>
+                <div class="canvas-container"><canvas id="cv_ges_q_col"></canvas></div>
+            </div>
+            
+            <div class="chart-box full-width-chart">
+                <h4 style="text-align:center; font-size:16px; margin-bottom:20px; font-weight:bold; color:black;"><img src="https://flagcdn.com/24x18/pe.png" class="flag-icon" alt="PER"> PERÚ</h4>
+                <div class="canvas-container"><canvas id="cv_ges_q_per"></canvas></div>
+            </div>
+            
+            <div class="comment-box" id="ui_txt_gestion"></div>-->
         </div>
     </section>
 
-    <!-- 7. INCIDENCIAS -->
+    <!-- 6. INCIDENCIAS -->
     <section id="incidencias">
         <div class="main-container">
             <h2>Análisis de Incidencias</h2>
-            <div class="chart-text-grid">
-                <div class="chart-box" style="margin-bottom:0;">
-                    <h3 style="text-align:center; color:#1e293b; margin-bottom:5px; font-weight:bold;">Tracker Incidencias</h3>
-                    <h4 style="text-align:center; font-size:16px; margin-bottom:5px; font-weight:bold; color:#556080;">TP MAR COL - PER</h4>
-                    <div style="width: 100%; overflow-x: auto; position:relative; height:350px;">
-                        <canvas id="cv_inc_area"></canvas>
-                    </div>
-                        <div id="tb_inc_area" style="overflow-x:auto;"></div>
-                </div>
-                <div class="comment-box" style="margin-top:0; border-left-color: #334155; background-color: white; border: 1px solid #e2e8f0; border-left: 4px solid #556080;" id="ui_txt_inc_area"></div>
+            
+            <div class="chart-box full-width-chart">
+                <h3 style="text-align:center; color:#1e293b; margin-bottom:5px; font-weight:bold;">Teleperformance Colombia / Peru</h3>
+                <h4 style="text-align:center; font-size:16px; margin-bottom:20px; font-weight:bold; color:black;">Tracker Incidencias</h4>
+                <div class="canvas-container"><canvas id="cv_inc_area"></canvas></div>
+                <div id="tb_inc_area" style="overflow-x:auto;"></div>
+                <div class="comment-box" style="margin-top:20px;" id="ui_txt_inc_area"></div>
             </div>
 
-            <div class="chart-text-grid">
-                <div class="chart-box" style="margin-bottom:0;">
-                    <h3 style="text-align:center; font-weight:bold; color:#1e293b; margin-bottom:5px;">Grafico de tendencia Incidencias Mensual</h3>
-                    <h4 style="text-align:center; font-size:16px; margin-bottom:20px; font-weight:bold; color:#556080;">TP MAR COL - PER</h4>
-                    <div style="width: 100%; overflow-x: auto; position:relative; height:300px;">
-                        <canvas id="cv_inc_mes"></canvas>
-                    </div>
-                        <div id="tb_inc_mes" style="overflow-x:auto;"></div>
+            <div class="chart-box full-width-chart">
+                <h3 style="text-align:center; font-weight:bold; color:black; margin-bottom:5px;">Teleperformance Colombia / Peru</h3>
+                <h4 style="text-align:center; font-size:16px; margin-bottom:20px; font-weight:bold; color:black;">Grafico de tendencia Incidencias Mensual</h4>
+                <div style="width: 100%; overflow-x: auto; position:relative; height:300px;">
+                    <canvas id="cv_inc_mes"></canvas>
                 </div>
-                <div class="comment-box" style="margin-top:0; border-left-color: #334155; background-color: white; border: 1px solid #e2e8f0; border-left: 4px solid #556080;" id="ui_txt_inc_mes"></div>
+                <div id="tb_inc_mes" style="overflow-x:auto;"></div>
+                <div class="comment-box" style="margin-top:20px;" id="ui_txt_inc_mes"></div>
             </div>
         </div>
     </section>
 
-    <!-- 8. ERRORES DE NÓMINA -->
+    <!-- 7. ERRORES DE NÓMINA -->
     <section id="errores">
         <div class="main-container">
             <h2>Errores de Nómina</h2>
 
             <!-- COLOMBIA -->
-            <div class="chart-text-grid">
-                <div class="chart-box" style="margin-bottom:0;">
-                    <h3 style="text-align:center; color:#1e293b; font-size:24px; margin-bottom:5px;">Tendencia Errores de nómina</h3>
-                    <h4 style="text-align:center; font-size:16px; margin-top:20px; margin-bottom:20px; font-weight:bold; color:#556080;">COLOMBIA</h4>
-                     <div style="width: 100%; overflow-x: auto; position:relative; height:350px;">
-                        <canvas id="cv_err_col"></canvas>
-                    </div>
-                        <div id="tb_err_col" style="overflow-x:auto;"></div>
-                </div>
-                <div class="comment-box" style="margin-top:0; border-left-color: #334155; background-color: white; border: 1px solid #e2e8f0; border-left: 4px solid #556080;" id="ui_txt_err_col"></div>
+            <div class="chart-box full-width-chart">
+                <h3 style="text-align:center; color:#556080; font-size:24px; margin-bottom:5px;">ERRORES DE NÓMINA COLOMBIA</h3>
+                <h4 style="text-align:center; font-size:16px; margin-top:20px; margin-bottom:20px; font-weight:bold; color:black;">Tendencia Errores de nómina</h4>
+                <div class="canvas-container"><canvas id="cv_err_col"></canvas></div>
+                <div id="tb_err_col" style="overflow-x:auto;"></div>
+                <div class="comment-box" style="margin-top:20px;" id="ui_txt_err_col"></div>
             </div>
 
             <!-- PERÚ -->
-            <div class="chart-text-grid">
-                <div class="chart-box" style="margin-bottom:0;">
-                    <h3 style="text-align:center; color:#1e293b; font-size:24px; margin-bottom:5px;"> Tendencia Errores de nómina</h3>
-                    <h4 style="text-align:center; font-size:16px; margin-top:20px; margin-bottom:20px; font-weight:bold; color:#556080;">PERÚ</h4>
-                    <div style="width: 100%; overflow-x: auto; position:relative; height:350px;">
-                        <canvas id="cv_err_per"></canvas>
-                    </div>
-                        <div id="tb_err_per" style="overflow-x:auto;"></div>
-                </div>
-                <div class="comment-box" style="margin-top:0; border-left-color: #334155; background-color: white; border: 1px solid #e2e8f0; border-left: 4px solid #556080;" id="ui_txt_err_per"></div>
+            <div class="chart-box full-width-chart">
+                <h3 style="text-align:center; color:#556080; font-size:24px; margin-bottom:5px;">ERRORES DE NÓMINA PERÚ</h3>
+                <h4 style="text-align:center; font-size:16px; margin-top:20px; margin-bottom:20px; font-weight:bold; color:black;">Tendencia Errores de nómina</h4>
+                <div class="canvas-container"><canvas id="cv_err_per"></canvas></div>
+                <div id="tb_err_per" style="overflow-x:auto;"></div>
+                <div class="comment-box" style="margin-top:20px;" id="ui_txt_err_per"></div>
             </div>
-            
+            <!-- BANNER LINK A ERRORES DETALLE -->
+            <div class="deep-dive-cta">
+                <div class="deep-dive-text">
+                    <h4><i class="fa-solid fa-magnifying-glass-chart"></i> Auditoría de Errores de Nómina</h4>
+                    <p>Para revisar el consolidado detallado de casuísticas y planes de acción por país, visita el reporte específico.</p>
+                </div>
+                <a href="LINK_ERRORES.html" target="_blank" class="deep-dive-btn">
+                    Abrir Landing Page <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
         </div>
     </section>
 
-    <!-- 9. HORAS EXTRAS -->
+    <!-- 8. HORAS EXTRAS -->
     <section id="horas-extras">
         <div class="main-container">
             <h2>Control de horas extras</h2>
@@ -404,23 +489,53 @@
     <footer><p>&copy; 2026 Process Controller Report. Confidencial.</p></footer>
 
     <!-- =============================================================== -->
-    <!-- MOTOR JAVASCRIPT BLINDADO (PREVIENE ERRORES DE DATOS EXCEL)     -->
+    <!-- MOTOR JAVASCRIPT BLINDADO Y COMPLETAMENTE PARAMETRIZADO         -->
     <!-- =============================================================== -->
     <script>
-        
-        // 1. COMPROBAR EXISTENCIA DE BASE DE DATOS
+        // Simulador de datos si el Excel falla. INCLUYE LA FILA "TOTAL" EN LOS DATOS.
         if(typeof base_de_datos === 'undefined') {
-            console.warn("Falta archivo JS. Cargando interfaz base sin datos.");
-            window.base_de_datos = { config: {} }; 
+            window.base_de_datos = {
+                config: {
+                    kpi_red_horas: "1.27M", kpi_red_euros: "€ 10.3M", kpi_adi_horas: "1.57M", kpi_adi_euros: "€ 12.4M", kpi_imp_col: "97.9", kpi_imp_col_sub: "97% Clientes implementados COL", kpi_imp_per: "100", kpi_imp_per_sub: "100% Clientes implementados PER"
+                },
+                adi_apli_col: { mes: ["01. Ene", "02. Feb", "03. Mar", "04. Abr", "TOTAL"], hrs: [300000, 280000, 290000, 310000, 1180000], cph: [8.27, 8.27, 8.27, 8.27, 0], eur: [2481000, 2315600, 2398300, 2563700, 9758600], cop: [10000, 10000, 10000, 10000, 40000] },
+                adi_apli_per: { mes: ["01. Ene", "02. Feb", "03. Mar", "04. Abr", "TOTAL"], hrs: [110837, 104744, 95859, 86561, 397991], cph: [4.5, 4.5, 4.5, 4.5, 0], eur: [498766, 471348, 431365, 389524, 1791003], cop: [10000, 10000, 10000, 10000, 40000] },
+                adi_est_col: { mes: ["Ene", "Feb", "Mar", "Abr"], app: [300000, 280000, 290000, 310000], den: [400000, 300000, 350000, 320000] },
+                adi_est_per: { mes: ["Ene", "Feb", "Mar", "Abr"], app: [110837, 104744, 95859, 86561], den: [98303, 88244, 115291, 129596] },
+                adi_par_col: { lbl: ["Log Floor", "Out of shift", "Tech Prob", "OPS Train"], hrs: [100, 50, 30, 20], pct: [50, 75, 90, 100] },
+                adi_par_per: { lbl: ["X", "Y", "Z"], hrs: [50, 30, 20], pct: [50, 80, 100] },
+                
+                red_apli_col: { mes: ["01. Ene", "02. Feb", "03. Mar", "04. Abr", "TOTAL"], man: [200000, 180000, 210000, 200000, 790000], auto: [10000, 8000, 5000, 6000, 290000], hrs: [210000, 188000, 215000, 206000, 819000], cph: [8.47, 8.47, 8.47, 8.47, 0], eur: [1778700, 1592360, 1821050, 1744820, 6936930], cop: [0,0,0,0,0] },
+                red_apli_per: { mes: ["01. Ene", "02. Feb", "03. Mar", "04. Abr", "TOTAL"], man: [124738, 106134, 101631, 108745, 441248], auto: [6696, 3864, 3894, 3762, 18216], hrs: [131434, 109997, 105525, 112507, 459463], cph: [4.5, 4.5, 4.5, 4.5, 0], eur: [591453, 494986, 474862, 506281, 2067582], cop: [0,0,0,0,0] },
+                red_est_col: { mes: ["Ene", "Feb", "Mar", "Abr"], app: [210000, 188000, 215000, 206000], den: [142000, 100000, 90000, 77000] },
+                red_est_per: { mes: ["Ene", "Feb", "Mar", "Abr"], app: [131434, 109997, 105525, 112507], den: [100754, 100828, 100241, 100130] },
+                red_par_col: { lbl: ["A", "B", "C"], hrs: [100, 50, 50], pct: [50, 75, 100] },
+                red_par_per: { lbl: ["X", "Y", "Z"], hrs: [50, 30, 20], pct: [50, 80, 100] },
+
+                imp_col: { lbl: ["Implementados", "Progreso"], val: [97.98, 2.02] },
+                imp_per: { lbl: ["Implementados"], val: [100] },
+                imp_det: { cta: ["Ebay"], pais: ["Colombia"], vp: ["Hector"], mot: ["URL"], resp: ["Ops"], fch: ["-"], est: ["Pendiente"], obs: ["-"] },
+                
+                ges_mes_col: { mes: ["Ene", "Feb", "Mar", "Abr"], val: [95.36, 96.57, 96.10, 96.25] },
+                ges_mes_per: { mes: ["Ene", "Feb", "Mar", "Abr"], val: [98.10, 97.50, 98.20, 99.00] },
+                ges_q_col: { q: ["Q1", "Q2"], val: [96.01, 96.25] },
+                ges_q_per: { q: ["Q1", "Q2"], val: [97.93, 99.00] },
+
+                inc_area: { area: ["Help Desk", "Master Lilos", "GBS"], casos: [499, 79, 17], afec: [587883, 60667, 88] },
+                inc_mes: { mes: ["Jan", "Feb", "Mar", "Apr"], casos: [183, 61, 87, 145] },
+                err_col: { mes: ["Jan", "Feb", "Mar", "Apr"], err: [636, 2333, 354, 422], pct: [0.82, 3.05, 0.47, 0.56] },
+                err_per: { mes: ["Jan", "Feb", "Mar", "Apr"], err: [56, 122, 176, 44], pct: [0.73, 1.66, 2.47, 0.62] },
+                extras: { mes: ["08-Aug", "09-Sep", "10-Oct", "11-Nov", "12-Dec", "01-Jan", "02-Feb", "03-Mar", "04-Apr"], hrs: [339.18, 264.46, 355.54, 544.94, 683.88, 432.43, 124.11, 50.36, 19.55], casos: [263, 269, 350, 323, 434, 303, 79, 40, 23] }
+            };
         }
+
         const db = base_de_datos;
 
-        // --- HERRAMIENTAS DE FORMATO ---
-        const formatMiles = (num) => Number(num).toLocaleString('es-CO'); 
-        const formatEuros = (num) => Number(num).toLocaleString('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+        // HERRAMIENTAS DE FORMATO (Máximo 2 decimales estricto)
+        const formatMiles = (num) => Number(num).toLocaleString('es-CO', { maximumFractionDigits: 2 }); 
+        const formatEuros = (num) => Number(num).toLocaleString('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 2 });
         const formatCOP = (num) => Number(num).toLocaleString('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 });
 
-        // 2. FUNCIÓN PARA LIMPIAR DATOS DE EXCEL (Evita bloqueos por % o símbolos)
         const cleanData = (arr) => {
             if (!Array.isArray(arr)) return [];
             return arr.map(val => {
@@ -430,16 +545,19 @@
             });
         };
 
-        // 3. INYECTAR TEXTOS Y KPIs (Con valor por defecto '-')
+        // Filtros para evitar que las Gráficas dibujen la fila "TOTAL" enviada por Excel
+        const chartLbls = (arr) => arr.filter(x => !String(x).toUpperCase().includes('TOTAL'));
+        const chartData = (lbls, arr) => cleanData(arr).filter((_, i) => !String(lbls[i]).toUpperCase().includes('TOTAL'));
+
+        // INYECTAR KPIs
         try {
-            if(db.config.hero_img) document.getElementById('ui_hero_img').src = db.config.hero_img;
             document.getElementById('ui_kpi_red_horas').innerText = db.config.kpi_red_horas || "-";
             document.getElementById('ui_kpi_red_euros').innerText = db.config.kpi_red_euros || "-";
             document.getElementById('ui_kpi_adi_horas').innerText = db.config.kpi_adi_horas || "-";
             document.getElementById('ui_kpi_adi_euros').innerText = db.config.kpi_adi_euros || "-";
-            document.getElementById('ui_kpi_imp_col').innerText = db.config.kpi_imp_col + "%" || "-";
+            document.getElementById('ui_kpi_imp_col').innerText = (db.config.kpi_imp_col || "-") + "%";
             document.getElementById('ui_kpi_imp_col_sub').innerText = db.config.kpi_imp_col_sub || "-";
-            document.getElementById('ui_kpi_imp_per').innerText = db.config.kpi_imp_per  + "%"|| "-";
+            document.getElementById('ui_kpi_imp_per').innerText = (db.config.kpi_imp_per || "-") + "%";
             document.getElementById('ui_kpi_imp_per_sub').innerText = db.config.kpi_imp_per_sub || "-";
             
             const comments = ['red_aplicadas', 'red_estado', 'red_pareto', 'adi_aplicadas', 'adi_estado', 'adi_pareto', 'implementacion', 'gestion', 'inc_area', 'inc_mes', 'err_col', 'err_per', 'horas_extras'];
@@ -448,40 +566,32 @@
                     document.getElementById('ui_txt_' + k).innerHTML = db.config['txt_' + k];
                 }
             });
-        } catch(e) { console.warn("Error inyectando textos.", e); }
+        } catch(e) {}
 
-        // Si la macro cargó la tabla imp_col, extraer los valores numéricos limpios
         let val_col = [0, 0]; let val_per = [0, 0];
         if(db.imp_col && db.imp_col.val) val_col = cleanData(db.imp_col.val);
         if(db.imp_per && db.imp_per.val) val_per = cleanData(db.imp_per.val);
-        
-        document.getElementById('lbl_imp_col').innerText = (val_col[0] || 0) + '%';
-        document.getElementById('lbl_imp_per').innerText = (val_per[0] || 0) + '%';
+        document.getElementById('lbl_imp_col').innerText = formatMiles(val_col[0] || 0) + '%';
+        document.getElementById('lbl_imp_per').innerText = formatMiles(val_per[0] || 0) + '%';
 
-        // 4. CONSTRUCCIÓN DE TABLAS DINÁMICAS
+        // CONSTRUCCIÓN DE TABLAS DINÁMICAS NATIVAS (Dibuja lo que venga del Excel, incluyendo el Total)
         try {
-            if(db.red_apli && db.red_apli.mes) {
-                let trApli = `<table class="chart-data-table"><thead><tr style="background-color:#556080; color:white;"><th style="text-align:left; padding-left:10px; border:none;">Mes</th><th style="border:none;">Horas</th><th style="border:none;">CPH</th><th style="border:none;">Euros</th><th style="border:none;">COP</th></tr></thead><tbody>`;
-                db.red_apli.mes.forEach((mes, i) => { trApli += `<tr>
-                    <td style="text-align:left; padding-left:10px;">${mes}</td>
-                    <td>${formatMiles(db.red_apli.hrs[i]||0)}</td>
-                    <td>${formatMiles(db.red_apli.cph[i]||0)}</td>
-                    <td>${formatEuros(db.red_apli.eur[i]||0)}</td>
-                    <td>${formatCOP(db.red_apli.cop[i]||0)}</td>
-                    </tr>`; });
-                document.getElementById('tb_red_apli').innerHTML = trApli + `</tbody></table>`;
-            }
-
-            if(db.adi_apli && db.adi_apli.mes) {
-                let taApli = `<table class="chart-data-table"><thead><tr style="background-color:#556080; color:white;"><th style="text-align:left; padding-left:10px; border:none;">Mes</th><th style="border:none;">Horas</th><th style="border:none;">CPH</th><th style="border:none;">Euros</th><th style="border:none;">COP</th></tr></thead><tbody>`;
-                db.adi_apli.mes.forEach((mes, i) => { taApli += `<tr><td style="text-align:left; padding-left:10px;">${mes}</td>
-                    <td>${formatMiles(db.adi_apli.hrs[i]||0)}</td>
-                    <td>${formatMiles(db.adi_apli.cph[i]||0)}</td>
-                    <td>${formatEuros(db.adi_apli.eur[i]||0)}</td>
-                    <td>${formatCOP(db.adi_apli.cop[i]||0)}</td>
-                    </tr>`; });
-                document.getElementById('tb_adi_apli').innerHTML = taApli + `</tbody></table>`;
-            }
+            const dibujarTablaApli = (id, dataObj) => {
+                if(!dataObj || !dataObj.mes) return;
+                let t = `<table class="chart-data-table"><thead><tr style="background-color:#556080; color:white;"><th style="text-align:left; padding-left:10px; border:none;">Mes</th><th style="border:none;">Horas</th><th style="border:none;">CPH</th><th style="border:none;">Euros</th><th style="border:none;">COP</th></tr></thead><tbody>`;
+                dataObj.mes.forEach((mes, i) => { 
+                    let isTot = String(mes).toUpperCase().includes('TOTAL');
+                    let rowSt = isTot ? 'font-weight:bold; background-color:#e2e8f0; color:#1e293b;' : '';
+                    let cphFmt = isTot ? '-' : formatEuros(dataObj.cph[i]||0);
+                    t += `<tr style="${rowSt}"><td style="text-align:left; padding-left:10px;">${mes}</td><td>${formatMiles(dataObj.hrs[i]||0)}</td><td>${cphFmt}</td><td>${formatEuros(dataObj.eur[i]||0)}</td><td>${formatCOP(dataObj.cop[i]||0)}</td></tr>`; 
+                });
+                t += `</tbody></table>`;
+                document.getElementById(id).innerHTML = t;
+            };
+            dibujarTablaApli('tb_adi_apli_col', db.adi_apli_col);
+            dibujarTablaApli('tb_adi_apli_per', db.adi_apli_per);
+            dibujarTablaApli('tb_red_apli_col', db.red_apli_col);
+            dibujarTablaApli('tb_red_apli_per', db.red_apli_per);
 
             if(db.imp_det && db.imp_det.cta) {
                 let tImp = "";
@@ -493,9 +603,9 @@
                 let tIncArea = `<table class="chart-data-table" style="margin-top:20px;"><thead><tr><th style="width:20%; background-color:#e2e8f0; border:none;"></th>`;
                 db.inc_area.area.forEach(a => { tIncArea += `<th>${a}</th>`; });
                 tIncArea += `</tr></thead><tbody><tr><td class="row-header"><span class="legend-box" style="background-color:#85c3c8;"></span>Casos</td>`;
-                db.inc_area.casos.forEach(c => { tIncArea += `<td>${formatMiles(c||0)}</td>`; });
+                db.inc_area.casos.forEach(c => { tIncArea += `<td>${formatMiles(c)}</td>`; });
                 tIncArea += `</tr><tr><td class="row-header"><span class="legend-box" style="background-color:#556080;"></span>Afectadas</td>`;
-                db.inc_area.afec.forEach(a => { tIncArea += `<td>${formatMiles(a||0)}</td>`; });
+                db.inc_area.afec.forEach(a => { tIncArea += `<td>${formatMiles(a)}</td>`; });
                 tIncArea += `</tr></tbody></table>`;
                 document.getElementById('tb_inc_area').innerHTML = tIncArea;
             }
@@ -504,485 +614,108 @@
                 let tIncMes = `<table class="chart-data-table" style="margin-top:20px;"><thead><tr><th style="width:20%; background-color:#e2e8f0; border:none;"></th>`;
                 db.inc_mes.mes.forEach(m => { tIncMes += `<th>${m}</th>`; });
                 tIncMes += `</tr></thead><tbody><tr><td class="row-header"><span class="legend-box" style="background-color:#556080;"></span>Casos</td>`;
-                db.inc_mes.casos.forEach(c => { tIncMes += `<td>${c}</td>`; });
+                db.inc_mes.casos.forEach(c => { tIncMes += `<td>${formatMiles(c)}</td>`; });
                 tIncMes += `</tr></tbody></table>`;
                 document.getElementById('tb_inc_mes').innerHTML = tIncMes;
             }
 
-            if(db.err_col && db.err_col.mes) {
-                let tErrCol = `<table class="chart-data-table" style="margin-top:20px;"><thead><tr><th style="width:20%; background-color:#e2e8f0; border:none;"></th>`;
-                db.err_col.mes.forEach(m => { tErrCol += `<th>${m}</th>`; });
-                tErrCol += `</tr></thead><tbody><tr><td class="row-header"><span class="legend-box" style="background-color:#556080;"></span>Cant Errores</td>`;
-                db.err_col.err.forEach(e => { tErrCol += `<td>${e}</td>`; });
-                tErrCol += `</tr><tr><td class="row-header"><span class="legend-box" style="background-color:#cbd5e1;"></span>% Errores Nómina</td>`;
-                db.err_col.pct.forEach(p => { tErrCol += `<td>${p}%</td>`; });
-                tErrCol += `</tr></tbody></table>`;
-                document.getElementById('tb_err_col').innerHTML = tErrCol;
-            }
-
-            if(db.err_per && db.err_per.mes) {
-                let tErrPer = `<table class="chart-data-table" style="margin-top:20px;"><thead><tr><th style="width:20%; background-color:#e2e8f0; border:none;"></th>`;
-                db.err_per.mes.forEach(m => { tErrPer += `<th>${m}</th>`; });
-                tErrPer += `</tr></thead><tbody><tr><td class="row-header"><span class="legend-box" style="background-color:#556080;"></span>Cant Errores</td>`;
-                db.err_per.err.forEach(e => { tErrPer += `<td>${e}</td>`; });
-                tErrPer += `</tr><tr><td class="row-header"><span class="legend-box" style="background-color:#cbd5e1;"></span>% Errores Nómina</td>`;
-                db.err_per.pct.forEach(p => { tErrPer += `<td>${formatMiles(p||0)}%</td>`; });
-                tErrPer += `</tr></tbody></table>`;
-                document.getElementById('tb_err_per').innerHTML = tErrPer;
-            }
+            const dibujarTablaErr = (id, dataObj) => {
+                if(!dataObj || !dataObj.mes) return;
+                let t = `<table class="chart-data-table" style="margin-top:20px;"><thead><tr><th style="width:20%; background-color:#e2e8f0; border:none;"></th>`;
+                dataObj.mes.forEach(m => { t += `<th>${m}</th>`; });
+                t += `</tr></thead><tbody><tr><td class="row-header"><span class="legend-box" style="background-color:#556080;"></span>Cant Errores</td>`;
+                dataObj.err.forEach(e => { t += `<td>${formatMiles(e)}</td>`; });
+                t += `</tr><tr><td class="row-header"><span class="legend-box" style="background-color:#cbd5e1;"></span>% Errores Nómina</td>`;
+                dataObj.pct.forEach(p => { t += `<td>${formatMiles(p)}%</td>`; });
+                t += `</tr></tbody></table>`;
+                document.getElementById(id).innerHTML = t;
+            };
+            dibujarTablaErr('tb_err_col', db.err_col);
+            dibujarTablaErr('tb_err_per', db.err_per);
 
             if(db.extras && db.extras.mes) {
                 let tHE = `<table class="chart-data-table" style="margin-top:20px;"><thead><tr><th style="width:20%; background-color:white; border:none;"></th>`;
                 db.extras.mes.forEach(mes => { tHE += `<th>${mes}</th>`; });
                 tHE += `</tr></thead><tbody><tr><td class="row-header"><span class="legend-box" style="background-color:#556080;"></span>Horas pagadas por encima de 11.5</td>`;
-                db.extras.hrs.forEach(hora => { tHE += `<td>${hora}</td>`; });
+                db.extras.hrs.forEach(hora => { tHE += `<td>${formatMiles(hora)}</td>`; });
                 tHE += `</tr><tr><td class="row-header"><span class="legend-box" style="background-color:#cbd5e1;"></span>Cantidad de casos</td>`;
-                db.extras.casos.forEach(caso => { tHE += `<td>${caso}</td>`; });
+                db.extras.casos.forEach(caso => { tHE += `<td>${formatMiles(caso)}</td>`; });
                 tHE += `</tr></tbody></table>`;
                 document.getElementById('tb_extras').innerHTML = tHE;
             }
-        } catch(e) { console.warn("Faltan datos para crear tablas"); }
+        } catch(e) {}
 
-        // 5. INICIALIZAR CHART.JS PROTEGIDO
+        // INICIALIZAR CHART.JS PROTEGIDO
         Chart.register(ChartDataLabels);
         Chart.defaults.font.family = "'Lato', sans-serif";
 
-        const c_azu = '#556080'; const c_gri = '#dce0e5'; const c_nar = '#ed7d31'; const c_vrd = '#21712a'; const c_tel = '#85c3c8'; const c_p1 = '#7030a0'; const c_p2 = '#ff0066';
-
-        // Solo dibujamos si las variables existen para que un error en una gráfica no rompa las demás
-        // Tabla Reducciones Aplicadas - On Time
-        try {
-            if(db.red_apli) new Chart(document.getElementById('cv_red_apli'), { 
-                type: 'bar', 
-                data: { 
-                    labels: db.red_apli.mes, 
-                    datasets: [ { label: 'Manual', 
-                                    data: cleanData(db.red_apli.man), 
-                                    backgroundColor: c_azu, 
-                                    datalabels: { 
-                                        align: 'top', 
-                                        anchor: 'end', 
-                                        font: {weight:'bold'},
-                                        formatter: (v) => formatMiles(v)
-                                    } 
-                                }, 
-                                { label: 'Automática', 
-                                    data: cleanData(db.red_apli.auto), 
-                                    backgroundColor: c_gri, 
-                                    datalabels: { 
-                                    align: 'top', 
-                                    anchor: 'end', 
-                                    font: {weight:'bold'},
-                                    formatter: (v) => formatMiles(v)
-                                    } 
-                                } ] 
-                        }, 
-                        options: { responsive: true, 
-                            maintainAspectRatio: false,
-                            layout: {
-                        padding: {
-                            top: 30 // <--- SOLUCIÓN 1: Margen en la parte superior
-                        }
-                        }, 
-                            plugins: { legend: {position: 'bottom'} 
-                        } 
-                    } 
+        const c_azu = '#556080'; const c_gri = '#dce0e5'; const c_tel = '#85c3c8'; const c_nar = '#ed7d31'; const c_vrd = '#21712a'; 
+        
+        // Helper Options (Aplica Margen Arriba de 35px, Grace 15% para no cortar barras y Formato Miles estricto a 2 decimales)
+        const getOptions = (isDual = false, isLegend = 'bottom', isPct = false) => {
+            return {
+                responsive: true, maintainAspectRatio: false, 
+                layout: { padding: { top: 35 } },
+                plugins: { 
+                    legend: { display: isLegend !== false, position: isLegend },
+                    tooltip: { callbacks: { label: function(c) { return c.dataset.label + ': ' + formatMiles(c.raw) + (isPct ? '%' : ''); } } }
+                },
+                scales: { 
+                    x: { offset: true },
+                    y: { grace: '15%', ticks: { callback: function(v) { return formatMiles(v) + (isPct ? '%' : ''); } } },
+                    ...(isDual ? { y1: { position: 'right', grace: '15%', grid: {drawOnChartArea: false}, ticks: { callback: function(v) { return formatMiles(v) + '%'; } } } } : {})
                 }
-            );
+            };
+        };
+
+        // G. ADICIONES
+        try { if(db.adi_apli_col) new Chart(document.getElementById('cv_adi_apli_col'), { type: 'bar', data: { labels: chartLbls(db.adi_apli_col.mes), datasets: [{ label: 'Horas', data: chartData(db.adi_apli_col.mes, db.adi_apli_col.hrs), backgroundColor: c_azu, datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'}, formatter: v => formatMiles(v) } }] }, options: getOptions(false, false) }); } catch(e){}
+        try { if(db.adi_apli_per) new Chart(document.getElementById('cv_adi_apli_per'), { type: 'bar', data: { labels: chartLbls(db.adi_apli_per.mes), datasets: [{ label: 'Horas', data: chartData(db.adi_apli_per.mes, db.adi_apli_per.hrs), backgroundColor: c_azu, datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'}, formatter: v => formatMiles(v) } }] }, options: getOptions(false, false) }); } catch(e){}
+        try { if(db.adi_est_col) new Chart(document.getElementById('cv_adi_est_col'), { type: 'bar', data: { labels: chartLbls(db.adi_est_col.mes), datasets: [ { label: 'Approved', data: chartData(db.adi_est_col.mes, db.adi_est_col.app), backgroundColor: c_azu, datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'}, formatter: v => formatMiles(v) } }, { label: 'Denied', data: chartData(db.adi_est_col.mes, db.adi_est_col.den), backgroundColor: c_gri, datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'}, formatter: v => formatMiles(v) } } ] }, options: getOptions(false, 'bottom') }); } catch(e){}
+        try { if(db.adi_est_per) new Chart(document.getElementById('cv_adi_est_per'), { type: 'bar', data: { labels: chartLbls(db.adi_est_per.mes), datasets: [ { label: 'Approved', data: chartData(db.adi_est_per.mes, db.adi_est_per.app), backgroundColor: c_azu, datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'}, formatter: v => formatMiles(v) } }, { label: 'Denied', data: chartData(db.adi_est_per.mes, db.adi_est_per.den), backgroundColor: c_gri, datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'}, formatter: v => formatMiles(v) } } ] }, options: getOptions(false, 'bottom') }); } catch(e){}
+        try { 
+            if(db.adi_par_col) { const paleta = db.adi_par_col.lbl.map((_, i) => i < 3 ? c_azu : c_gri); new Chart(document.getElementById('cv_adi_par_col'), { type: 'bar', data: { labels: chartLbls(db.adi_par_col.lbl), datasets: [ { type: 'line', label: 'Porcentaje', data: chartData(db.adi_par_col.lbl, db.adi_par_col.pct), borderColor: c_tel, backgroundColor: c_tel, borderWidth: 3, yAxisID: 'y1', datalabels: { align: 'bottom', backgroundColor: c_azu, color: 'white', borderRadius: 3, font: {weight:'bold'}, formatter: v => formatMiles(v) + '%' } }, { type: 'bar', label: 'Horas', data: chartData(db.adi_par_col.lbl, db.adi_par_col.hrs), backgroundColor: paleta, yAxisID: 'y', datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'}, formatter: v => formatMiles(v) } } ] }, options: getOptions(true, false) }); }
+            if(db.adi_par_per) { const paleta = db.adi_par_per.lbl.map((_, i) => i < 3 ? c_azu : c_gri); new Chart(document.getElementById('cv_adi_par_per'), { type: 'bar', data: { labels: chartLbls(db.adi_par_per.lbl), datasets: [ { type: 'line', label: 'Porcentaje', data: chartData(db.adi_par_per.lbl, db.adi_par_per.pct), borderColor: c_tel, backgroundColor: c_tel, borderWidth: 3, yAxisID: 'y1', datalabels: { align: 'bottom', backgroundColor: c_azu, color: 'white', borderRadius: 3, font: {weight:'bold'}, formatter: v => formatMiles(v) + '%' } }, { type: 'bar', label: 'Horas', data: chartData(db.adi_par_per.lbl, db.adi_par_per.hrs), backgroundColor: paleta, yAxisID: 'y', datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'}, formatter: v => formatMiles(v) } } ] }, options: getOptions(true, false) }); }
+        } catch(e){}
+
+        // G. REDUCCIONES
+        try { if(db.red_apli_col) new Chart(document.getElementById('cv_red_apli_col'), { type: 'bar', data: { labels: chartLbls(db.red_apli_col.mes), datasets: [ { label: 'Manual', data: chartData(db.red_apli_col.mes, db.red_apli_col.man), backgroundColor: c_azu, datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'}, formatter: v => formatMiles(v) } }, { label: 'Automática', data: chartData(db.red_apli_col.mes, db.red_apli_col.auto), backgroundColor: c_gri, datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'}, formatter: v => formatMiles(v) } } ] }, options: getOptions(false, 'bottom') }); } catch(e){}
+        try { if(db.red_apli_per) new Chart(document.getElementById('cv_red_apli_per'), { type: 'bar', data: { labels: chartLbls(db.red_apli_per.mes), datasets: [ { label: 'Manual', data: chartData(db.red_apli_per.mes, db.red_apli_per.man), backgroundColor: c_azu, datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'}, formatter: v => formatMiles(v) } }, { label: 'Automática', data: chartData(db.red_apli_per.mes, db.red_apli_per.auto), backgroundColor: c_gri, datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'}, formatter: v => formatMiles(v) } } ] }, options: getOptions(false, 'bottom') }); } catch(e){}
+        try { if(db.red_est_col) new Chart(document.getElementById('cv_red_est_col'), { type: 'bar', data: { labels: chartLbls(db.red_est_col.mes), datasets: [ { label: 'Approved', data: chartData(db.red_est_col.mes, db.red_est_col.app), backgroundColor: c_azu, datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'}, formatter: v => formatMiles(v) } }, { label: 'Denied', data: chartData(db.red_est_col.mes, db.red_est_col.den), backgroundColor: c_gri, datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'}, formatter: v => formatMiles(v) } } ] }, options: getOptions(false, 'bottom') }); } catch(e){}
+        try { if(db.red_est_per) new Chart(document.getElementById('cv_red_est_per'), { type: 'bar', data: { labels: chartLbls(db.red_est_per.mes), datasets: [ { label: 'Approved', data: chartData(db.red_est_per.mes, db.red_est_per.app), backgroundColor: c_azu, datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'}, formatter: v => formatMiles(v) } }, { label: 'Denied', data: chartData(db.red_est_per.mes, db.red_est_per.den), backgroundColor: c_gri, datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'}, formatter: v => formatMiles(v) } } ] }, options: getOptions(false, 'bottom') }); } catch(e){}
+        try { 
+            if(db.red_par_col) { const paleta = db.red_par_col.lbl.map((_, i) => i < 3 ? c_azu : c_gri); new Chart(document.getElementById('cv_red_par_col'), { type: 'bar', data: { labels: chartLbls(db.red_par_col.lbl), datasets: [ { type: 'line', label: 'Porcentaje', data: chartData(db.red_par_col.lbl, db.red_par_col.pct), borderColor: c_tel, backgroundColor: c_tel, borderWidth: 3, yAxisID: 'y1', datalabels: { align: 'bottom', backgroundColor: c_azu, color: 'white', borderRadius: 3, font: {weight:'bold'}, formatter: v => formatMiles(v) + '%' } }, { type: 'bar', label: 'Horas', data: chartData(db.red_par_col.lbl, db.red_par_col.hrs), backgroundColor: paleta, yAxisID: 'y', datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'}, formatter: v => formatMiles(v) } } ] }, options: getOptions(true, false) }); }
+            if(db.red_par_per) { const paleta = db.red_par_per.lbl.map((_, i) => i < 3 ? c_azu : c_gri); new Chart(document.getElementById('cv_red_par_per'), { type: 'bar', data: { labels: chartLbls(db.red_par_per.lbl), datasets: [ { type: 'line', label: 'Porcentaje', data: chartData(db.red_par_per.lbl, db.red_par_per.pct), borderColor: c_tel, backgroundColor: c_tel, borderWidth: 3, yAxisID: 'y1', datalabels: { align: 'bottom', backgroundColor: c_azu, color: 'white', borderRadius: 3, font: {weight:'bold'}, formatter: v => formatMiles(v) + '%' } }, { type: 'bar', label: 'Horas', data: chartData(db.red_par_per.lbl, db.red_par_per.hrs), backgroundColor: paleta, yAxisID: 'y', datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'}, formatter: v => formatMiles(v) } } ] }, options: getOptions(true, false) }); }
+        } catch(e){}
+
+        // G. IMPLEMENTACIÓN Y GESTIÓN
+        try {
+            if(db.imp_col) new Chart(document.getElementById('donutCol'), { type: 'doughnut', data: { labels: db.imp_col.lbl, datasets: [{ data: val_col, backgroundColor: [c_azu, '#94a3b8'] }] }, options: { cutout: '65%', plugins:{legend:{display:false}, datalabels:{display:false}} }});
+            if(db.imp_per) new Chart(document.getElementById('donutPer'), { type: 'doughnut', data: { labels: db.imp_per.lbl, datasets: [{ data: val_per, backgroundColor: [c_azu, c_tel] }] }, options: { cutout: '65%', plugins:{legend:{display:false}, datalabels:{display:false}} }});
         } catch(e) {}
 
-        // Tabla Horas de Reducción justificadas y denegadas
         try {
-            if(db.red_est) new Chart(document.getElementById('cv_red_est'), 
-            { type: 'bar', 
-            data: { 
-                labels: db.red_est.mes, 
-                datasets: [ { label: 'Approved', 
-                data: cleanData(db.red_est.app), 
-                backgroundColor: c_azu, 
-                datalabels: { 
-                    align: 'top', 
-                    anchor: 'end', 
-                    font: {weight:'bold'},
-                    formatter: (v) => formatMiles(v)
-                    } 
-                }, 
-            { label: 'Denied', 
-            data: cleanData(db.red_est.den), 
-            backgroundColor: c_gri, 
-            datalabels: { 
-                align: 'top', 
-                anchor: 'end', 
-                font: {weight:'bold'}, 
-                formatter: (v) => formatMiles(v)
-                } 
-                } ] 
-        }, 
-            options: { responsive: true, 
-                maintainAspectRatio: false,
-                layout: {
-                        padding: {
-                            top: 30 // <--- SOLUCIÓN 1: Margen en la parte superior
-                        }
-                        }, 
-                plugins: { legend: {position: 'bottom'} } 
-                } 
-            }
-        );
+            if(db.ges_mes_col) new Chart(document.getElementById('cv_ges_mes_col'), { type: 'line', data: { labels: chartLbls(db.ges_mes_col.mes), datasets: [{ label: '% Gestión COL', data: chartData(db.ges_mes_col.mes, db.ges_mes_col.val), borderColor: c_tel, backgroundColor: c_azu, borderWidth: 4, pointRadius: 5, datalabels: { align: 'top', font: {weight:'bold'}, formatter: v => formatMiles(v) + '%' } }] }, options: getOptions(false, false, true) });
+            if(db.ges_mes_per) new Chart(document.getElementById('cv_ges_mes_per'), { type: 'line', data: { labels: chartLbls(db.ges_mes_per.mes), datasets: [{ label: '% Gestión PER', data: chartData(db.ges_mes_per.mes, db.ges_mes_per.val), borderColor: c_tel, backgroundColor: c_azu, borderWidth: 4, pointRadius: 5, datalabels: { align: 'top', font: {weight:'bold'}, formatter: v => formatMiles(v) + '%' } }] }, options: getOptions(false, false, true) });
+            if(db.ges_q_col) new Chart(document.getElementById('cv_ges_q_col'), { type: 'line', data: { labels: chartLbls(db.ges_q_col.q), datasets: [{ label: '% Gestión COL', data: chartData(db.ges_q_col.q, db.ges_q_col.val), borderColor: c_tel, backgroundColor: c_azu, borderWidth: 4, pointRadius: 5, datalabels: { align: 'top', font: {weight:'bold'}, formatter: v => formatMiles(v) + '%' } }] }, options: getOptions(false, false, true) });
+            if(db.ges_q_per) new Chart(document.getElementById('cv_ges_q_per'), { type: 'line', data: { labels: chartLbls(db.ges_q_per.q), datasets: [{ label: '% Gestión PER', data: chartData(db.ges_q_per.q, db.ges_q_per.val), borderColor: c_tel, backgroundColor: c_azu, borderWidth: 4, pointRadius: 5, datalabels: { align: 'top', font: {weight:'bold'}, formatter: v => formatMiles(v) + '%' } }] }, options: getOptions(false, false, true) });
         } catch(e) {}
 
-        // Tabla Pareto Justificaciones Reducción On Time
+        // G. INCIDENCIAS
         try {
-            if(db.red_par) {
-                const paletaParRed = db.red_par.lbl.map((_, i) => i < 3 ? c_azu : c_gri);
-                new Chart(document.getElementById('cv_red_par'), 
-                { type: 'bar', 
-                data: { labels: db.red_par.lbl, 
-                    datasets: [ 
-                        { type: 'line', 
-                        label: 'Porcentaje', 
-                        data: cleanData(db.red_par.pct), 
-                        borderColor: c_tel, 
-                        backgroundColor: c_tel, 
-                        borderWidth: 3, 
-                        yAxisID: 'y1', 
-                        datalabels: { align: 'top', 
-                            backgroundColor: c_azu, 
-                            color: 'white', 
-                            borderRadius: 3, 
-                            font: {weight:'bold'}, 
-                            formatter: (v) => formatMiles(v) + '%' } 
-                        }, 
-                        { type: 'bar', 
-                        label: 'Horas', 
-                        data: cleanData(db.red_par.hrs), 
-                        backgroundColor: paletaParRed, 
-                        yAxisID: 'y', 
-                        datalabels: { 
-                            align: 'top', 
-                            anchor: 'end', 
-                            font: {weight:'bold'},
-                            formatter: (v) => formatMiles(v) 
-                        } } ] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {display: false} }, scales: { x:{ ticks:{ maxRotation:90, minRotation:90 } }, y: { type: 'linear', position: 'left' }, y1: { type: 'linear', position: 'right', max: 110, grid: {drawOnChartArea: false} } } } });
-            }
+            if(db.inc_area) new Chart(document.getElementById('cv_inc_area'), { type: 'bar', data: { labels: chartLbls(db.inc_area.area), datasets: [ { type: 'line', label: 'Afectadas', data: chartData(db.inc_area.area, db.inc_area.afec), borderColor: c_azu, backgroundColor: c_azu, borderWidth: 3, yAxisID: 'y1', datalabels: { align: 'right', backgroundColor: c_azu, color: 'white', borderRadius: 3, font: {weight:'bold'}, formatter: v => formatMiles(v) } }, { type: 'bar', label: 'Casos', data: chartData(db.inc_area.area, db.inc_area.casos), backgroundColor: c_tel, barPercentage: 0.6, yAxisID: 'y', datalabels: { align: 'top', anchor: 'end', backgroundColor: c_tel, color: 'white', borderRadius: 3, font: {weight:'bold'}, formatter: v => formatMiles(v) } } ] }, options: getOptions(true, 'bottom') });
+            if(db.inc_mes) new Chart(document.getElementById('cv_inc_mes'), { type: 'line', data: { labels: chartLbls(db.inc_mes.mes), datasets: [{ label: 'Casos', data: chartData(db.inc_mes.mes, db.inc_mes.casos), borderColor: c_azu, backgroundColor: c_azu, borderWidth: 4, pointRadius: 6, datalabels: { align: 'top', font: {weight:'bold'}, formatter: v => formatMiles(v) } }] }, options: getOptions(false, false) });
         } catch(e) {}
 
-        // Tabla Adiciones Aplicadas - On Time
+        // G. ERRORES
         try {
-            if(db.adi_apli) new Chart(document.getElementById('cv_adi_apli'), 
-            { type: 'bar', 
-            data: { labels: db.adi_apli.mes, 
-                datasets: [{ label: 'Horas', 
-                data: cleanData(db.adi_apli.hrs),
-                 backgroundColor: c_azu, 
-                 barPercentage: 0.5, 
-                 datalabels: {
-                    align: 'top', 
-                    anchor: 'end', 
-                    font: {weight:'bold'},
-                    formatter: (v) => formatMiles(v) 
-                    } 
-                }] 
-            }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {display: false} } } });
+            if(db.err_col) new Chart(document.getElementById('cv_err_col'), { type: 'bar', data: { labels: chartLbls(db.err_col.mes), datasets: [ { type: 'line', label: '% Errores', data: chartData(db.err_col.mes, db.err_col.pct), borderColor: c_tel, backgroundColor: c_tel, borderWidth: 3, yAxisID: 'y1', datalabels: { display: false } }, { type: 'bar', label: 'Cant Errores', data: chartData(db.err_col.mes, db.err_col.err), backgroundColor: c_azu, barPercentage: 0.6, yAxisID: 'y', datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'}, formatter: v => formatMiles(v) } } ] }, options: getOptions(true, 'bottom') });
+            if(db.err_per) new Chart(document.getElementById('cv_err_per'), { type: 'bar', data: { labels: chartLbls(db.err_per.mes), datasets: [ { type: 'line', label: '% Errores', data: chartData(db.err_per.mes, db.err_per.pct), borderColor: c_tel, backgroundColor: c_tel, borderWidth: 3, yAxisID: 'y1', datalabels: { display: false } }, { type: 'bar', label: 'Cant Errores', data: chartData(db.err_per.mes, db.err_per.err), backgroundColor: c_azu, barPercentage: 0.6, yAxisID: 'y', datalabels: { align: 'top', anchor: 'end', font: {weight:'bold'}, formatter: v => formatMiles(v) } } ] }, options: getOptions(true, 'bottom') });
         } catch(e) {}
 
-        // Tabla Horas de Adición justificadas y denegadas
+        // G. HORAS EXTRAS (Línea Gris y Barras Verde Agua)
         try {
-            if(db.adi_est) new Chart(document.getElementById('cv_adi_est'), 
-            { type: 'bar', 
-            data: { labels: db.adi_est.mes, 
-                datasets: [ { label: 'Approved', 
-                data: cleanData(db.adi_est.app), 
-                backgroundColor: c_azu, 
-                datalabels: { 
-                    align: 'top', 
-                    anchor: 'end', 
-                    font: {weight:'bold'},
-                    formatter: (v) => formatMiles(v)
-                    } 
-                }, 
-                { label: 'Denied', 
-                data: cleanData(db.adi_est.den), 
-                backgroundColor: c_gri, 
-                datalabels: { 
-                    align: 'top', 
-                    anchor: 'end', 
-                    font: {weight:'bold'},
-                    formatter: (v) => formatMiles(v) 
-                    } 
-                } 
-                ] 
-            }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {position: 'bottom'} } } });
-        } catch(e) {}
-
-        // Tabla Pareto Justificaciones Adición On Time
-        try {
-            if(db.adi_par) {
-                const paletaParAdi = db.adi_par.lbl.map((_, i) => i < 3 ? c_azu : c_gri);
-                new Chart(document.getElementById('cv_adi_par'), 
-                { type: 'bar', 
-                data: { labels: db.adi_par.lbl, 
-                    datasets: [ { type: 'line', 
-                    label: 'Porcentaje', 
-                    data: cleanData(db.adi_par.pct), 
-                    borderColor: c_tel, 
-                    backgroundColor: c_tel, 
-                    borderWidth: 3, 
-                    yAxisID: 'y1', 
-                    datalabels: { align: 'top', 
-                        backgroundColor: c_azu, 
-                        color: 'white', 
-                        borderRadius: 3, 
-                        font: {weight:'bold'}, 
-                        formatter: (v) => formatMiles(v) + '%' 
-                        } }, 
-                { type: 'bar', 
-                    label: 'Horas', 
-                    data: cleanData(db.adi_par.hrs), 
-                    backgroundColor: paletaParAdi, 
-                    yAxisID: 'y', 
-                    datalabels: { align: 'top', 
-                        anchor: 'end', 
-                        font: {weight:'bold'},
-                        formatter: (v) => formatMiles(v)
-                    } } ] }, 
-                    options: { responsive: true, 
-                        maintainAspectRatio: false,
-                        plugins: { legend: {display: false} }, 
-                        scales: { x:{ ticks:{ maxRotation:90, minRotation:90 } }, y: { type: 'linear', position: 'left' }, y1: { type: 'linear', position: 'right', max: 110, grid: {drawOnChartArea: false} } } } });
-            }
-        } catch(e) {}
-
-        // Grafico circular Estado de Implementación
-        try {
-            if(db.imp_col) new Chart(document.getElementById('donutCol'), 
-            { type: 'doughnut', 
-                data: { labels: db.imp_col.lbl, 
-                            datasets: [{ data: val_col, label: '%', 
-                            backgroundColor: [c_azu, c_tel] }] }, 
-                        options: { cutout: '65%', 
-                            plugins:{legend:{display:false}, datalabels:{display:false}} 
-                        }    
-                    }
-                );
-            if(db.imp_per) new Chart(document.getElementById('donutPer'), 
-            { type: 'doughnut', 
-            data: { labels: db.imp_per.lbl, 
-                datasets: [{ data: val_per, label: '%', 
-                    backgroundColor: [c_azu, c_tel] }] 
-                }, 
-            options: { cutout: '65%', 
-            plugins:{legend:{display:false}, datalabels:{display:false}} }});
-        } catch(e) {}
-
-        // Grafico lineas Gestión On Time por mes y Q
-        try {
-            if(db.ges_mes) new Chart(document.getElementById('cv_ges_mes'), { 
-            type: 'line', 
-            data: { labels: db.ges_mes.mes, 
-                datasets: [{ label: '% Gestión', 
-                    data: cleanData(db.ges_mes.val), 
-                    borderColor: c_tel, 
-                    backgroundColor: c_azu, 
-                    borderWidth: 4, 
-                    pointRadius: 5, 
-                    datalabels: { align: 'top', font: {weight:'bold'}, formatter: (v) => formatMiles(v) + '%' } }] }, 
-            options: { 
-                responsive: true, 
-                maintainAspectRatio: false, 
-                layout: { padding: { left: 10, right: 10, top: 20 } }, // <--- Añade espacio para que los números no se corten arriba
-                plugins: { legend: {display: false} }, 
-                scales: { 
-                    y: { suggestedMin: 85, suggestedMax: 100 },
-                    x: { offset: true } // <--- Separa el primer punto del eje Y
-                } 
-            } 
-        });
-            if(db.ges_q) new Chart(document.getElementById('cv_ges_q'), { 
-            type: 'line', 
-            data: { labels: db.ges_q.q, 
-                datasets: [{ label: '% Gestión', 
-                    data: cleanData(db.ges_q.val), 
-                    borderColor: c_tel, 
-                    backgroundColor: c_azu, 
-                    borderWidth: 4, 
-                    pointRadius: 5, 
-                    datalabels: { align: 'top', font: {weight:'bold'}, formatter: (v) => formatMiles(v) + '%' } }] }, 
-            options: { 
-                responsive: true, 
-                maintainAspectRatio: false, 
-                layout: { padding: { left: 10, right: 10, top: 20 } }, // <--- Añade espacio
-                plugins: { legend: {display: false} }, 
-                scales: { 
-                    y: { suggestedMin: 85, suggestedMax: 100 },
-                    x: { offset: true } // <--- Separa el primer punto del eje Y
-                } 
-            } 
-        });
-        } catch(e) {}
-
-        // Graficos Análisis de Incidencias
-        try {
-            if(db.inc_area) new Chart(document.getElementById('cv_inc_area'), 
-            { type: 'bar', 
-            data: { labels: db.inc_area.area, 
-                datasets: [ 
-                    { type: 'line', 
-                    label: 'Afectadas', 
-                    data: cleanData(db.inc_area.afec), 
-                    borderColor: c_azu, 
-                    backgroundColor: c_azu, 
-                    borderWidth: 3, 
-                    yAxisID: 'y1', 
-                    datalabels: { 
-                        align: 'right', 
-                        backgroundColor: c_azu, 
-                        color: 'white', 
-                        borderRadius: 3, 
-                        font: {weight:'bold'},
-                        formatter: (v) => formatMiles(v) 
-                        } 
-                    }, 
-                    { type: 'bar', 
-                    label: 'Casos', 
-                    data: cleanData(db.inc_area.casos), 
-                    backgroundColor: c_tel, 
-                    barPercentage: 0.6, 
-                    yAxisID: 'y', 
-                    datalabels: {
-                        align: 'left', 
-                        anchor: 'end', 
-                        backgroundColor: c_tel, 
-                        color: 'white', 
-                        borderRadius: 3, 
-                        font: {weight:'bold'},
-                        formatter: (v) => formatMiles(v)
-                        } 
-                    } ] 
-                }, 
-            options: { responsive: true, 
-                maintainAspectRatio: false, 
-                plugins: { legend: {position: 'bottom'} }, 
-                scales: { y: { type: 'linear', position: 'left' }, 
-                y1: { type: 'linear', position: 'right', 
-                grid: {drawOnChartArea: false} } } } });
-            if(db.inc_mes) new Chart(document.getElementById('cv_inc_mes'), 
-            { type: 'line', 
-            data: { labels: db.inc_mes.mes, 
-                datasets: [{ label: 'Casos', 
-                data: cleanData(db.inc_mes.casos), 
-                borderColor: c_azu, 
-                backgroundColor: c_azu, 
-                borderWidth: 4, 
-                pointRadius: 6, 
-                datalabels: { align: 'top', 
-                    font: {weight:'bold'},
-                    formatter: (v) => formatMiles(v)
-                    } }] 
-                }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {display: false} }, scales: { y: { suggestedMin: 0 } } } });
-        } catch(e) {}
-
-        // Graficos Errores de Nómina
-        try {
-            if(db.err_col) new Chart(document.getElementById('cv_err_col'), 
-            { type: 'bar', 
-            data: { 
-                labels: db.err_col.mes, 
-                datasets: [ 
-                    { type: 'line', 
-                    label: '% Errores', 
-                    data: cleanData(db.err_col.pct), 
-                    borderColor: c_tel, 
-                    backgroundColor: c_azu, 
-                    borderWidth: 3, 
-                    yAxisID: 'y1', 
-                    datalabels: { 
-                        align: 'bottom', 
-                        backgroundColor: c_gri,
-                         color: 'black', 
-                         borderRadius: 3, 
-                         font: {weight:'bold'},
-                         formatter: (v) => formatMiles(v) +'%' 
-                        } }, 
-                    { type: 'bar', 
-                    label: 'Cant Errores', 
-                    data: cleanData(db.err_col.err), 
-                    backgroundColor: c_azu, 
-                    barPercentage: 0.6, yAxisID: 'y', 
-                    datalabels: { 
-                        align: 'top', 
-                        anchor: 'end', 
-                        font: {weight:'bold'},
-                        formatter: (v) => formatMiles(v) 
-                        } } ] }, 
-            options: { 
-                responsive: true, 
-                maintainAspectRatio: false, 
-                plugins: { legend: {position: 'bottom'} },
-                scales: { y: { max: 3000, type: 'linear', position: 'left' }, y1: { type: 'linear', position: 'right', max: 5, grid: {drawOnChartArea: false} } } } });
-            if(db.err_per) new Chart(document.getElementById('cv_err_per'), 
-            { type: 'bar', 
-            data: { 
-                labels: db.err_per.mes, 
-                datasets: [
-                    { type: 'line', 
-                    label: '% Errores', 
-                    data: cleanData(db.err_per.pct),
-                    borderColor: c_tel, 
-                    backgroundColor: c_azu, 
-                    borderWidth: 3, 
-                    yAxisID: 'y1', 
-                    datalabels: { 
-                        align: 'bottom', 
-                        backgroundColor: c_gri, 
-                        color: 'black', 
-                        borderRadius: 3, 
-                        font: {weight:'bold'},
-                        formatter: (v) => formatMiles(v) +'%'
-                        } }, 
-                    { type: 'bar', 
-                    label: 'Cant Errores', 
-                    data: cleanData(db.err_per.err), 
-                    backgroundColor: c_azu, 
-                    barPercentage: 0.6, 
-                    yAxisID: 'y', 
-                    datalabels: { 
-                        align: 'top', 
-                        anchor: 'end', 
-                        font: {weight:'bold'},
-                        formatter: (v) => formatMiles(v) 
-                        } } ] }, 
-            options: { 
-                responsive: true, 
-                maintainAspectRatio: false, 
-                plugins: { legend: {position: 'bottom'} }, 
-                scales: { y: { max: 250, type: 'linear', position: 'left' }, y1: { type: 'linear', position: 'right', max: 5, grid: {drawOnChartArea: false} } } } });
-        } catch(e) {}
-
-        // Graficos Control de horas extras
-        try {
-            if(db.extras) new Chart(document.getElementById('cv_extras'), 
-            { type: 'bar',
-            data: { labels: db.extras.mes, datasets: [ 
-                { type: 'line', 
-                label: 'Casos',
-                data: cleanData(db.extras.casos), 
-                borderColor: '#cbd5e1', 
-                backgroundColor: '#cbd5e1', 
-                borderWidth: 4, 
-                yAxisID: 'y1', 
-                datalabels: { 
-                    align: 'top', 
-                    font: {weight:'bold'},
-                    formatter: (v) => formatMiles(v) 
-                    } }, 
-            { type: 'bar', 
-            label: 'Horas', 
-            data: cleanData(db.extras.hrs), 
-            backgroundColor: c_tel, 
-            barPercentage: 0.5, 
-            yAxisID: 'y', 
-            datalabels: { display: false } } ] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {position: 'bottom'} }, scales: { y: { type: 'linear', position: 'left' }, y1: { type: 'linear', position: 'right', grid: {drawOnChartArea: false} } } } });
+            if(db.extras) new Chart(document.getElementById('cv_extras'), { type: 'bar', data: { labels: chartLbls(db.extras.mes), datasets: [ { type: 'line', label: 'Casos', data: chartData(db.extras.mes, db.extras.casos), borderColor: '#cbd5e1', backgroundColor: '#cbd5e1', borderWidth: 4, yAxisID: 'y1', datalabels: { align: 'top', font: {weight:'bold'}, formatter: v => formatMiles(v) } }, { type: 'bar', label: 'Horas', data: chartData(db.extras.mes, db.extras.hrs), backgroundColor: c_tel, barPercentage: 0.5, yAxisID: 'y', datalabels: { display: false } } ] }, options: getOptions(true, 'bottom') });
         } catch(e) {}
 
     </script>
