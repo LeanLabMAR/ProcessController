@@ -4,13 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consolidado Mensual Infracciones - Executive View</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js para las gráficas -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- DataLabels plugin -->
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
-    <!-- FontAwesome para iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script>
@@ -43,17 +39,12 @@
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        
-        /* Habilitar scroll suave */
         html { scroll-behavior: smooth; }
-        
         body { background-color: #f4f5f7; color: #1e1c2a; }
-        
-        /* Compensar el alto del menú fijo al hacer scroll hacia una sección */
         .scroll-mt { scroll-margin-top: 80px; }
 
         .pbi-table th {
-            background-color: var(--dynamic-color, #5a547c); color: white; padding: 12px 10px;
+            background-color: var(--dynamic-color, #382a5c); color: white; padding: 12px 10px;
             text-align: left; font-size: 0.85rem; font-weight: 600;
             position: sticky; top: 0; z-index: 10; transition: background-color 0.3s;
         }
@@ -83,7 +74,6 @@
 </head>
 <body class="min-h-screen">
 
-    <!-- Menú de Navegación Fijo (Sticky) -->
     <nav class="sticky top-0 z-50 bg-white border-b shadow-sm w-full">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-14">
@@ -99,9 +89,7 @@
         </div>
     </nav>
 
-    <!-- Contenedor Principal con Padding extra para compensar el navbar sticky -->
     <div class="p-4 md:p-6">
-
         <header class="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div class="flex items-center gap-4">
                 <i class="fa-solid fa-chart-pie text-4xl text-brand-purple-dark"></i>
@@ -111,16 +99,13 @@
                 </div>
             </div>
             
-            <!-- Pestañas de Navegación por País -->
             <div class="flex flex-wrap gap-2" id="country-tabs">
                 <div id="tab-colombia" class="nav-pill active" onclick="switchCountry('Colombia')"><i class="fa-solid fa-earth-americas mr-2"></i>Colombia</div>
                 <div id="tab-peru" class="nav-pill" onclick="switchCountry('Peru')"><i class="fa-solid fa-earth-americas mr-2"></i>Perú</div>
             </div>
         </header>
 
-        <!-- PANEL EJECUTIVO DE CONTROL -->
         <div id="seccion-segmentacion" class="grid grid-cols-1 xl:grid-cols-12 gap-4 mb-6 scroll-mt">
-            <!-- Segmentación Rápida (Slicers) -->
             <div class="card xl:col-span-8 flex flex-col justify-center">
                 <div class="flex justify-between items-center mb-4 border-b pb-2">
                     <h2 class="font-bold text-lg text-brand-dark"><i class="fa-solid fa-sliders mr-2 text-brand-purple"></i>Segmentación de Datos</h2>
@@ -130,7 +115,6 @@
                 </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Dropdowns VP / Client / Tipo -->
                     <div class="flex flex-col gap-3">
                         <div>
                             <label class="block text-xs font-semibold mb-1 text-brand-slate uppercase tracking-wide">Filtro VP</label>
@@ -152,7 +136,6 @@
                         </div>
                     </div>
 
-                    <!-- Botones Mes y Estado -->
                     <div class="md:col-span-2 flex flex-col gap-3">
                         <div>
                             <label class="block text-xs font-semibold mb-2 text-brand-slate uppercase tracking-wide">Selección de Mes</label>
@@ -166,7 +149,6 @@
                 </div>
             </div>
 
-            <!-- KPIs de Alto Nivel -->
             <div class="xl:col-span-4 grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-1 gap-3">
                 <div class="card flex flex-col justify-center items-center border-l-4 border-l-brand-purple bg-brand-purple/5">
                     <h3 class="text-xs font-bold text-brand-slate mb-1 uppercase tracking-wide">Total Horas</h3>
@@ -183,7 +165,6 @@
             </div>
         </div>
 
-        <!-- Gráficas Principales VP y Mes -->
         <div id="seccion-vp" class="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-6 scroll-mt">
             <div class="card flex flex-col">
                 <h2 class="font-bold text-lg mb-4 text-brand-dark border-b pb-2 flex flex-wrap items-center">
@@ -206,7 +187,6 @@
             </div>
         </div>
 
-        <!-- Análisis Adición -->
         <div id="seccion-adicion" class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6 scroll-mt">
             <div class="card lg:col-span-4 overflow-hidden flex flex-col">
                 <h2 class="font-bold text-md mb-3 text-brand-dark border-b pb-2"><i class="fa-solid fa-arrow-trend-up mr-2 text-brand-purple"></i>Detalle Adición (Hrs)</h2>
@@ -229,7 +209,6 @@
             </div>
         </div>
 
-        <!-- Análisis Reducción -->
         <div id="seccion-reduccion" class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6 scroll-mt">
             <div class="card lg:col-span-4 overflow-hidden flex flex-col">
                 <h2 class="font-bold text-md mb-3 text-brand-dark border-b pb-2"><i class="fa-solid fa-arrow-trend-down mr-2 text-brand-purple"></i>Detalle Reducción (Hrs)</h2>
@@ -252,10 +231,8 @@
             </div>
         </div>
 
-        <!-- Paretos -->
         <div id="seccion-pareto" class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6 scroll-mt">
             
-            <!-- Bloque Justificaciones Adición -->
             <div class="card lg:col-span-5 overflow-hidden flex flex-col">
                 <h2 class="font-bold text-md mb-3 text-brand-dark border-b pb-2 flex items-center">
                     <i class="fa-solid fa-list-check mr-2 text-brand-purple"></i>Justificaciones Adición
@@ -278,7 +255,6 @@
                 </div>
             </div>
 
-            <!-- Bloque Justificaciones Reducción -->
             <div class="card lg:col-span-5 overflow-hidden flex flex-col">
                 <h2 class="font-bold text-md mb-3 text-brand-dark border-b pb-2 flex items-center">
                     <i class="fa-solid fa-list-check mr-2 text-brand-purple"></i>Justificaciones Reducción
@@ -303,7 +279,7 @@
 
         </div>
 
-    </div> <!-- Fin Contenedor Principal -->
+    </div>
 
     <script>
         Chart.register(ChartDataLabels);
@@ -311,7 +287,6 @@
         const formatNum = (num) => new Intl.NumberFormat('es-CO').format(Math.round(num));
         const formatPerc = (num) => (Math.round(num * 100) / 100).toFixed(2) + '%';
         
-        // Estado Global (Persistente entre pestañas)
         const globalState = {
             country: 'Colombia',
             vp: 'Todas',
@@ -452,7 +427,6 @@
                 const btn = document.createElement('button');
                 btn.innerText = e;
                 if (globalState.estado === e) {
-                    // Semántica de colores en los botones
                     let bgCol = 'bg-brand-purple-dark';
                     if(e.toLowerCase().includes('aprobadas')) bgCol = 'bg-emerald-600';
                     if(e.toLowerCase().includes('denegadas')) bgCol = 'bg-red-600';
@@ -466,21 +440,24 @@
         }
 
         function getDynamicColors() {
-            // COLORES UNIFICADOS: Si no hay filtro específico de estado, todo usa tonos de la paleta base.
-            let mainColor = '#382a5c';   // Dark purple para líneas y headers
-            let accentColor = '#5a547c'; // Medium purple para todas las barras por defecto
+            // Colores por defecto para las barras y elementos hover
+            let barColor = '#5a547c';   
+            let hoverColor = '#382a5c'; 
             
+            // Un color sólido y distintivo para la línea del Pareto, garantizando alto contraste
+            // Utilizamos el color más oscuro de la paleta original que indicaste
+            let lineColor = '#1e1c2a'; 
+
             const est = globalState.estado.toLowerCase();
 
-            // Solo cambian a Verde o Rojo si explícitamente se selecciona Aprobadas o Denegadas
             if (est.includes('aprobadas')) {
-                mainColor = '#059669'; accentColor = '#10b981'; // Tonos verdes
+                barColor = '#10b981'; hoverColor = '#059669'; lineColor = '#064e3b'; // Tonos verdes
             } else if (est.includes('denegadas')) {
-                mainColor = '#e11d48'; accentColor = '#f43f5e'; // Tonos rojos
+                barColor = '#f43f5e'; hoverColor = '#e11d48'; lineColor = '#881337'; // Tonos rojos
             }
 
-            document.documentElement.style.setProperty('--dynamic-color', mainColor);
-            return { main: mainColor, accent: accentColor };
+            document.documentElement.style.setProperty('--dynamic-color', hoverColor);
+            return { bar: barColor, hover: hoverColor, line: lineColor };
         }
 
         function updateDynamicTitles() {
@@ -515,7 +492,8 @@
 
             const filteredJust = dataJust.filter(row => {
                 if(!row.Mes) return false;
-                return (globalState.tipo === 'Todas' || row.Tipo === globalState.tipo) &&
+                return (globalState.vp === 'Todas' || row.VP === globalState.vp) &&
+                       (globalState.tipo === 'Todas' || row.Tipo === globalState.tipo) &&
                        (globalState.mes === 'Todos' || row.Mes === globalState.mes) &&
                        (globalState.estado === 'Todas' || row.Estado === globalState.estado);
             });
@@ -572,7 +550,6 @@
             container.style.minWidth = minWidth > container.parentElement.clientWidth ? `${minWidth}px` : '100%';
         }
 
-        // RESTAURADO: Función renderTable con soporte para calcular los Totales (tfoot) e inyectar el % de Pareto.
         function renderTable(tbodyId, totalId, data, isPareto = false) {
             const tbody = document.querySelector(`#${tbodyId} tbody`);
             tbody.innerHTML = '';
@@ -600,7 +577,6 @@
         }
 
         function renderVisuals(vpData, mesData, adClient, redClient, parAd, parRed) {
-            // Llenado de tablas con su cálculo de totales restaurado
             renderTable('tableAdicionCliente', 'totalAdicion', adClient);
             renderTable('tableReduccionCliente', 'totalReduccion', redClient);
             renderTable('tableJustAdicion', 'totalJustAd', parAd, true);
@@ -623,28 +599,27 @@
                 layout: { padding: { top: 20 } }
             };
 
-            const simpleBarConfig = (dataArr, bgCol, hbgCol) => ({
+            const simpleBarConfig = (dataArr, col, hoverCol) => ({
                 type: 'bar',
-                data: { labels: dataArr.map(d => d[0]), datasets: [{ data: dataArr.map(d => d[1]), backgroundColor: bgCol, hoverBackgroundColor: hbgCol, borderRadius: 4 }] },
-                options: { ...commonOptions, plugins: { ...commonOptions.plugins, datalabels: { display: true, anchor: 'end', align: 'top', font: { weight: 'bold' }, formatter: (val) => formatNum(val) } } }
+                data: { labels: dataArr.map(d => d[0]), datasets: [{ data: dataArr.map(d => d[1]), backgroundColor: col, hoverBackgroundColor: hoverCol, borderRadius: 4 }] },
+                options: { ...commonOptions, plugins: { ...commonOptions.plugins, datalabels: { display: true, anchor: 'end', align: 'top', font: { weight: 'bold' }, color: '#1e1c2a', formatter: (val) => formatNum(val) } } }
             });
 
-            // Para la gráfica de VPs y Mes, usamos el accentColor por defecto para mantener la uniformidad visual, con hover en mainColor.
             if(charts['chartVPHours']) charts['chartVPHours'].destroy();
-            charts['chartVPHours'] = new Chart(document.getElementById('chartVPHours').getContext('2d'), simpleBarConfig(vpData, palette.accent, palette.main));
+            charts['chartVPHours'] = new Chart(document.getElementById('chartVPHours').getContext('2d'), simpleBarConfig(vpData, palette.bar, palette.hover));
 
             if(charts['chartMesHours']) charts['chartMesHours'].destroy();
-            charts['chartMesHours'] = new Chart(document.getElementById('chartMesHours').getContext('2d'), simpleBarConfig(mesData, palette.accent, palette.main));
+            charts['chartMesHours'] = new Chart(document.getElementById('chartMesHours').getContext('2d'), simpleBarConfig(mesData, palette.bar, palette.hover));
 
             if(charts['chartAdicionClient']) charts['chartAdicionClient'].destroy();
             charts['chartAdicionClient'] = new Chart(document.getElementById('chartAdicionClient').getContext('2d'), {
-                ...simpleBarConfig(adClient, palette.accent, palette.main),
+                ...simpleBarConfig(adClient, palette.bar, palette.hover),
                 options: { ...commonOptions, scales: { ...commonOptions.scales, x: { ...commonOptions.scales.x, ticks: { ...commonOptions.scales.x.ticks, maxRotation: 90, minRotation: 90 } } } }
             });
 
             if(charts['chartReduccionClient']) charts['chartReduccionClient'].destroy();
             charts['chartReduccionClient'] = new Chart(document.getElementById('chartReduccionClient').getContext('2d'), {
-                ...simpleBarConfig(redClient, palette.accent, palette.main),
+                ...simpleBarConfig(redClient, palette.bar, palette.hover),
                 options: { ...commonOptions, scales: { ...commonOptions.scales, x: { ...commonOptions.scales.x, ticks: { ...commonOptions.scales.x.ticks, maxRotation: 90, minRotation: 90 } } } }
             });
 
@@ -653,8 +628,37 @@
                 data: {
                     labels: paretoData.map(d => d.justificacion),
                     datasets: [
-                        { type: 'line', label: 'Pareto %', data: paretoData.map(d => d.pareto), borderColor: palette.main, backgroundColor: palette.main, borderWidth: 3, pointRadius: 4, pointHoverRadius: 6, yAxisID: 'y1', datalabels: { display: true, anchor: 'end', align: 'top', font: { weight: 'bold', size: 10 }, color: palette.main, formatter: (val) => formatPerc(val) } },
-                        { type: 'bar', label: 'Horas', data: paretoData.map(d => d.horas), backgroundColor: palette.accent, hoverBackgroundColor: palette.main, borderRadius: 4, yAxisID: 'y', datalabels: { display: false } }
+                        { 
+                            type: 'line', 
+                            label: 'Pareto %', 
+                            data: paretoData.map(d => d.pareto), 
+                            borderColor: palette.line, // Color contrastante para la línea
+                            backgroundColor: '#ffffff', // Centro del punto en blanco
+                            borderWidth: 3, 
+                            pointBorderColor: palette.line, // Borde del punto del color de la línea
+                            pointBorderWidth: 2,
+                            pointRadius: 4, 
+                            pointHoverRadius: 6, 
+                            yAxisID: 'y1', 
+                            datalabels: { 
+                                display: true, 
+                                anchor: 'bottom', 
+                                align: 'top', 
+                                font: { weight: 'bold', size: 10 }, 
+                                color: palette.line, 
+                                formatter: (val) => formatPerc(val) 
+                            } 
+                        },
+                        { 
+                            type: 'bar', 
+                            label: 'Horas', 
+                            data: paretoData.map(d => d.horas), 
+                            backgroundColor: palette.bar, 
+                            hoverBackgroundColor: palette.hover, 
+                            borderRadius: 4, 
+                            yAxisID: 'y', 
+                            datalabels: { display: false } 
+                        }
                     ]
                 },
                 options: {
