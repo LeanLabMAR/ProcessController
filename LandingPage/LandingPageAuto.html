@@ -260,7 +260,7 @@
                     <h4><i class="fa-solid fa-magnifying-glass-chart"></i> Análisis Profundo de Adiciones</h4>
                     <p>¿Necesitas auditar o validar más información sobre los tiempos adicionados? Consulta la vista extendida.</p>
                 </div>
-                <a href="LINK_ADICIONES.html" target="_blank" class="deep-dive-btn">
+                <a href="https://leanlabmar.github.io/ProcessController/InfraccionesNomina/InfraccionesOnTime.html" target="_blank" class="deep-dive-btn">
                     Abrir Landing Page <i class="fa-solid fa-arrow-right"></i>
                 </a>
             </div>
@@ -322,7 +322,7 @@
                     <h4><i class="fa-solid fa-magnifying-glass-chart"></i> Análisis Profundo de Reducciones</h4>
                     <p>¿Deseas profundizar en las justificaciones y penalizaciones de tiempos? Explora el panel interactivo completo.</p>
                 </div>
-                <a href="LINK_REDUCCIONES.html" target="_blank" class="deep-dive-btn">
+                <a href="https://leanlabmar.github.io/ProcessController/InfraccionesNomina/InfraccionesOnTime.html" target="_blank" class="deep-dive-btn">
                     Abrir Landing Page <i class="fa-solid fa-arrow-right"></i>
                 </a>
             </div>
@@ -462,7 +462,7 @@
                     <h4><i class="fa-solid fa-magnifying-glass-chart"></i> Auditoría de Errores de Nómina</h4>
                     <p>Para revisar el consolidado detallado de casuísticas y planes de acción por país, visita el reporte específico.</p>
                 </div>
-                <a href="LINK_ERRORES.html" target="_blank" class="deep-dive-btn">
+                <a href="https://leanlabmar.github.io/ProcessController/ErroresNomina/Q1Q2.html" target="_blank" class="deep-dive-btn">
                     Abrir Landing Page <i class="fa-solid fa-arrow-right"></i>
                 </a>
             </div>
@@ -532,8 +532,8 @@
         const db = base_de_datos;
 
         // HERRAMIENTAS DE FORMATO (Máximo 2 decimales estricto)
-        const formatMiles = (num) => Number(num).toLocaleString('es-CO', { maximumFractionDigits: 2 }); 
-        const formatEuros = (num) => Number(num).toLocaleString('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 2 });
+        const formatMiles = (num) => Number(num).toLocaleString('es-CO', { maximumFractionDigits: 0 }); 
+        const formatEuros = (num) => Number(num).toLocaleString('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
         const formatCOP = (num) => Number(num).toLocaleString('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 });
 
         const cleanData = (arr) => {
