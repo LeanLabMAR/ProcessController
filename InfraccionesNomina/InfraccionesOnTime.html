@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consolidado Mensual Infracciones - Executive View</title>
+    <title>Consolidado Mensual Justificaciones - Executive View</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
@@ -29,7 +29,6 @@
                         'brand-purple-dark': '#382a5c',
                         'brand-purple': '#5a547c',
                         'brand-slate': '#7a849c',
-                        'brand-light': '#d4d8e4',
                         'brand-bg': '#f4f5f7'
                     },
                     fontFamily: { sans: ['Inter', 'sans-serif'] }
@@ -48,7 +47,7 @@
             text-align: left; font-size: 0.85rem; font-weight: 600;
             position: sticky; top: 0; z-index: 10; transition: background-color 0.3s;
         }
-        .pbi-table td { padding: 10px; font-size: 0.85rem; border-bottom: 1px solid #e2e8f0; }
+        .pbi-table td { padding: 10px; font-size: 0.85rem; border-bottom: 1px solid #e2e8f0; cursor: pointer; }
         .pbi-table tr:nth-child(even) { background-color: #f8fafc; }
         .pbi-table tr:nth-child(odd) { background-color: #ffffff; }
         .pbi-table tr:hover { background-color: #e2e8f0; transition: background-color 0.2s; }
@@ -70,6 +69,8 @@
         ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        canvas { cursor: pointer; }
     </style>
 </head>
 <body class="min-h-screen">
@@ -89,19 +90,36 @@
         </div>
     </nav>
 
-    <div class="p-4 md:p-6">
+    <div class="p-4 md:p-6 relative">
+        <div id="internal-filter-badge" class="hidden fixed bottom-6 right-6 bg-brand-dark text-white p-4 rounded-xl shadow-2xl z-50 flex-col gap-2 max-w-sm border border-gray-700">
+            <div class="flex justify-between items-center border-b border-gray-600 pb-2 mb-2">
+                <span class="font-bold text-sm"><i class="fa-solid fa-filter mr-2 text-brand-accent"></i>Filtro Interno Activo</span>
+            </div>
+            <div id="internal-filter-list" class="text-xs text-gray-300 flex flex-col gap-1"></div>
+            <button onclick="clearInternalFilters()" class="mt-2 w-full bg-red-600 hover:bg-red-500 text-white font-bold py-1.5 rounded text-xs transition">
+                <i class="fa-solid fa-xmark mr-1"></i> Quitar Filtros Internos
+            </button>
+        </div>
+
         <header class="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div class="flex items-center gap-4">
-                <i class="fa-solid fa-chart-pie text-4xl text-brand-purple-dark"></i>
+                <i class="fa-solid fa-chart-pie text-4xl text-brand-purple-dark hidden md:block"></i>
                 <div>
-                    <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-brand-dark leading-none" id="main-title">Consolidado Colombia</h1>
-                    <p class="text-brand-slate text-sm font-medium mt-1">Visión Ejecutiva de Infracciones</p>
+                    <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-brand-dark leading-none flex items-center" id="main-title">
+                        <img src="https://flagcdn.com/w40/co.png" class="inline-block w-8 md:w-10 h-auto mr-3 shadow-sm rounded-sm" alt="CO"> 
+                        Consolidado Colombia
+                    </h1>
+                    <p class="text-brand-slate text-sm font-medium mt-1">Visión Ejecutiva de Justificaciones</p>
                 </div>
             </div>
             
             <div class="flex flex-wrap gap-2" id="country-tabs">
-                <div id="tab-colombia" class="nav-pill active" onclick="switchCountry('Colombia')"><i class="fa-solid fa-earth-americas mr-2"></i>Colombia</div>
-                <div id="tab-peru" class="nav-pill" onclick="switchCountry('Peru')"><i class="fa-solid fa-earth-americas mr-2"></i>Perú</div>
+                <div id="tab-colombia" class="nav-pill active flex items-center" onclick="switchCountry('Colombia')">
+                    <img src="https://flagcdn.com/w20/co.png" class="w-4 h-auto mr-2 rounded-sm border border-gray-300" alt="CO"> Colombia
+                </div>
+                <div id="tab-peru" class="nav-pill flex items-center" onclick="switchCountry('Peru')">
+                    <img src="https://flagcdn.com/w20/pe.png" class="w-4 h-auto mr-2 rounded-sm border border-gray-300" alt="PE"> Perú
+                </div>
             </div>
         </header>
 
@@ -114,8 +132,8 @@
                     </button>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="flex flex-col gap-3">
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                    <div class="md:col-span-4 flex flex-col gap-3">
                         <div>
                             <label class="block text-xs font-semibold mb-1 text-brand-slate uppercase tracking-wide">Filtro VP</label>
                             <select id="vpFilter" class="w-full bg-gray-50 border border-gray-300 text-brand-dark text-sm p-2 rounded cursor-pointer filter-select focus:ring-2 focus:ring-brand-purple outline-none transition">
@@ -128,21 +146,19 @@
                                 <option value="Todas">Todas</option>
                             </select>
                         </div>
-                        <div>
-                            <label class="block text-xs font-semibold mb-1 text-brand-slate uppercase tracking-wide">Tipo de Infracción</label>
-                            <select id="tipoFilter" class="w-full bg-gray-50 border border-gray-300 text-brand-dark text-sm p-2 rounded cursor-pointer filter-select focus:ring-2 focus:ring-brand-purple outline-none transition">
-                                <option value="Todas">Todas</option>
-                            </select>
-                        </div>
                     </div>
 
-                    <div class="md:col-span-2 flex flex-col gap-3">
+                    <div class="md:col-span-8 flex flex-col gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold mb-2 text-brand-slate uppercase tracking-wide">Tipo de Justificación</label>
+                            <div class="flex flex-wrap gap-2" id="tipo-slicer"></div>
+                        </div>
                         <div>
                             <label class="block text-xs font-semibold mb-2 text-brand-slate uppercase tracking-wide">Selección de Mes</label>
                             <div class="flex flex-wrap gap-2" id="mes-slicer"></div>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold mb-2 text-brand-slate uppercase tracking-wide">Estado de la Infracción</label>
+                            <label class="block text-xs font-semibold mb-2 text-brand-slate uppercase tracking-wide">Estado de la Justificación</label>
                             <div class="flex flex-wrap gap-2" id="estado-slicer"></div>
                         </div>
                     </div>
@@ -194,7 +210,7 @@
                     <table class="w-full pbi-table" id="tableAdicionCliente">
                         <thead><tr><th>Cliente</th><th class="text-right">Horas</th></tr></thead>
                         <tbody></tbody>
-                        <tfoot><tr class="font-bold bg-gray-200 text-brand-dark"><td class="p-3 border-t">Total</td><td class="p-3 border-t text-right" id="totalAdicion">0</td></tr></tfoot>
+                        <tfoot><tr class="font-bold bg-gray-200 text-brand-dark cursor-default"><td class="p-3 border-t">Total</td><td class="p-3 border-t text-right" id="totalAdicion">0</td></tr></tfoot>
                     </table>
                 </div>
             </div>
@@ -216,7 +232,7 @@
                     <table class="w-full pbi-table" id="tableReduccionCliente">
                         <thead><tr><th>Cliente</th><th class="text-right">Horas</th></tr></thead>
                         <tbody></tbody>
-                        <tfoot><tr class="font-bold bg-gray-200 text-brand-dark"><td class="p-3 border-t">Total</td><td class="p-3 border-t text-right" id="totalReduccion">0</td></tr></tfoot>
+                        <tfoot><tr class="font-bold bg-gray-200 text-brand-dark cursor-default"><td class="p-3 border-t">Total</td><td class="p-3 border-t text-right" id="totalReduccion">0</td></tr></tfoot>
                     </table>
                 </div>
             </div>
@@ -241,7 +257,7 @@
                     <table class="w-full pbi-table" id="tableJustAdicion">
                         <thead><tr><th>Justificación</th><th class="text-right">Horas</th><th class="text-right">% Pareto</th></tr></thead>
                         <tbody></tbody>
-                        <tfoot><tr class="font-bold bg-gray-200 text-brand-dark"><td class="p-3 border-t">Total</td><td class="p-3 border-t text-right" id="totalJustAd">0</td><td></td></tr></tfoot>
+                        <tfoot><tr class="font-bold bg-gray-200 text-brand-dark cursor-default"><td class="p-3 border-t">Total</td><td class="p-3 border-t text-right" id="totalJustAd">0</td><td></td></tr></tfoot>
                     </table>
                 </div>
             </div>
@@ -263,7 +279,7 @@
                     <table class="w-full pbi-table" id="tableJustReduccion">
                         <thead><tr><th>Justificación</th><th class="text-right">Horas</th><th class="text-right">% Pareto</th></tr></thead>
                         <tbody></tbody>
-                        <tfoot><tr class="font-bold bg-gray-200 text-brand-dark"><td class="p-3 border-t">Total</td><td class="p-3 border-t text-right" id="totalJustRed">0</td><td></td></tr></tfoot>
+                        <tfoot><tr class="font-bold bg-gray-200 text-brand-dark cursor-default"><td class="p-3 border-t">Total</td><td class="p-3 border-t text-right" id="totalJustRed">0</td><td></td></tr></tfoot>
                     </table>
                 </div>
             </div>
@@ -296,6 +312,14 @@
             estado: 'Todas'
         };
 
+        const internalFilters = {
+            vp: null,
+            client: null,
+            mes: null,
+            justificacion: null
+        };
+
+        let uniqueTipos = [];
         let uniqueMonths = [];
         let uniqueEstados = [];
 
@@ -311,12 +335,20 @@
 
         function switchCountry(country) {
             globalState.country = country;
+            
             document.getElementById('tab-colombia').classList.toggle('active', country === 'Colombia');
             document.getElementById('tab-peru').classList.toggle('active', country === 'Peru');
-            document.getElementById('main-title').innerText = `Consolidado ${country === 'Colombia' ? 'Colombia' : 'Perú'}`;
+            
+            const flagCode = country === 'Colombia' ? 'co' : 'pe';
+            const countryName = country === 'Colombia' ? 'Colombia' : 'Perú';
+            
+            document.getElementById('main-title').innerHTML = `
+                <img src="https://flagcdn.com/w40/${flagCode}.png" class="inline-block w-8 md:w-10 h-auto mr-3 shadow-sm rounded-sm" alt="${countryName}"> 
+                Consolidado ${countryName}
+            `;
             
             initFilters(false); 
-            processAndRenderData();
+            clearInternalFilters(); 
         }
 
         function resetFilters() {
@@ -328,10 +360,8 @@
             
             document.getElementById('vpFilter').value = 'Todas';
             document.getElementById('clientFilter').value = 'Todas';
-            document.getElementById('tipoFilter').value = 'Todas';
             
-            renderSlicers();
-            processAndRenderData();
+            clearInternalFilters();
         }
 
         function getActiveDatasets() {
@@ -380,13 +410,13 @@
 
             const uniqueVPs = [...new Set(dataClientes.map(item => item.VP))].filter(Boolean).sort();
             const uniqueClients = [...new Set(dataClientes.map(item => item.Client))].filter(Boolean).sort();
-            const uniqueTipos = [...new Set(dataClientes.map(item => item.Tipo))].filter(Boolean).sort();
+            
+            uniqueTipos = [...new Set(dataClientes.map(item => item.Tipo))].filter(Boolean).sort();
             uniqueMonths = [...new Set(dataClientes.map(item => item.Mes))].filter(Boolean).sort((a, b) => getMonthWeight(a) - getMonthWeight(b));
             uniqueEstados = [...new Set(dataClientes.map(item => item.Estado))].filter(Boolean).sort();
 
             populateSelect('vpFilter', uniqueVPs, 'vp');
             populateSelect('clientFilter', uniqueClients, 'client');
-            populateSelect('tipoFilter', uniqueTipos, 'tipo');
 
             renderSlicers();
 
@@ -396,26 +426,37 @@
                 newSelect.addEventListener('change', (e) => {
                     if(e.target.id === 'vpFilter') globalState.vp = e.target.value;
                     if(e.target.id === 'clientFilter') globalState.client = e.target.value;
-                    if(e.target.id === 'tipoFilter') globalState.tipo = e.target.value;
                     processAndRenderData();
                 });
             });
         }
 
         function renderSlicers() {
+            const tipoContainer = document.getElementById('tipo-slicer');
+            tipoContainer.innerHTML = '';
+            if(globalState.tipo !== 'Todas' && !uniqueTipos.includes(globalState.tipo)) globalState.tipo = 'Todas';
+            ['Todas', ...uniqueTipos].forEach(t => {
+                const btn = document.createElement('button');
+                btn.innerText = t;
+                if (globalState.tipo === t) {
+                    btn.className = 'px-4 py-1 text-sm font-bold rounded bg-brand-purple-dark text-white shadow-md transform scale-105 transition';
+                } else {
+                    btn.className = 'px-4 py-1 text-sm font-medium rounded bg-white text-brand-slate border border-gray-300 hover:bg-gray-100 hover:text-brand-dark transition';
+                }
+                btn.onclick = () => { globalState.tipo = t; renderSlicers(); processAndRenderData(); };
+                tipoContainer.appendChild(btn);
+            });
+
             const mesContainer = document.getElementById('mes-slicer');
             mesContainer.innerHTML = '';
-            
             if(globalState.mes !== 'Todos' && !uniqueMonths.includes(globalState.mes)) globalState.mes = 'Todos';
-            if(globalState.estado !== 'Todas' && !uniqueEstados.includes(globalState.estado)) globalState.estado = 'Todas';
-
             ['Todos', ...uniqueMonths].forEach(m => {
                 const btn = document.createElement('button');
                 btn.innerText = m;
                 if (globalState.mes === m) {
-                    btn.className = 'px-4 py-1 text-sm font-bold rounded bg-brand-purple-dark text-white shadow-md transform scale-105';
+                    btn.className = 'px-4 py-1 text-sm font-bold rounded bg-brand-purple-dark text-white shadow-md transform scale-105 transition';
                 } else {
-                    btn.className = 'px-4 py-1 text-sm font-medium rounded bg-white text-brand-slate border border-gray-300 hover:bg-gray-100 hover:text-brand-dark';
+                    btn.className = 'px-4 py-1 text-sm font-medium rounded bg-white text-brand-slate border border-gray-300 hover:bg-gray-100 hover:text-brand-dark transition';
                 }
                 btn.onclick = () => { globalState.mes = m; renderSlicers(); processAndRenderData(); };
                 mesContainer.appendChild(btn);
@@ -423,6 +464,7 @@
 
             const estadoContainer = document.getElementById('estado-slicer');
             estadoContainer.innerHTML = '';
+            if(globalState.estado !== 'Todas' && !uniqueEstados.includes(globalState.estado)) globalState.estado = 'Todas';
             ['Todas', ...uniqueEstados].forEach(e => {
                 const btn = document.createElement('button');
                 btn.innerText = e;
@@ -430,34 +472,66 @@
                     let bgCol = 'bg-brand-purple-dark';
                     if(e.toLowerCase().includes('aprobadas')) bgCol = 'bg-emerald-600';
                     if(e.toLowerCase().includes('denegadas')) bgCol = 'bg-red-600';
-                    btn.className = `px-4 py-1 text-sm font-bold rounded ${bgCol} text-white shadow-md transform scale-105`;
+                    btn.className = `px-4 py-1 text-sm font-bold rounded ${bgCol} text-white shadow-md transform scale-105 transition`;
                 } else {
-                    btn.className = 'px-4 py-1 text-sm font-medium rounded bg-white text-brand-slate border border-gray-300 hover:bg-gray-100 hover:text-brand-dark';
+                    btn.className = 'px-4 py-1 text-sm font-medium rounded bg-white text-brand-slate border border-gray-300 hover:bg-gray-100 hover:text-brand-dark transition';
                 }
                 btn.onclick = () => { globalState.estado = e; renderSlicers(); processAndRenderData(); };
                 estadoContainer.appendChild(btn);
             });
         }
 
-        function getDynamicColors() {
-            // Colores por defecto para las barras y elementos hover
-            let barColor = '#5a547c';   
-            let hoverColor = '#382a5c'; 
+        function setInternalFilter(type, value) {
+            internalFilters[type] = value;
+            renderInternalFilterBadge();
+            processAndRenderData();
+        }
+
+        function clearInternalFilters() {
+            internalFilters.vp = null;
+            internalFilters.client = null;
+            internalFilters.mes = null;
+            internalFilters.justificacion = null;
+            renderInternalFilterBadge();
+            processAndRenderData();
+        }
+
+        function renderInternalFilterBadge() {
+            const badge = document.getElementById('internal-filter-badge');
+            const list = document.getElementById('internal-filter-list');
+            list.innerHTML = '';
             
-            // Un color sólido y distintivo para la línea del Pareto, garantizando alto contraste
-            // Utilizamos el color más oscuro de la paleta original que indicaste
+            let hasFilters = false;
+            
+            if(internalFilters.vp) { list.innerHTML += `<div><span class="font-bold text-gray-400">VP:</span> ${internalFilters.vp}</div>`; hasFilters = true; }
+            if(internalFilters.mes) { list.innerHTML += `<div><span class="font-bold text-gray-400">Mes:</span> ${internalFilters.mes}</div>`; hasFilters = true; }
+            if(internalFilters.client) { list.innerHTML += `<div><span class="font-bold text-gray-400">Cliente:</span> ${internalFilters.client}</div>`; hasFilters = true; }
+            if(internalFilters.justificacion) { list.innerHTML += `<div><span class="font-bold text-gray-400">Justificación:</span> ${internalFilters.justificacion}</div>`; hasFilters = true; }
+
+            if(hasFilters) {
+                badge.classList.remove('hidden');
+                badge.classList.add('flex');
+            } else {
+                badge.classList.add('hidden');
+                badge.classList.remove('flex');
+            }
+        }
+
+        function getDynamicColors() {
+            let mainColor = '#382a5c';   
+            let accentColor = '#5a547c'; 
             let lineColor = '#1e1c2a'; 
 
             const est = globalState.estado.toLowerCase();
 
             if (est.includes('aprobadas')) {
-                barColor = '#10b981'; hoverColor = '#059669'; lineColor = '#064e3b'; // Tonos verdes
+                mainColor = '#059669'; accentColor = '#10b981'; lineColor = '#064e3b';
             } else if (est.includes('denegadas')) {
-                barColor = '#f43f5e'; hoverColor = '#e11d48'; lineColor = '#881337'; // Tonos rojos
+                mainColor = '#e11d48'; accentColor = '#f43f5e'; lineColor = '#881337';
             }
 
-            document.documentElement.style.setProperty('--dynamic-color', hoverColor);
-            return { bar: barColor, hover: hoverColor, line: lineColor };
+            document.documentElement.style.setProperty('--dynamic-color', mainColor);
+            return { bar: accentColor, hover: mainColor, line: lineColor };
         }
 
         function updateDynamicTitles() {
@@ -468,6 +542,11 @@
             if(globalState.vp !== 'Todas') activeFilters.push(`VP: ${globalState.vp.split(' ')[0]}`); 
             if(globalState.client !== 'Todas') activeFilters.push(`Cli: ${globalState.client}`);
             
+            if(internalFilters.vp) activeFilters.push(`(Filtro: ${internalFilters.vp.split(' ')[0]})`);
+            if(internalFilters.client) activeFilters.push(`(Filtro: ${internalFilters.client})`);
+            if(internalFilters.mes) activeFilters.push(`(Filtro: ${internalFilters.mes})`);
+            if(internalFilters.justificacion) activeFilters.push(`(Justificación Activa)`);
+
             const subtitleText = activeFilters.length > 0 ? activeFilters.join(' | ') : 'Sin Filtros';
             
             document.querySelectorAll('.dynamic-subtitle').forEach(el => {
@@ -483,19 +562,32 @@
 
             const filteredClientes = dataClientes.filter(row => {
                 if(!row.VP || !row.Horas) return false; 
-                return (globalState.vp === 'Todas' || row.VP === globalState.vp) &&
-                       (globalState.client === 'Todas' || row.Client === globalState.client) &&
-                       (globalState.tipo === 'Todas' || row.Tipo === globalState.tipo) &&
-                       (globalState.mes === 'Todos' || row.Mes === globalState.mes) &&
-                       (globalState.estado === 'Todas' || row.Estado === globalState.estado);
+                
+                let pass = (globalState.vp === 'Todas' || row.VP === globalState.vp) &&
+                           (globalState.client === 'Todas' || row.Client === globalState.client) &&
+                           (globalState.tipo === 'Todas' || row.Tipo === globalState.tipo) &&
+                           (globalState.mes === 'Todos' || row.Mes === globalState.mes) &&
+                           (globalState.estado === 'Todas' || row.Estado === globalState.estado);
+                
+                if(internalFilters.vp && row.VP !== internalFilters.vp) pass = false;
+                if(internalFilters.client && row.Client !== internalFilters.client) pass = false;
+                if(internalFilters.mes && row.Mes !== internalFilters.mes) pass = false;
+
+                return pass;
             });
 
             const filteredJust = dataJust.filter(row => {
                 if(!row.Mes) return false;
-                return (globalState.vp === 'Todas' || row.VP === globalState.vp) &&
-                       (globalState.tipo === 'Todas' || row.Tipo === globalState.tipo) &&
-                       (globalState.mes === 'Todos' || row.Mes === globalState.mes) &&
-                       (globalState.estado === 'Todas' || row.Estado === globalState.estado);
+                let pass = (globalState.vp === 'Todas' || row.VP === globalState.vp) &&
+                           (globalState.tipo === 'Todas' || row.Tipo === globalState.tipo) &&
+                           (globalState.mes === 'Todos' || row.Mes === globalState.mes) &&
+                           (globalState.estado === 'Todas' || row.Estado === globalState.estado);
+                
+                if(internalFilters.vp && row.VP !== internalFilters.vp) pass = false;
+                if(internalFilters.mes && row.Mes !== internalFilters.mes) pass = false;
+                if(internalFilters.justificacion && row.Justificacion !== internalFilters.justificacion) pass = false;
+                
+                return pass;
             });
             
             const totalHoras = filteredClientes.reduce((acc, curr) => acc + (parseFloat(curr.Horas) || 0), 0);
@@ -550,7 +642,7 @@
             container.style.minWidth = minWidth > container.parentElement.clientWidth ? `${minWidth}px` : '100%';
         }
 
-        function renderTable(tbodyId, totalId, data, isPareto = false) {
+        function renderTable(tbodyId, data, isPareto = false, filterType = 'client') {
             const tbody = document.querySelector(`#${tbodyId} tbody`);
             tbody.innerHTML = '';
             let total = 0;
@@ -565,9 +657,15 @@
                 if(isPareto) html += `<td class="text-right text-brand-slate font-medium">${formatPerc(item.pareto)}</td>`;
                 
                 tr.innerHTML = html;
+                
+                tr.onclick = () => {
+                    setInternalFilter(filterType, val1);
+                };
+                
                 tbody.appendChild(tr);
             });
-            document.getElementById(totalId).innerText = formatNum(total);
+            const tfootTd = document.querySelector(`#${tbodyId} tfoot tr td:nth-child(2)`);
+            if(tfootTd) tfootTd.innerText = formatNum(total);
         }
 
         function createChart(canvasId, config) {
@@ -577,10 +675,10 @@
         }
 
         function renderVisuals(vpData, mesData, adClient, redClient, parAd, parRed) {
-            renderTable('tableAdicionCliente', 'totalAdicion', adClient);
-            renderTable('tableReduccionCliente', 'totalReduccion', redClient);
-            renderTable('tableJustAdicion', 'totalJustAd', parAd, true);
-            renderTable('tableJustReduccion', 'totalJustRed', parRed, true);
+            renderTable('tableAdicionCliente', adClient, false, 'client');
+            renderTable('tableReduccionCliente', redClient, false, 'client');
+            renderTable('tableJustAdicion', parAd, true, 'justificacion');
+            renderTable('tableJustReduccion', parRed, true, 'justificacion');
 
             const palette = getDynamicColors(); 
 
@@ -588,39 +686,56 @@
             adjustCanvasContainerWidth('container-chartMes', mesData.length, 80); 
             adjustCanvasContainerWidth('container-chartAdicion', adClient.length, 60);
             adjustCanvasContainerWidth('container-chartReduccion', redClient.length, 60);
-            adjustCanvasContainerWidth('container-chartParetoAdicion', parAd.length, 100);
-            adjustCanvasContainerWidth('container-chartParetoReduccion', parRed.length, 100);
+            adjustCanvasContainerWidth('container-chartParetoAdicion', parAd.length, 120);
+            adjustCanvasContainerWidth('container-chartParetoReduccion', parRed.length, 120);
 
             const commonOptions = {
                 responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
                 plugins: { legend: { display: false }, datalabels: { display: false },
                 tooltip: { backgroundColor: 'rgba(30, 28, 42, 0.9)', titleFont: { size: 13, family: 'Inter' }, bodyFont: { size: 14, family: 'Inter', weight: 'bold' }, padding: 10, callbacks: { label: function(c) { return ' Horas: ' + formatNum(c.parsed.y); } } } },
-                scales: { y: { beginAtZero: true, grid: { borderDash: [3, 3] } }, x: { ticks: { autoSkip: false, maxRotation: 45, minRotation: 45, font: { size: 11, family: 'Inter' } }, grid: { display: false } } },
-                layout: { padding: { top: 20 } }
+                scales: { 
+                    y: { beginAtZero: true, grid: { borderDash: [3, 3] }, title: { display: true, text: 'Horas (Hrs)', font: { size: 12, weight: 'bold', family: 'Inter' } } }, 
+                    x: { ticks: { autoSkip: false, maxRotation: 45, minRotation: 45, font: { size: 11, family: 'Inter' } }, grid: { display: false } } 
+                },
+                layout: { padding: { top: 35 } } 
             };
 
-            const simpleBarConfig = (dataArr, col, hoverCol) => ({
+            const generateOnClick = (filterKey) => {
+                return (e, elements, chart) => {
+                    if (elements.length > 0) {
+                        const index = elements[0].index;
+                        const label = chart.data.labels[index];
+                        setInternalFilter(filterKey, label);
+                    }
+                };
+            };
+
+            const simpleBarConfig = (dataArr, col, hoverCol, filterKey) => ({
                 type: 'bar',
                 data: { labels: dataArr.map(d => d[0]), datasets: [{ data: dataArr.map(d => d[1]), backgroundColor: col, hoverBackgroundColor: hoverCol, borderRadius: 4 }] },
-                options: { ...commonOptions, plugins: { ...commonOptions.plugins, datalabels: { display: true, anchor: 'end', align: 'top', font: { weight: 'bold' }, color: '#1e1c2a', formatter: (val) => formatNum(val) } } }
+                options: { 
+                    ...commonOptions, 
+                    onClick: generateOnClick(filterKey),
+                    plugins: { ...commonOptions.plugins, datalabels: { display: true, anchor: 'end', align: 'top', font: { weight: 'bold' }, color: '#1e1c2a', formatter: (val) => formatNum(val) } } 
+                }
             });
 
             if(charts['chartVPHours']) charts['chartVPHours'].destroy();
-            charts['chartVPHours'] = new Chart(document.getElementById('chartVPHours').getContext('2d'), simpleBarConfig(vpData, palette.bar, palette.hover));
+            charts['chartVPHours'] = new Chart(document.getElementById('chartVPHours').getContext('2d'), simpleBarConfig(vpData, palette.bar, palette.hover, 'vp'));
 
             if(charts['chartMesHours']) charts['chartMesHours'].destroy();
-            charts['chartMesHours'] = new Chart(document.getElementById('chartMesHours').getContext('2d'), simpleBarConfig(mesData, palette.bar, palette.hover));
+            charts['chartMesHours'] = new Chart(document.getElementById('chartMesHours').getContext('2d'), simpleBarConfig(mesData, palette.bar, palette.hover, 'mes'));
 
             if(charts['chartAdicionClient']) charts['chartAdicionClient'].destroy();
             charts['chartAdicionClient'] = new Chart(document.getElementById('chartAdicionClient').getContext('2d'), {
-                ...simpleBarConfig(adClient, palette.bar, palette.hover),
-                options: { ...commonOptions, scales: { ...commonOptions.scales, x: { ...commonOptions.scales.x, ticks: { ...commonOptions.scales.x.ticks, maxRotation: 90, minRotation: 90 } } } }
+                ...simpleBarConfig(adClient, palette.bar, palette.hover, 'client'),
+                options: { ...commonOptions, onClick: generateOnClick('client'), layout: { padding: { top: 35 } }, plugins: { ...commonOptions.plugins, datalabels: { display: true, anchor: 'end', align: 'top', color: '#1e1c2a', font: { size: 10, weight: 'bold' }, formatter: (val) => formatNum(val) } }, scales: { ...commonOptions.scales, x: { ...commonOptions.scales.x, ticks: { ...commonOptions.scales.x.ticks, maxRotation: 90, minRotation: 90 } } } }
             });
 
             if(charts['chartReduccionClient']) charts['chartReduccionClient'].destroy();
             charts['chartReduccionClient'] = new Chart(document.getElementById('chartReduccionClient').getContext('2d'), {
-                ...simpleBarConfig(redClient, palette.bar, palette.hover),
-                options: { ...commonOptions, scales: { ...commonOptions.scales, x: { ...commonOptions.scales.x, ticks: { ...commonOptions.scales.x.ticks, maxRotation: 90, minRotation: 90 } } } }
+                ...simpleBarConfig(redClient, palette.bar, palette.hover, 'client'),
+                options: { ...commonOptions, onClick: generateOnClick('client'), layout: { padding: { top: 35 } }, plugins: { ...commonOptions.plugins, datalabels: { display: true, anchor: 'end', align: 'top', color: '#1e1c2a', font: { size: 10, weight: 'bold' }, formatter: (val) => formatNum(val) } }, scales: { ...commonOptions.scales, x: { ...commonOptions.scales.x, ticks: { ...commonOptions.scales.x.ticks, maxRotation: 90, minRotation: 90 } } } }
             });
 
             const paretoConfig = (paretoData) => ({
@@ -628,43 +743,20 @@
                 data: {
                     labels: paretoData.map(d => d.justificacion),
                     datasets: [
-                        { 
-                            type: 'line', 
-                            label: 'Pareto %', 
-                            data: paretoData.map(d => d.pareto), 
-                            borderColor: palette.line, // Color contrastante para la línea
-                            backgroundColor: '#ffffff', // Centro del punto en blanco
-                            borderWidth: 3, 
-                            pointBorderColor: palette.line, // Borde del punto del color de la línea
-                            pointBorderWidth: 2,
-                            pointRadius: 4, 
-                            pointHoverRadius: 6, 
-                            yAxisID: 'y1', 
-                            datalabels: { 
-                                display: true, 
-                                anchor: 'bottom', 
-                                align: 'top', 
-                                font: { weight: 'bold', size: 10 }, 
-                                color: palette.line, 
-                                formatter: (val) => formatPerc(val) 
-                            } 
-                        },
-                        { 
-                            type: 'bar', 
-                            label: 'Horas', 
-                            data: paretoData.map(d => d.horas), 
-                            backgroundColor: palette.bar, 
-                            hoverBackgroundColor: palette.hover, 
-                            borderRadius: 4, 
-                            yAxisID: 'y', 
-                            datalabels: { display: false } 
-                        }
+                        { type: 'line', label: 'Pareto %', data: paretoData.map(d => d.pareto), borderColor: palette.line, backgroundColor: 'rgba(255, 255, 255, 0.9)', borderWidth: 3, pointBorderColor: palette.line, pointBorderWidth: 2, pointRadius: 4, pointHoverRadius: 6, yAxisID: 'y1', datalabels: { display: true, anchor: 'bottom', align: 'bottom', offset: 6, font: { weight: 'bold', size: 10 }, color: palette.line, backgroundColor: 'rgba(255, 255, 255, 0.85)', borderRadius: 4, formatter: (val) => formatPerc(val) } },
+                        { type: 'bar', label: 'Horas', data: paretoData.map(d => d.horas), backgroundColor: palette.bar, hoverBackgroundColor: palette.hover, borderRadius: 4, yAxisID: 'y', datalabels: { display: true, anchor: 'end', align: 'top', offset: 4, font: { weight: 'bold', size: 10 }, color: '#1e1c2a', formatter: (val) => formatNum(val) } }
                     ]
                 },
                 options: {
                     ...commonOptions,
+                    onClick: generateOnClick('justificacion'),
+                    layout: { padding: { top: 40 } },
                     plugins: { ...commonOptions.plugins, tooltip: { backgroundColor: 'rgba(30, 28, 42, 0.9)', callbacks: { label: function(c) { return c.datasetIndex === 0 ? ' Pareto: ' + formatPerc(c.parsed.y) : ' Horas: ' + formatNum(c.parsed.y); } } } },
-                    scales: { y: { type: 'linear', position: 'left', beginAtZero: true }, y1: { type: 'linear', position: 'right', beginAtZero: true, max: 110, grid: { drawOnChartArea: false } }, x: { ...commonOptions.scales.x, ticks: { ...commonOptions.scales.x.ticks, maxRotation: 60, minRotation: 60 } } }
+                    scales: { 
+                        y: { type: 'linear', position: 'left', beginAtZero: true, title: { display: true, text: 'Horas (Hrs)', font: { size: 12, weight: 'bold', family: 'Inter' } } }, 
+                        y1: { type: 'linear', position: 'right', beginAtZero: true, max: 110, grid: { drawOnChartArea: false }, title: { display: true, text: '% Pareto', font: { size: 12, weight: 'bold', family: 'Inter' } } }, 
+                        x: { ...commonOptions.scales.x, ticks: { ...commonOptions.scales.x.ticks, maxRotation: 60, minRotation: 60 } } 
+                    }
                 }
             });
 
