@@ -1,64 +1,119 @@
-Sub ExportarDatosNómina()
-    Dim fso As Object, ts As Object
-    Dim rutaArchivo As String
-    Dim jsFinal As String
-    
-    ' Define la ruta donde se guardará el archivo (en la misma carpeta del Excel)
-    rutaArchivo = ThisWorkbook.Path & "\datos_nomina.js"
-    
-    ' Crea el objeto de sistema de archivos (con soporte para caracteres latinos/UTF-8)
-    Set fso = CreateObject("Scripting.FileSystemObject")
-    Set ts = fso.CreateTextFile(rutaArchivo, True, True)
-    
-    ' Ensambla el código JavaScript final
-    jsFinal = "// Datos exportados automáticamente desde Excel" & vbCrLf & vbCrLf
-    jsFinal = jsFinal & ConvertirHojaAJS(ThisWorkbook.Sheets("1_Metricas"), "raw_metricas")
-    jsFinal = jsFinal & ConvertirHojaAJS(ThisWorkbook.Sheets("2_Detalle_Errores"), "raw_detalles")
-    jsFinal = jsFinal & ConvertirHojaAJS(ThisWorkbook.Sheets("3_Textos"), "raw_textos")
-    
-    ' Escribe y cierra el archivo
-    ts.Write jsFinal
-    ts.Close
-    
-    MsgBox "Exportación exitosa. El archivo 'datos_nomina.js' está listo en la misma carpeta de este Excel.", vbInformation, "Actualización Completada"
-End Sub
+// Datos exportados automáticamente desde Excel
 
-' --- Función Auxiliar para formatear los datos ---
-Function ConvertirHojaAJS(ws As Worksheet, nombreVariable As String) As String
-    Dim filaActual As Long, colActual As Long
-    Dim ultimaFila As Long, ultimaColumna As Long
-    Dim output As String, textoFila As String
-    Dim valorCelda As Variant
-    
-    ultimaFila = ws.Cells(ws.Rows.Count, 1).End(xlUp).Row
-    ultimaColumna = ws.Cells(1, ws.Columns.Count).End(xlToLeft).Column
-    
-    output = "const " & nombreVariable & " = [" & vbCrLf
-    
-    For filaActual = 2 To ultimaFila
-        textoFila = "  {"
-        For colActual = 1 To ultimaColumna
-            valorCelda = ws.Cells(filaActual, colActual).Value
-            
-            ' Formatea números vs textos
-            If IsNumeric(valorCelda) And Not IsEmpty(valorCelda) Then
-                textoFila = textoFila & """" & ws.Cells(1, colActual).Value & """: " & Replace(valorCelda, ",", ".")
-            Else
-                valorCelda = Replace(valorCelda, """", "\""") ' Protege comillas
-                valorCelda = Replace(valorCelda, vbCrLf, " ") ' Elimina saltos de línea de Excel
-                valorCelda = Replace(valorCelda, vbLf, " ")
-                textoFila = textoFila & """" & ws.Cells(1, colActual).Value & """: """ & valorCelda & """"
-            End If
-            
-            If colActual < ultimaColumna Then textoFila = textoFila & ", "
-        Next colActual
-        
-        textoFila = textoFila & "}"
-        If filaActual < ultimaFila Then textoFila = textoFila & ","
-        textoFila = textoFila & vbCrLf
-        output = output & textoFila
-    Next filaActual
-    
-    output = output & "];" & vbCrLf & vbCrLf
-    ConvertirHojaAJS = output
-End Function
+const raw_metricas = [
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Enero", "Total_Errores": 295, "Headcount": 77275},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Febrero", "Total_Errores": 2314, "Headcount": 76483},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Marzo", "Total_Errores": 358, "Headcount": 75929},
+  {"Pais": "COL", "Trimestre": "Q2", "Mes": "Abril", "Total_Errores": 425, "Headcount": 75210},
+  {"Pais": "COL", "Trimestre": "Q2", "Mes": "Mayo", "Total_Errores": 303, "Headcount": 75884},
+  {"Pais": "COL", "Trimestre": "Q2", "Mes": "Junio", "Total_Errores": 235, "Headcount": 77031},
+  {"Pais": "COL", "Trimestre": "Q3", "Mes": "Julio", "Total_Errores": 6626, "Headcount": 76371},
+  {"Pais": "PER", "Trimestre": "Q1", "Mes": "Enero", "Total_Errores": 56, "Headcount": 7679},
+  {"Pais": "PER", "Trimestre": "Q1", "Mes": "Febrero", "Total_Errores": 122, "Headcount": 7311},
+  {"Pais": "PER", "Trimestre": "Q1", "Mes": "Marzo", "Total_Errores": 176, "Headcount": 6998},
+  {"Pais": "PER", "Trimestre": "Q2", "Mes": "Abril", "Total_Errores": 135, "Headcount": 7043},
+  {"Pais": "PER", "Trimestre": "Q2", "Mes": "Mayo", "Total_Errores": 30, "Headcount": 7480},
+  {"Pais": "PER", "Trimestre": "Q2", "Mes": "Junio", "Total_Errores": 36, "Headcount": 7663}
+];
+
+const raw_detalles = [
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Enero", "Capacidad": "1. Operations", "Subcapacidad": "1.1 Client Operations", "Cantidad": 24, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Enero", "Capacidad": "1. Operations", "Subcapacidad": "1.2 Training Management", "Cantidad": 264, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Enero", "Capacidad": "1. Operations", "Subcapacidad": "5.3 Human Capital", "Cantidad": 1, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Enero", "Capacidad": "1. Operations", "Subcapacidad": "1.3 Quality Management", "Cantidad": 2, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Enero", "Capacidad": "1. Operations", "Subcapacidad": "5.2 People Counselors", "Cantidad": 2, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Enero", "Capacidad": "1. Operations", "Subcapacidad": "8.1.2.10 Data Calculations", "Cantidad": 2, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Febrero", "Capacidad": "8. Data, Workforce & Process Offices", "Subcapacidad": "8.5 Goods Strategy", "Cantidad": 1911, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Febrero", "Capacidad": "1. Operations", "Subcapacidad": "1.1 Client Operations", "Cantidad": 304, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Febrero", "Capacidad": "1. Operations", "Subcapacidad": "1.2 Training Management", "Cantidad": 50, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Febrero", "Capacidad": "8. Data, Workforce & Process Offices", "Subcapacidad": "8.4 Wapps", "Cantidad": 29, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Febrero", "Capacidad": "10. Global Share Services", "Subcapacidad": "10.1 Data", "Cantidad": 2, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Febrero", "Capacidad": "5. People", "Subcapacidad": "5.3 Human Capital", "Cantidad": 2, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Febrero", "Capacidad": "1. Operations", "Subcapacidad": "1.3 Quality Management", "Cantidad": 8, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Febrero", "Capacidad": "5. People", "Subcapacidad": "5.3.2 Compensations & benefits", "Cantidad": 2, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Febrero", "Capacidad": "8. Data, Workforce & Process Offices", "Subcapacidad": "8.2 Workforce Office", "Cantidad": 2, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Febrero", "Capacidad": "5. People", "Subcapacidad": "5.2 People Counselors", "Cantidad": 1, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Febrero", "Capacidad": "8. Data, Workforce & Process Offices", "Subcapacidad": "8.1.2.10 Data Calculations", "Cantidad": 1, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Febrero", "Capacidad": "4. Financial", "Subcapacidad": "4.5 Payroll", "Cantidad": 2, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Marzo", "Capacidad": "1. Operations", "Subcapacidad": "1.1 Client Operations", "Cantidad": 261, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Marzo", "Capacidad": "1. Operations", "Subcapacidad": "1.2 Training Management", "Cantidad": 54, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Marzo", "Capacidad": "10. Global Share Services", "Subcapacidad": "10.1 Data", "Cantidad": 10, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Marzo", "Capacidad": "5. People", "Subcapacidad": "5.3 Human Capital", "Cantidad": 3, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Marzo", "Capacidad": "1. Operations", "Subcapacidad": "1.3 Quality Management", "Cantidad": 1, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Marzo", "Capacidad": "5. People", "Subcapacidad": "5.3.2 Compensations & benefits", "Cantidad": 9, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Marzo", "Capacidad": "8. Data, Workforce & Process Offices", "Subcapacidad": "8.2 Workforce Office", "Cantidad": 2, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Marzo", "Capacidad": "5. People", "Subcapacidad": "5.2 People Counselors", "Cantidad": 3, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Marzo", "Capacidad": "8. Data, Workforce & Process Offices", "Subcapacidad": "8.1.2.9 BMS Support", "Cantidad": 1, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Marzo", "Capacidad": "8. Data, Workforce & Process Offices", "Subcapacidad": "8.1.1 Data Pipeline & Delivery", "Cantidad": 7, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Marzo", "Capacidad": "3. Office Of Experiences", "Subcapacidad": "3.6.3 Advisor", "Cantidad": 6, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q1", "Mes": "Marzo", "Capacidad": "3. Office Of Experiences", "Subcapacidad": "3.6 Emotions & Experiences", "Cantidad": 1, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q2", "Mes": "Abril", "Capacidad": "1. Operations", "Subcapacidad": "1.1 Client Operations", "Cantidad": 331, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q2", "Mes": "Abril", "Capacidad": "1. Operations", "Subcapacidad": "1.2 Training Management", "Cantidad": 65, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q2", "Mes": "Abril", "Capacidad": "5. People", "Subcapacidad": "5.3 Human Capital", "Cantidad": 8, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q2", "Mes": "Abril", "Capacidad": "1. Operations", "Subcapacidad": "1.3 Quality Management", "Cantidad": 19, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q2", "Mes": "Abril", "Capacidad": "5. People", "Subcapacidad": "5.2 People Counselors", "Cantidad": 2, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q2", "Mes": "Mayo", "Capacidad": "1. Operations", "Subcapacidad": "1.1 Client Operations", "Cantidad": 211, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q2", "Mes": "Mayo", "Capacidad": "1. Operations", "Subcapacidad": "1.2 Training Management", "Cantidad": 44, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q2", "Mes": "Mayo", "Capacidad": "10. Global Share Services", "Subcapacidad": "10.1 Data", "Cantidad": 29, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q2", "Mes": "Mayo", "Capacidad": "5. People", "Subcapacidad": "5.3 Human Capital", "Cantidad": 2, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q2", "Mes": "Mayo", "Capacidad": "1. Operations", "Subcapacidad": "1.3 Quality Management", "Cantidad": 1, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q2", "Mes": "Mayo", "Capacidad": "8. Data, Workforce & Process Offices", "Subcapacidad": "8.2 Workforce Office", "Cantidad": 6, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q2", "Mes": "Mayo", "Capacidad": "8. Data, Workforce & Process Offices", "Subcapacidad": "8.1.2.9 BMS Support", "Cantidad": 7, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q2", "Mes": "Mayo", "Capacidad": "8. Data, Workforce & Process Offices", "Subcapacidad": "8.1.2.10 Data Calculations", "Cantidad": 2, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q2", "Mes": "Mayo", "Capacidad": "5. People", "Subcapacidad": "5.3.3 Labor relations", "Cantidad": 1, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q2", "Mes": "Junio", "Capacidad": "1. Operations", "Subcapacidad": "1.1 Client Operations", "Cantidad": 131, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q2", "Mes": "Junio", "Capacidad": "1. Operations", "Subcapacidad": "1.2 Training Management", "Cantidad": 52, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q2", "Mes": "Junio", "Capacidad": "8. Data, Workforce & Process Offices", "Subcapacidad": "8.4 Wapps", "Cantidad": 20, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q2", "Mes": "Junio", "Capacidad": "5. People", "Subcapacidad": "5.3 Human Capital", "Cantidad": 24, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q2", "Mes": "Junio", "Capacidad": "8. Data, Workforce & Process Offices", "Subcapacidad": "8.2 Workforce Office", "Cantidad": 1, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q2", "Mes": "Junio", "Capacidad": "5. People", "Subcapacidad": "5.2 People Counselors", "Cantidad": 1, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q2", "Mes": "Junio", "Capacidad": "8. Data, Workforce & Process Offices", "Subcapacidad": "8.1.2.9 BMS Support", "Cantidad": 1, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q2", "Mes": "Junio", "Capacidad": "8. Data, Workforce & Process Offices", "Subcapacidad": "8.1.2.10 Data Calculations", "Cantidad": 1, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q2", "Mes": "Junio", "Capacidad": "8. Data, Workforce & Process Offices", "Subcapacidad": "8.3 Process Office", "Cantidad": 4, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q3", "Mes": "Julio", "Capacidad": "1. Operations", "Subcapacidad": "1.1 Client Operations", "Cantidad": 311, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q3", "Mes": "Julio", "Capacidad": "1. Operations", "Subcapacidad": "1.2 Training Management", "Cantidad": 55, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q3", "Mes": "Julio", "Capacidad": "8. Data, Workforce & Process Offices", "Subcapacidad": "8.4 Wapps", "Cantidad": 32, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q3", "Mes": "Julio", "Capacidad": "5. People", "Subcapacidad": "5.3 Human Capital", "Cantidad": 14, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q3", "Mes": "Julio", "Capacidad": "8. Data, Workforce & Process Offices", "Subcapacidad": "8.2 Workforce Office", "Cantidad": 4, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q3", "Mes": "Julio", "Capacidad": "8. Data, Workforce & Process Offices", "Subcapacidad": "8.1.2.10 Data Calculations", "Cantidad": 6208, "Crudo Mes": ""},
+  {"Pais": "COL", "Trimestre": "Q3", "Mes": "Julio", "Capacidad": "4. Financial", "Subcapacidad": "4.5 Payroll", "Cantidad": 2, "Crudo Mes": ""},
+  {"Pais": "PER", "Trimestre": "Q1", "Mes": "Enero", "Capacidad": "1. Operations", "Subcapacidad": " 1.1 Client Operations", "Cantidad": 51, "Crudo Mes": ""},
+  {"Pais": "PER", "Trimestre": "Q1", "Mes": "Enero", "Capacidad": "1. Operations", "Subcapacidad": " 1.2 Training Management", "Cantidad": 3, "Crudo Mes": ""},
+  {"Pais": "PER", "Trimestre": "Q1", "Mes": "Enero", "Capacidad": "1. Operations", "Subcapacidad": " 1.3 Quality Management", "Cantidad": 1, "Crudo Mes": ""},
+  {"Pais": "PER", "Trimestre": "Q1", "Mes": "Enero", "Capacidad": "5. People", "Subcapacidad": " 5.2 People Counselors", "Cantidad": 1, "Crudo Mes": ""},
+  {"Pais": "PER", "Trimestre": "Q1", "Mes": "Febrero", "Capacidad": "1. Operations", "Subcapacidad": " 1.1 Client Operations", "Cantidad": 13, "Crudo Mes": ""},
+  {"Pais": "PER", "Trimestre": "Q1", "Mes": "Febrero", "Capacidad": "8. Data Workforce & Process Offices", "Subcapacidad": " 8.1.2.10 Data Calculations", "Cantidad": 79, "Crudo Mes": ""},
+  {"Pais": "PER", "Trimestre": "Q1", "Mes": "Febrero", "Capacidad": "1. Operations", "Subcapacidad": " 1.2 Training Management", "Cantidad": 22, "Crudo Mes": ""},
+  {"Pais": "PER", "Trimestre": "Q1", "Mes": "Febrero", "Capacidad": "1. Operations", "Subcapacidad": " 1.3 Quality Management", "Cantidad": 6, "Crudo Mes": ""},
+  {"Pais": "PER", "Trimestre": "Q1", "Mes": "Febrero", "Capacidad": "5. People", "Subcapacidad": " 5.2 People Counselors", "Cantidad": 2, "Crudo Mes": ""},
+  {"Pais": "PER", "Trimestre": "Q1", "Mes": "Marzo", "Capacidad": "1. Operations", "Subcapacidad": " 1.1 Client Operations", "Cantidad": 24, "Crudo Mes": ""},
+  {"Pais": "PER", "Trimestre": "Q1", "Mes": "Marzo", "Capacidad": "8. Data Workforce & Process Offices", "Subcapacidad": " 8.1.2.10 Data Calculations", "Cantidad": 99, "Crudo Mes": ""},
+  {"Pais": "PER", "Trimestre": "Q1", "Mes": "Marzo", "Capacidad": "1. Operations", "Subcapacidad": " 1.2 Training Management", "Cantidad": 3, "Crudo Mes": ""},
+  {"Pais": "PER", "Trimestre": "Q1", "Mes": "Marzo", "Capacidad": "5. People", "Subcapacidad": " 5.5 Recruitment & Selection", "Cantidad": 41, "Crudo Mes": ""},
+  {"Pais": "PER", "Trimestre": "Q1", "Mes": "Marzo", "Capacidad": "5. People", "Subcapacidad": " 5.3 Human Capital", "Cantidad": 1, "Crudo Mes": ""},
+  {"Pais": "PER", "Trimestre": "Q1", "Mes": "Marzo", "Capacidad": "5. People", "Subcapacidad": " 5.2 People Counselors", "Cantidad": 1, "Crudo Mes": ""},
+  {"Pais": "PER", "Trimestre": "Q1", "Mes": "Marzo", "Capacidad": "10. Global Share Services", "Subcapacidad": " 10.1 Data", "Cantidad": 4, "Crudo Mes": ""},
+  {"Pais": "PER", "Trimestre": "Q1", "Mes": "Marzo", "Capacidad": "8. Data Workforce & Process Offices", "Subcapacidad": " 8.2 Workforce Office", "Cantidad": 2, "Crudo Mes": ""},
+  {"Pais": "PER", "Trimestre": "Q1", "Mes": "Marzo", "Capacidad": "8. Data Workforce & Process Offices", "Subcapacidad": " 8.3 Process Office", "Cantidad": 1, "Crudo Mes": ""},
+  {"Pais": "PER", "Trimestre": "Q2", "Mes": "Abril", "Capacidad": "1. Operations", "Subcapacidad": " 1.1 Client Operations", "Cantidad": 105, "Crudo Mes": ""},
+  {"Pais": "PER", "Trimestre": "Q2", "Mes": "Abril", "Capacidad": "1. Operations", "Subcapacidad": " 1.2 Training Management", "Cantidad": 8, "Crudo Mes": ""},
+  {"Pais": "PER", "Trimestre": "Q2", "Mes": "Abril", "Capacidad": "1. Operations", "Subcapacidad": " 1.3 Quality Management", "Cantidad": 6, "Crudo Mes": ""},
+  {"Pais": "PER", "Trimestre": "Q2", "Mes": "Abril", "Capacidad": "5. People", "Subcapacidad": " 5.3 Human Capital", "Cantidad": 12, "Crudo Mes": ""},
+  {"Pais": "PER", "Trimestre": "Q2", "Mes": "Abril", "Capacidad": "5. People", "Subcapacidad": " 5.2 People Counselors", "Cantidad": 4, "Crudo Mes": ""},
+  {"Pais": "PER", "Trimestre": "Q2", "Mes": "Mayo", "Capacidad": "1. Operations", "Subcapacidad": " 1.1 Client Operations", "Cantidad": 13, "Crudo Mes": ""},
+  {"Pais": "PER", "Trimestre": "Q2", "Mes": "Mayo", "Capacidad": "1. Operations", "Subcapacidad": " 1.2 Training Management", "Cantidad": 13, "Crudo Mes": ""},
+  {"Pais": "PER", "Trimestre": "Q2", "Mes": "Mayo", "Capacidad": "1. Operations", "Subcapacidad": " 1.3 Quality Management", "Cantidad": 3, "Crudo Mes": ""},
+  {"Pais": "PER", "Trimestre": "Q2", "Mes": "Mayo", "Capacidad": "8. Data Workforce & Process Offices", "Subcapacidad": " 8.4 Wapps", "Cantidad": 1, "Crudo Mes": ""},
+  {"Pais": "PER", "Trimestre": "Q2", "Mes": "Junio", "Capacidad": "1. Operations", "Subcapacidad": " 1.1 Client Operations", "Cantidad": 12, "Crudo Mes": ""},
+  {"Pais": "PER", "Trimestre": "Q2", "Mes": "Junio", "Capacidad": "1. Operations", "Subcapacidad": " 1.2 Training Management", "Cantidad": 22, "Crudo Mes": ""},
+  {"Pais": "PER", "Trimestre": "Q2", "Mes": "Junio", "Capacidad": "5. People", "Subcapacidad": " 5.2 People Counselors", "Cantidad": 2, "Crudo Mes": ""}
+];
+
+const raw_textos = [
+  {"Pais": "COL", "Trimestre": "Q1", "Titulo": "Ene - Feb - Mar", "Analisis_HTML": "<p>Durante el primer trimestre de 2026 se registró un total de 2,967 errores de nómina. Para el mes de enero se reportaron 295 errores, de los cuales el 89.49% se atribuye a la responsabilidad de la operación.</p><p>En febrero se presentaron 2,314 errores de nómina, lo que representa un incremento del 684.41% en comparación con enero. De este total, 1,911 errores se atribuyen a la capacidad de Goods Strategy, asociados principalmente a fallas en el procesamiento de filtros dentro de las bases de datos.</p><p>Para el mes de marzo se registraron 358 errores de nómina, lo que evidencia una disminución del 84.53% respecto a febrero. La mayoría de estos errores son atribuibles nuevamente a la gestión operativa.</p>"},
+  {"Pais": "COL", "Trimestre": "Q2", "Titulo": "Abr - May - Jun", "Analisis_HTML": "<p>Durante el segundo trimestre de 2026 se registró un total de 963 errores de nómina, lo que representa una disminución de 2,004 errores frente a los 2,967 reportados en el primer trimestre de 2026. Esto equivale a una reducción del 67.54%, reflejando una mejora significativa en la gestión y control de las novedades de nómina.</p><p>Respecto al comportamiento mensual, en abril se reportaron 425 errores de nómina; en mayo se registraron 303 errores, evidenciando una disminución del 28.71% frente al mes anterior; y en junio se presentaron 235 errores, lo que representa una reducción adicional del 22.44% respecto a mayo. Esta tendencia muestra una disminución sostenida de los errores a lo largo del trimestre, consolidando la mejora observada frente al Q1.</p><p>A nivel consolidado del trimestre, Client Operations concentró 673 errores, equivalentes al 69.89% del total de incidencias registradas. Este comportamiento confirma que la mayoría de los errores de nómina continúa recayendo en Operaciones, principalmente debido a falencias en la gestión operativa, el seguimiento de procesos y la correcta ejecución de las actividades asociadas a la administración de nómina.</p>"},
+  {"Pais": "COL", "Trimestre": "Q3", "Titulo": "Jul - Ago - Sep", "Analisis_HTML": "<p>Durante el primer trimestre de 2026 se registró un total de 2,967 errores de nómina. Para el mes de enero se reportaron 295 errores, de los cuales el 89.49% se atribuye a la responsabilidad de la operación.</p><p>En febrero se presentaron 2,314 errores de nómina, lo que representa un incremento del 684.41% en comparación con enero. De este total, 1,911 errores se atribuyen a la capacidad de Goods Strategy, asociados principalmente a fallas en el procesamiento de filtros dentro de las bases de datos.</p><p>Para el mes de marzo se registraron 358 errores de nómina, lo que evidencia una disminución del 84.53% respecto a febrero. La mayoría de estos errores son atribuibles nuevamente a la gestión operativa.</p>"},
+  {"Pais": "PER", "Trimestre": "Q1", "Titulo": "Abr - May - Jun", "Analisis_HTML": "<p>Durante el primer trimestre se evidencia un incremento progresivo en los errores de nómina en Perú, pasando de 56 casos en enero a 122 en febrero. Este crecimiento continuó en marzo, alcanzando un total de 176 errores, lo que confirma una tendencia ascendente a lo largo del periodo.</p><p>Este aumento está asociado principalmente al área de Data Calculation, donde se identificaron inconsistencias derivadas de novedades relacionadas con vacaciones y licencias remuneradas. En marzo, el incremento responde adicionalmente a una mayor identificación de novedades dentro de los procesos de cálculo, lo que incrementó la exposición a errores.</p><p>El comportamiento sostenido al alza refleja la necesidad de reforzar los controles sobre el registro, validación y procesamiento de novedades, así como de optimizar la calidad de la información que alimenta los procesos de cálculo. Esto permitirá mitigar errores recurrentes y asegurar una mayor precisión en la liquidación de nómina.</p>"},
+  {"Pais": "PER", "Trimestre": "Q2", "Titulo": "Jul - Ago - Sep", "Analisis_HTML": "<p>Durante el segundo trimestre de 2026 se registraron 201 errores de nómina en Perú, lo que representa una disminución de 153 casos frente a los 354 errores reportados durante el primer trimestre. Esta reducción equivale a un 43.22%, evidenciando una mejora significativa en la gestión y control de las novedades que impactan el proceso de nómina.</p><p>A nivel mensual, se observó una disminución sostenida a lo largo del trimestre. En abril se registraron 135 errores, mientras que en mayo los casos se redujeron a 30, representando una disminución del 77.78%. Durante junio se reportaron 36 errores, mostrando un ligero incremento de 20.00% frente a mayo; sin embargo, el volumen se mantuvo significativamente por debajo de los niveles observados al inicio del trimestre..</p><p>De forma consolidada, Client Operations concentró 130 errores, equivalentes al 64.68% del total registrado en el trimestre. Este comportamiento confirma que la mayoría de los errores de nómina continúa estando asociada a Operaciones, principalmente debido a oportunidades de mejora en la gestión operativa, el control de novedades y la ejecución de los procesos que impactan la liquidación de nómina.</p>"}
+];
+
