@@ -103,7 +103,12 @@
                 <!-- Cap Table Collapsible -->
                 <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
                     <div class="bg-slate-800 hover:bg-slate-700 cursor-pointer text-white px-5 py-4 flex items-center justify-between transition-colors" onclick="toggleSection('col-cap-table')">
-                        <h3 class="font-semibold flex items-center gap-2"><i class="ph ph-table"></i> Desglose Exacto por Capacidad</h3>
+                        <div class="flex items-center gap-4">
+                            <h3 class="font-semibold flex items-center gap-2"><i class="ph ph-table"></i> Desglose Exacto por Capacidad</h3>
+                            <button id="btn-clear-col-cap" onclick="clearInternalFilters(); event.stopPropagation();" class="hidden bg-[#d32f2f] hover:bg-red-700 text-white text-xs font-bold py-1.5 px-3 rounded shadow-sm transition-colors">
+                                <i class="ph-bold ph-x"></i> Quitar Filtros
+                            </button>
+                        </div>
                         <i id="icon-col-cap-table" class="ph-bold ph-caret-up text-lg transition-transform"></i>
                     </div>
                     <div id="col-cap-table" class="overflow-x-auto custom-scrollbar transition-all duration-300">
@@ -127,7 +132,12 @@
                 <!-- Subcap Table Collapsible -->
                 <div class="glass-card rounded-2xl overflow-hidden mt-6 shadow-sm">
                     <div class="bg-indigo-900 hover:bg-indigo-800 cursor-pointer text-white px-5 py-3 flex items-center justify-between transition-colors" onclick="toggleSection('col-subcap-table')">
-                        <h3 class="font-semibold flex items-center gap-2 text-sm"><i class="ph ph-list-dashes"></i> Desglose por Sub Capacidad</h3>
+                        <div class="flex items-center gap-4">
+                            <h3 class="font-semibold flex items-center gap-2 text-sm"><i class="ph ph-list-dashes"></i> Desglose por Sub Capacidad</h3>
+                            <button id="btn-clear-col-subcap" onclick="clearInternalFilters(); event.stopPropagation();" class="hidden bg-[#d32f2f] hover:bg-red-700 text-white text-xs font-bold py-1.5 px-3 rounded shadow-sm transition-colors">
+                                <i class="ph-bold ph-x"></i> Quitar Filtros
+                            </button>
+                        </div>
                         <i id="icon-col-subcap-table" class="ph-bold ph-caret-up text-lg transition-transform"></i>
                     </div>
                     <div id="col-subcap-table" class="overflow-x-auto custom-scrollbar transition-all duration-300">
@@ -141,7 +151,8 @@
 
             <!-- Right Side -->
             <div class="lg:col-span-1">
-                <div class="sticky top-32 space-y-6">
+                <!-- Se agregó pb-20 para asegurar que el scroll fluya bien -->
+                <div class="sticky top-32 space-y-6 pb-20">
                     <div class="grid grid-cols-2 gap-4">
                         <div class="bg-blue-50 border border-blue-100 rounded-2xl p-4 text-center">
                             <p class="text-blue-600 text-xs font-bold uppercase tracking-wider mb-1">Total Errores</p>
@@ -211,7 +222,12 @@
                 <!-- Cap Table -->
                 <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
                     <div class="bg-rose-900 hover:bg-rose-800 cursor-pointer text-white px-5 py-4 flex items-center justify-between transition-colors" onclick="toggleSection('per-cap-table')">
-                        <h3 class="font-semibold flex items-center gap-2"><i class="ph ph-table"></i> Desglose Exacto por Capacidad</h3>
+                        <div class="flex items-center gap-4">
+                            <h3 class="font-semibold flex items-center gap-2"><i class="ph ph-table"></i> Desglose Exacto por Capacidad</h3>
+                            <button id="btn-clear-per-cap" onclick="clearInternalFilters(); event.stopPropagation();" class="hidden bg-[#d32f2f] hover:bg-red-700 text-white text-xs font-bold py-1.5 px-3 rounded shadow-sm transition-colors">
+                                <i class="ph-bold ph-x"></i> Quitar Filtros
+                            </button>
+                        </div>
                         <i id="icon-per-cap-table" class="ph-bold ph-caret-up text-lg transition-transform"></i>
                     </div>
                     <div id="per-cap-table" class="overflow-x-auto custom-scrollbar transition-all duration-300">
@@ -235,7 +251,12 @@
                 <!-- Subcap Table -->
                 <div class="glass-card rounded-2xl overflow-hidden mt-6 shadow-sm">
                     <div class="bg-rose-800 hover:bg-rose-700 cursor-pointer text-white px-5 py-3 flex items-center justify-between transition-colors" onclick="toggleSection('per-subcap-table')">
-                        <h3 class="font-semibold flex items-center gap-2 text-sm"><i class="ph ph-list-dashes"></i> Desglose por Sub Capacidad</h3>
+                        <div class="flex items-center gap-4">
+                            <h3 class="font-semibold flex items-center gap-2 text-sm"><i class="ph ph-list-dashes"></i> Desglose por Sub Capacidad</h3>
+                            <button id="btn-clear-per-subcap" onclick="clearInternalFilters(); event.stopPropagation();" class="hidden bg-[#d32f2f] hover:bg-red-700 text-white text-xs font-bold py-1.5 px-3 rounded shadow-sm transition-colors">
+                                <i class="ph-bold ph-x"></i> Quitar Filtros
+                            </button>
+                        </div>
                         <i id="icon-per-subcap-table" class="ph-bold ph-caret-up text-lg transition-transform"></i>
                     </div>
                     <div id="per-subcap-table" class="overflow-x-auto custom-scrollbar transition-all duration-300">
@@ -249,7 +270,7 @@
 
             <!-- Right Side -->
             <div class="lg:col-span-1">
-                <div class="sticky top-32 space-y-6">
+                <div class="sticky top-32 space-y-6 pb-20">
                     <div class="grid grid-cols-2 gap-4">
                         <div class="bg-rose-50 border border-rose-100 rounded-2xl p-4 text-center">
                             <p class="text-rose-600 text-xs font-bold uppercase tracking-wider mb-1">Total Errores</p>
@@ -273,22 +294,11 @@
         </div>
     </main>
 
-    <!-- WIDGET FLOTANTE DE FILTROS -->
-    <div id="floating-filter" class="fixed bottom-6 right-6 z-50 bg-[#2b2545] text-white p-4 rounded-xl shadow-2xl border border-slate-700 hidden transition-all duration-300 w-72">
-        <div class="flex items-center gap-2 mb-3 border-b border-slate-600 pb-2">
-            <i class="ph-fill ph-funnel text-slate-300"></i>
-            <span class="font-semibold text-sm">Filtro Interno Activo</span>
-        </div>
-        <p class="text-xs text-slate-300 mb-4">Ventana de Análisis: <strong id="active-filter-text" class="text-white font-bold ml-1">Q1</strong></p>
-        <button onclick="updateGlobalData('anual_mes')" class="w-full bg-[#d32f2f] hover:bg-red-700 text-white text-xs font-bold py-2.5 px-4 rounded-md transition-colors flex items-center justify-center gap-2">
-            <i class="ph-bold ph-x"></i> Quitar Filtros Internos
-        </button>
-    </div>
-
-    <!-- Carga de datos opcional por archivo JS -->
+    <!-- Carga de datos de Excel -->
     <script src="datos_nomina.js"></script>
 
     <script>
+        // --- FUNCIONES DE UI ---
         function toggleSection(id) {
             const section = document.getElementById(id);
             const icon = document.getElementById('icon-' + id);
@@ -301,6 +311,28 @@
             }
         }
 
+        function clearInternalFilters() {
+            // Oculta los botones
+            let btns = ['btn-clear-col-cap', 'btn-clear-col-subcap', 'btn-clear-per-cap', 'btn-clear-per-subcap'];
+            btns.forEach(id => {
+                let btn = document.getElementById(id);
+                if(btn) btn.classList.add('hidden');
+            });
+            // NOTA: Aquí iría tu lógica real de JS para resetear la data de las gráficas
+            console.log("Filtros removidos");
+        }
+
+        function simulateTableClick() {
+            // Simulación visual: al dar clic en la fila, muestra los botones rojos
+            let btns = ['btn-clear-col-cap', 'btn-clear-col-subcap', 'btn-clear-per-cap', 'btn-clear-per-subcap'];
+            btns.forEach(id => {
+                let btn = document.getElementById(id);
+                if(btn) btn.classList.remove('hidden');
+            });
+        }
+
+
+        // --- LÓGICA CORE DE DATOS Y CHART.JS ---
         Chart.register(ChartDataLabels);
 
         let colData = {};
@@ -313,7 +345,6 @@
             'sep': 'Sep', 'oct': 'Oct', 'nov': 'Nov', 'dec': 'Dic'
         };
 
-        // Función ULTRA destructiva para forzar el match del mes sin importar cómo se digite
         function getMesCode(str) {
             if(!str) return '';
             let s = String(str).toLowerCase().replace(/[^a-z]/g, '').substring(0,3);
@@ -332,7 +363,6 @@
             return s;
         }
 
-        // --- SISTEMA DE SANITIZACIÓN 100% ESTRICTO ---
         function sanitizeData(arr, type) {
             if(!arr || !Array.isArray(arr)) return [];
             return arr.map(obj => {
@@ -389,7 +419,6 @@
             });
         }
 
-        // DATOS DE RESPALDO (FALLBACKS) - VALORES EXACTOS DE IMÁGENES
         const datosMetricasFallback = [
             {"Pais":"COL","Trimestre":"q1","Mes":"January","Total_Errores":290,"Headcount":77275},
             {"Pais":"COL","Trimestre":"q1","Mes":"February","Total_Errores":2314,"Headcount":76483},
@@ -398,7 +427,6 @@
             {"Pais":"COL","Trimestre":"q2","Mes":"May","Total_Errores":300,"Headcount":75884},
             {"Pais":"COL","Trimestre":"q2","Mes":"June","Total_Errores":234,"Headcount":77031},
             {"Pais":"COL","Trimestre":"q3","Mes":"July","Total_Errores":6595,"Headcount":76371},
-            
             {"Pais":"PER","Trimestre":"q1","Mes":"January","Total_Errores":56,"Headcount":7679},
             {"Pais":"PER","Trimestre":"q1","Mes":"February","Total_Errores":122,"Headcount":7311},
             {"Pais":"PER","Trimestre":"q1","Mes":"March","Total_Errores":176,"Headcount":6998},
@@ -412,27 +440,11 @@
             {"Pais":"COL","Trimestre":"q1","Mes":"January","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":290},
             {"Pais":"COL","Trimestre":"q1","Mes":"February","Capacidad":"8. Data Workforce","Subcapacidad":"8.1 Data Pipeline","Cantidad":1943},
             {"Pais":"COL","Trimestre":"q1","Mes":"February","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":362},
-            {"Pais":"COL","Trimestre":"q1","Mes":"February","Capacidad":"5. People","Subcapacidad":"5.1 HC","Cantidad":5},
-            {"Pais":"COL","Trimestre":"q1","Mes":"February","Capacidad":"10. Global Share Services","Subcapacidad":"10.1","Cantidad":2},
-            {"Pais":"COL","Trimestre":"q1","Mes":"February","Capacidad":"4. Financial","Subcapacidad":"4.1","Cantidad":2},
             {"Pais":"COL","Trimestre":"q1","Mes":"March","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":316},
-            {"Pais":"COL","Trimestre":"q1","Mes":"March","Capacidad":"5. People","Subcapacidad":"5.1","Cantidad":15},
-            {"Pais":"COL","Trimestre":"q1","Mes":"March","Capacidad":"10. Global Share Services","Subcapacidad":"10.1","Cantidad":10},
-            {"Pais":"COL","Trimestre":"q1","Mes":"March","Capacidad":"8. Data Workforce","Subcapacidad":"8.1","Cantidad":7},
-            {"Pais":"COL","Trimestre":"q1","Mes":"March","Capacidad":"3. Office","Subcapacidad":"3.1","Cantidad":7},
             {"Pais":"COL","Trimestre":"q2","Mes":"April","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":415},
-            {"Pais":"COL","Trimestre":"q2","Mes":"April","Capacidad":"5. People","Subcapacidad":"5.1","Cantidad":6},
             {"Pais":"COL","Trimestre":"q2","Mes":"May","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":256},
-            {"Pais":"COL","Trimestre":"q2","Mes":"May","Capacidad":"10. Global Share Services","Subcapacidad":"10.1","Cantidad":29},
-            {"Pais":"COL","Trimestre":"q2","Mes":"May","Capacidad":"8. Data Workforce","Subcapacidad":"8.1","Cantidad":15},
             {"Pais":"COL","Trimestre":"q2","Mes":"June","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":183},
-            {"Pais":"COL","Trimestre":"q2","Mes":"June","Capacidad":"8. Data Workforce","Subcapacidad":"8.1","Cantidad":27},
-            {"Pais":"COL","Trimestre":"q2","Mes":"June","Capacidad":"5. People","Subcapacidad":"5.1","Cantidad":24},
             {"Pais":"COL","Trimestre":"q3","Mes":"July","Capacidad":"8. Data Workforce","Subcapacidad":"8.1","Cantidad":6244},
-            {"Pais":"COL","Trimestre":"q3","Mes":"July","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":335},
-            {"Pais":"COL","Trimestre":"q3","Mes":"July","Capacidad":"5. People","Subcapacidad":"5.1","Cantidad":14},
-            {"Pais":"COL","Trimestre":"q3","Mes":"July","Capacidad":"4. Financial","Subcapacidad":"4.1","Cantidad":2},
-
             {"Pais":"PER","Trimestre":"q1","Mes":"January","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":56},
             {"Pais":"PER","Trimestre":"q1","Mes":"February","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":122},
             {"Pais":"PER","Trimestre":"q1","Mes":"March","Capacidad":"8. Data Workforce","Subcapacidad":"8.1 Data Pipeline","Cantidad":176},
@@ -443,9 +455,9 @@
         ];
 
         const datosTextosFallback = [
-            {"Pais":"COL","Trimestre":"q1","Titulo":"Ene - Mar","Analisis_HTML":"<p>Análisis Q1 procesado correctamente. Impacto del 1.29%.</p>"},
-            {"Pais":"COL","Trimestre":"q2","Titulo":"Abr - Jun","Analisis_HTML":"<p>Análisis Q2 procesado correctamente. Impacto del 0.42%.</p>"},
-            {"Pais":"COL","Trimestre":"q3","Titulo":"Julio","Analisis_HTML":"<p>Resultados iniciales de Julio con impacto del 8.64%.</p>"},
+            {"Pais":"COL","Trimestre":"q1","Titulo":"Ene - Mar","Analisis_HTML":"<p>Análisis Q1 procesado correctamente.</p>"},
+            {"Pais":"COL","Trimestre":"q2","Titulo":"Abr - Jun","Analisis_HTML":"<p>Análisis Q2 procesado correctamente.</p>"},
+            {"Pais":"COL","Trimestre":"q3","Titulo":"Julio","Analisis_HTML":"<p>Resultados de Julio procesados.</p>"},
             {"Pais":"PER","Trimestre":"q1","Titulo":"Ene - Mar","Analisis_HTML":"<p>Análisis Q1 procesado correctamente.</p>"},
             {"Pais":"PER","Trimestre":"q2","Titulo":"Abr - Jun","Analisis_HTML":"<p>Análisis Q2 procesado correctamente.</p>"},
             {"Pais":"PER","Trimestre":"q3","Titulo":"Julio","Analisis_HTML":"<p>Resultados iniciales de Julio.</p>"}
@@ -489,12 +501,10 @@
                     let totalErroresPorMes = new Array(meses.length).fill(0);
                     let hcPorMes = new Array(meses.length).fill(0);
                     
-                    // 1. Extraer HC y Total de Errores STRICTAMENTE de Hoja 1 (Metricas)
                     m.forEach(row => {
                         let idx = meses.indexOf(row.Mes);
                         if(idx !== -1) {
                             totalErroresPorMes[idx] += row.Total_Errores;
-                            
                             let hc = row.Headcount;
                             if (!hc && row.Porcentaje) {
                                 let pctMath = (row.Porcentaje > 0 && row.Porcentaje < 1) ? row.Porcentaje : (row.Porcentaje / 100);
@@ -504,7 +514,6 @@
                         }
                     });
 
-                    // 2. Agrupar capacidades STRICTAMENTE de Hoja 2 (Detalles)
                     let capacities = {};
                     let subCapacities = {};
                     d.forEach(row => {
@@ -521,11 +530,11 @@
                     pData[q] = {
                         title: t.Titulo,
                         labels: meses,
-                        barData: totalErroresPorMes, // De Hoja 1
-                        hcData: hcPorMes, // De Hoja 1
+                        barData: totalErroresPorMes, 
+                        hcData: hcPorMes, 
                         lineDataPercent: totalErroresPorMes.map((err, idx) => hcPorMes[idx] > 0 ? Number(((err / hcPorMes[idx]) * 100).toFixed(2)) : 0),
-                        capacities: capacities, // De Hoja 2
-                        subCapacities: subCapacities, // De Hoja 2
+                        capacities: capacities, 
+                        subCapacities: subCapacities, 
                         analysis: t.Analisis_HTML
                     };
 
@@ -539,7 +548,6 @@
 
         procesarDatosDeExcel();
 
-        // --- SISTEMA DUAL PARA EL ANUAL (POR MES Y POR CUARTIL) ---
         function buildAnnualData(sourceData, countryName, mode) {
             let annual = {
                 title: mode === 'mes' ? 'Consolidado Anual (Mes a Mes)' : 'Consolidado Anual (Por Trimestre)',
@@ -562,8 +570,8 @@
                     let dataQ = sourceData[q];
                     dataQ.labels.forEach((m, idx) => {
                         if(!monthMap[m]) monthMap[m] = { err: 0, hc: 0, caps: {}, subcaps: {} };
-                        monthMap[m].err += dataQ.barData[idx]; // Desde Metricas
-                        monthMap[m].hc += dataQ.hcData[idx];   // Desde Metricas
+                        monthMap[m].err += dataQ.barData[idx]; 
+                        monthMap[m].hc += dataQ.hcData[idx];   
                         allCaps.forEach(cap => monthMap[m].caps[cap] = (monthMap[m].caps[cap]||0) + (dataQ.capacities[cap] ? dataQ.capacities[cap][idx] : 0));
                         allSubCaps.forEach(sc => monthMap[m].subcaps[sc] = (monthMap[m].subcaps[sc]||0) + (dataQ.subCapacities[sc] ? dataQ.subCapacities[sc][idx] : 0));
                     });
@@ -584,8 +592,8 @@
             } else {
                 sortedQs.forEach(q => {
                     annual.labels.push(`Cuartil ${q.replace('q','')}`);
-                    let qErrors = sourceData[q].barData.reduce((a,b)=>a+b, 0); // Desde Metricas
-                    let qHC = sourceData[q].hcData.reduce((a,b)=>a+b, 0);       // Desde Metricas
+                    let qErrors = sourceData[q].barData.reduce((a,b)=>a+b, 0); 
+                    let qHC = sourceData[q].hcData.reduce((a,b)=>a+b, 0);       
                     annual.barData.push(qErrors);
                     annual.hcData.push(qHC);
                     totalErrors += qErrors;
@@ -612,7 +620,6 @@
             perData.anual_q = buildAnnualData(perData, 'Perú', 'q');
         }
 
-        // --- INYECCIÓN DE BOTONES ---
         function generarBotonesFiltro() {
             const container = document.getElementById('global-filters-container');
             container.innerHTML = ''; 
@@ -675,8 +682,8 @@
                 grandTotal += rowTotal;
                 values.forEach((val, index) => colTotals[index] += val);
 
-                bodyHTML += `<tr class="hover:bg-blue-50/50 transition-colors group odd:bg-white even:bg-slate-50/30">
-                        <td class="px-5 py-3 font-medium text-slate-700 border-r border-slate-100 whitespace-nowrap group-hover:text-blue-700">${name}</td>`;
+                bodyHTML += `<tr class="hover:bg-blue-50/50 transition-colors group odd:bg-white even:bg-slate-50/30" onclick="simulateTableClick()">
+                        <td class="px-5 py-3 font-medium text-slate-700 border-r border-slate-100 whitespace-nowrap group-hover:text-blue-700 cursor-pointer">${name}</td>`;
                 
                 values.forEach(val => {
                     const displayVal = val === 0 ? '<span class="text-slate-300">-</span>' : val.toLocaleString();
@@ -715,8 +722,8 @@
                 const rowTotal = values.reduce((a, b) => a + b, 0);
                 if (rowTotal === 0) continue; 
 
-                bodyHTML += `<tr class="hover:bg-indigo-50/50 transition-colors group odd:bg-white even:bg-slate-50/30">
-                        <td class="px-5 py-3 font-medium text-slate-700 border-r border-slate-100 whitespace-nowrap group-hover:text-indigo-700">${name}</td>`;
+                bodyHTML += `<tr class="hover:bg-indigo-50/50 transition-colors group odd:bg-white even:bg-slate-50/30" onclick="simulateTableClick()">
+                        <td class="px-5 py-3 font-medium text-slate-700 border-r border-slate-100 whitespace-nowrap group-hover:text-indigo-700 cursor-pointer">${name}</td>`;
                 
                 values.forEach(val => {
                     const displayVal = val === 0 ? '<span class="text-slate-300">-</span>' : val.toLocaleString();
@@ -729,7 +736,6 @@
 
         let chartColBar, chartColLine, chartPerBar, chartColSubLine, chartPerLine, chartPerSubLine;
 
-        // ESTILO EXACTO DEL MOCKUP: Barra azul con recuadro azul, Línea morada con recuadro morado
         const defaultBarOptions = {
             responsive: true, maintainAspectRatio: false,
             layout: { padding: { top: 40 } },
@@ -934,16 +940,7 @@
                 targetBtn.classList.add('bg-indigo-600', 'text-white', 'shadow-sm', 'ring-2', 'ring-indigo-300');
             }
 
-            const floatingWidget = document.getElementById('floating-filter');
-            const filterText = document.getElementById('active-filter-text');
-            
-            if (quarter.startsWith('anual')) {
-                floatingWidget.classList.add('hidden');
-            } else {
-                floatingWidget.classList.remove('hidden');
-                filterText.innerText = targetBtn ? targetBtn.innerText : quarter.toUpperCase();
-            }
-
+            clearInternalFilters();
             updateColData(quarter);
             updatePerData(quarter);
         }
@@ -965,7 +962,7 @@
             const canvasPerSubLine = document.getElementById('perSubLineChart');
             if (canvasPerSubLine && perData['anual_mes']) chartPerSubLine = new Chart(canvasPerSubLine.getContext('2d'), { type: 'line', data: getSubLineDataConfig('per', 'anual_mes'), options: defaultLineOptions });
 
-            updateGlobalData('anual_mes'); // Inicia por defecto en vista Anual (Meses)
+            updateGlobalData('anual_mes'); 
         };
     </script>
 </body>
