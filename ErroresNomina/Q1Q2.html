@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -38,13 +37,6 @@
                         <i class="ph ph-arrow-left"></i> Informe General
                     </a>
                 </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="#resumen" class="hover:bg-slate-700 px-3 py-2 rounded-md text-sm font-medium transition-colors">Resumen</a>
-                        <a href="#colombia" class="bg-blue-600 hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium transition-colors">Colombia</a>
-                        <a href="#peru" class="bg-rose-600 hover:bg-rose-700 px-3 py-2 rounded-md text-sm font-medium transition-colors">Perú</a>
-                    </div>
-                </div>
             </div>
         </div>
     </nav>
@@ -57,7 +49,7 @@
             <div class="relative z-10 md:w-2/3">
                 <h1 class="text-3xl md:text-5xl font-bold mb-4">Informe de Errores de Nómina</h1>
                 <p class="text-blue-100 text-lg mb-6 leading-relaxed">
-                    Análisis detallado del comportamiento, volumen y origen de las incidencias en los procesos de nómina para las geografías de <strong>Colombia</strong> y <strong>Perú</strong>. Este dashboard interactivo permite evaluar el desempeño y visualizar la responsabilidad de cada capacidad.
+                    Análisis detallado del comportamiento, volumen y origen de las incidencias en los procesos de nómina para las geografías de <strong>Colombia</strong> y <strong>Perú</strong>.
                 </p>
             </div>
         </div>
@@ -69,11 +61,8 @@
             <div class="flex items-center gap-2 text-slate-700 font-bold whitespace-nowrap">
                 <i class="ph-fill ph-funnel text-xl text-indigo-500"></i> Segmentación Global:
             </div>
-            <!-- Los botones se inyectan automáticamente aquí desde JS -->
-            <div id="global-filters-container" class="flex flex-wrap gap-2 bg-slate-100 p-1.5 rounded-xl inline-flex w-full xl:w-auto">
-                <button onclick="updateGlobalData('anual')" id="btn-global-anual" class="global-tab-btn flex-1 xl:flex-none px-5 py-2.5 rounded-lg text-sm font-bold transition-all bg-indigo-600 text-white shadow-sm ring-2 ring-indigo-300">Anual Totalizado</button>
-                <!-- Botones Q dinámicos se inyectan aquí -->
-            </div>
+            <!-- Contenedor dinámico -->
+            <div id="global-filters-container" class="flex flex-wrap gap-2 bg-slate-100 p-1.5 rounded-xl inline-flex w-full xl:w-auto"></div>
         </div>
     </div>
 
@@ -159,7 +148,7 @@
                             <p id="col-total-num" class="text-3xl font-black text-blue-900">0</p>
                         </div>
                         <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-4 text-center">
-                            <p class="text-indigo-600 text-xs font-bold uppercase tracking-wider mb-1">Impacto (% / HC)</p>
+                            <p class="text-indigo-600 text-xs font-bold uppercase tracking-wider mb-1">Impacto Promedio</p>
                             <p id="col-total-percent" class="text-3xl font-black text-indigo-900">0.00%</p>
                         </div>
                     </div>
@@ -203,7 +192,7 @@
                 <!-- Bar Chart -->
                 <div class="glass-card p-5 rounded-2xl">
                     <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-bold text-slate-800">Cantidad y % de Errores <span class="text-sm font-normal text-slate-500">(Unidades / %)</span></h3>
+                        <h3 class="text-lg font-bold text-slate-800">Cantidad y % de Errores <span class="text-sm font-normal text-slate-500">(Cantidad / %)</span></h3>
                         <span class="text-xs font-bold bg-green-100 text-green-700 px-3 py-1.5 rounded-full border border-green-200">Target < 1.00%</span>
                     </div>
                     <div class="relative h-[380px] w-full">
@@ -267,7 +256,7 @@
                             <p id="per-total-num" class="text-3xl font-black text-rose-900">0</p>
                         </div>
                         <div class="bg-orange-50 border border-orange-100 rounded-2xl p-4 text-center">
-                            <p class="text-orange-600 text-xs font-bold uppercase tracking-wider mb-1">Impacto (% / HC)</p>
+                            <p class="text-orange-600 text-xs font-bold uppercase tracking-wider mb-1">Impacto Promedio</p>
                             <p id="per-total-percent" class="text-3xl font-black text-orange-900">0.00%</p>
                         </div>
                     </div>
@@ -291,7 +280,7 @@
             <span class="font-semibold text-sm">Filtro Interno Activo</span>
         </div>
         <p class="text-xs text-slate-300 mb-4">Ventana de Análisis: <strong id="active-filter-text" class="text-white font-bold ml-1">Q1</strong></p>
-        <button onclick="updateGlobalData('anual')" class="w-full bg-[#d32f2f] hover:bg-red-700 text-white text-xs font-bold py-2.5 px-4 rounded-md transition-colors flex items-center justify-center gap-2">
+        <button onclick="updateGlobalData('anual_mes')" class="w-full bg-[#d32f2f] hover:bg-red-700 text-white text-xs font-bold py-2.5 px-4 rounded-md transition-colors flex items-center justify-center gap-2">
             <i class="ph-bold ph-x"></i> Quitar Filtros Internos
         </button>
     </div>
@@ -300,7 +289,6 @@
     <script src="datos_nomina.js"></script>
 
     <script>
-        // Función para colapsar/expandir tablas
         function toggleSection(id) {
             const section = document.getElementById(id);
             const icon = document.getElementById('icon-' + id);
@@ -320,12 +308,88 @@
         let availableQuarters = []; 
 
         const monthNamesMap = {
-            'January': 'Ene', 'February': 'Feb', 'March': 'Mar', 'April': 'Abr', 
-            'May': 'May', 'June': 'Jun', 'July': 'Jul', 'August': 'Ago', 
-            'September': 'Sep', 'October': 'Oct', 'November': 'Nov', 'December': 'Dic'
+            'ene': 'Ene', 'feb': 'Feb', 'mar': 'Mar', 'apr': 'Abr', 
+            'may': 'May', 'jun': 'Jun', 'jul': 'Jul', 'aug': 'Ago', 
+            'sep': 'Sep', 'oct': 'Oct', 'nov': 'Nov', 'dec': 'Dic'
         };
 
-        // --- INYECCIÓN NATIVA DE DATOS 2026 (VALORES EXACTOS DE IMAGEN) ---
+        // Función ULTRA destructiva para forzar el match del mes sin importar cómo se digite
+        function getMesCode(str) {
+            if(!str) return '';
+            let s = String(str).toLowerCase().replace(/[^a-z]/g, '').substring(0,3);
+            if(s==='jan' || s==='ene') return 'ene';
+            if(s==='feb') return 'feb';
+            if(s==='mar') return 'mar';
+            if(s==='apr' || s==='abr') return 'apr';
+            if(s==='may') return 'may';
+            if(s==='jun') return 'jun';
+            if(s==='jul') return 'jul';
+            if(s==='aug' || s==='ago') return 'aug';
+            if(s==='sep') return 'sep';
+            if(s==='oct') return 'oct';
+            if(s==='nov') return 'nov';
+            if(s==='dec' || s==='dic') return 'dec';
+            return s;
+        }
+
+        // --- SISTEMA DE SANITIZACIÓN 100% ESTRICTO ---
+        function sanitizeData(arr, type) {
+            if(!arr || !Array.isArray(arr)) return [];
+            return arr.map(obj => {
+                let clean = {
+                    Pais: 'COL', Trimestre: '', Mes: '', Capacidad: 'Sin Capacidad', Subcapacidad: 'Sin Subcapacidad',
+                    Total_Errores: 0, Headcount: 0, Porcentaje: 0, Cantidad: 0, Titulo: '', Analisis_HTML: ''
+                };
+                for (let k in obj) {
+                    if (!k) continue;
+                    let rawKey = String(k).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+                    let safeKey = rawKey.replace(/[^a-z0-9]/g, '');
+                    let val = obj[k];
+                    let valStr = typeof val === 'string' ? val.trim() : val;
+                    
+                    if (safeKey === 'pais' || safeKey === 'country') {
+                        let pVal = typeof valStr === 'string' ? valStr.toUpperCase() : String(valStr);
+                        clean.Pais = (pVal.includes('PER') || pVal === 'PE') ? 'PER' : 'COL';
+                    }
+                    else if (safeKey === 'trimestre' || safeKey === 'q' || safeKey === 'quarter' || safeKey === 'cuartil') {
+                        clean.Trimestre = String(valStr).toLowerCase().replace(/\s+/g, '').replace('trimestre', 'q').replace('cuartil', 'q');
+                    }
+                    else if (safeKey === 'mes' || safeKey === 'meses' || safeKey === 'month') {
+                        clean.Mes = getMesCode(valStr);
+                    }
+                    else if (safeKey === 'totalerrores' || safeKey === 'total' || safeKey.includes('errores')) {
+                        if (!safeKey.includes('porcentaje') && !safeKey.includes('%')) {
+                            clean.Total_Errores = parseFloat(val) || 0;
+                        }
+                    }
+                    else if (safeKey === 'headcount' || safeKey === 'hc' || safeKey.includes('quin')) {
+                        clean.Headcount = parseFloat(val) || 0;
+                    }
+                    else if (safeKey.includes('porcentaje') || safeKey.includes('pct') || rawKey.includes('%')) {
+                        clean.Porcentaje = parseFloat(val) || 0;
+                    }
+                    else if (safeKey === 'subcapacidad' || safeKey === 'subcap') {
+                        clean.Subcapacidad = valStr || "Sin Subcapacidad";
+                    }
+                    else if (safeKey === 'capacidad' || safeKey === 'cap') {
+                        clean.Capacidad = valStr || "Sin Capacidad";
+                    }
+                    else if (safeKey === 'cantidad' || safeKey === 'cant') {
+                        clean.Cantidad = parseFloat(val) || 0;
+                    }
+                    else if (safeKey === 'titulo' || safeKey === 'title') {
+                        clean.Titulo = valStr;
+                    }
+                    else if (safeKey === 'analisis' || safeKey === 'html' || safeKey === 'analisishtml') {
+                        clean.Analisis_HTML = val;
+                    }
+                }
+                if (type === 'detalles' && clean.Cantidad === 0 && clean.Total_Errores > 0) clean.Cantidad = clean.Total_Errores;
+                return clean;
+            });
+        }
+
+        // DATOS DE RESPALDO (FALLBACKS) - VALORES EXACTOS DE IMÁGENES
         const datosMetricasFallback = [
             {"Pais":"COL","Trimestre":"q1","Mes":"January","Total_Errores":290,"Headcount":77275},
             {"Pais":"COL","Trimestre":"q1","Mes":"February","Total_Errores":2314,"Headcount":76483},
@@ -335,210 +399,249 @@
             {"Pais":"COL","Trimestre":"q2","Mes":"June","Total_Errores":234,"Headcount":77031},
             {"Pais":"COL","Trimestre":"q3","Mes":"July","Total_Errores":6595,"Headcount":76371},
             
-            {"Pais":"PER","Trimestre":"q1","Mes":"March","Total_Errores":176,"Headcount":6984},
-            {"Pais":"PER","Trimestre":"q2","Mes":"April","Total_Errores":14,"Headcount":5000},
-            {"Pais":"PER","Trimestre":"q2","Mes":"May","Total_Errores":40,"Headcount":5128},
-            {"Pais":"PER","Trimestre":"q2","Mes":"June","Total_Errores":39,"Headcount":5342},
+            {"Pais":"PER","Trimestre":"q1","Mes":"January","Total_Errores":56,"Headcount":7679},
+            {"Pais":"PER","Trimestre":"q1","Mes":"February","Total_Errores":122,"Headcount":7311},
+            {"Pais":"PER","Trimestre":"q1","Mes":"March","Total_Errores":176,"Headcount":6998},
+            {"Pais":"PER","Trimestre":"q2","Mes":"April","Total_Errores":134,"Headcount":7043},
+            {"Pais":"PER","Trimestre":"q2","Mes":"May","Total_Errores":30,"Headcount":7480},
+            {"Pais":"PER","Trimestre":"q2","Mes":"June","Total_Errores":36,"Headcount":7663},
             {"Pais":"PER","Trimestre":"q3","Mes":"July","Total_Errores":146,"Headcount":6008}
         ];
 
         const datosDetallesFallback = [
             {"Pais":"COL","Trimestre":"q1","Mes":"January","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":290},
-            {"Pais":"COL","Trimestre":"q1","Mes":"February","Capacidad":"8. Data Workforce","Subcapacidad":"8.5 Goods Strategy","Cantidad":2314},
-            {"Pais":"COL","Trimestre":"q1","Mes":"March","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":355},
-            {"Pais":"COL","Trimestre":"q2","Mes":"April","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":421},
-            {"Pais":"COL","Trimestre":"q2","Mes":"May","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":300},
-            {"Pais":"COL","Trimestre":"q2","Mes":"June","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":234},
-            {"Pais":"COL","Trimestre":"q3","Mes":"July","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":6595},
+            {"Pais":"COL","Trimestre":"q1","Mes":"February","Capacidad":"8. Data Workforce","Subcapacidad":"8.1 Data Pipeline","Cantidad":1943},
+            {"Pais":"COL","Trimestre":"q1","Mes":"February","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":362},
+            {"Pais":"COL","Trimestre":"q1","Mes":"February","Capacidad":"5. People","Subcapacidad":"5.1 HC","Cantidad":5},
+            {"Pais":"COL","Trimestre":"q1","Mes":"February","Capacidad":"10. Global Share Services","Subcapacidad":"10.1","Cantidad":2},
+            {"Pais":"COL","Trimestre":"q1","Mes":"February","Capacidad":"4. Financial","Subcapacidad":"4.1","Cantidad":2},
+            {"Pais":"COL","Trimestre":"q1","Mes":"March","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":316},
+            {"Pais":"COL","Trimestre":"q1","Mes":"March","Capacidad":"5. People","Subcapacidad":"5.1","Cantidad":15},
+            {"Pais":"COL","Trimestre":"q1","Mes":"March","Capacidad":"10. Global Share Services","Subcapacidad":"10.1","Cantidad":10},
+            {"Pais":"COL","Trimestre":"q1","Mes":"March","Capacidad":"8. Data Workforce","Subcapacidad":"8.1","Cantidad":7},
+            {"Pais":"COL","Trimestre":"q1","Mes":"March","Capacidad":"3. Office","Subcapacidad":"3.1","Cantidad":7},
+            {"Pais":"COL","Trimestre":"q2","Mes":"April","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":415},
+            {"Pais":"COL","Trimestre":"q2","Mes":"April","Capacidad":"5. People","Subcapacidad":"5.1","Cantidad":6},
+            {"Pais":"COL","Trimestre":"q2","Mes":"May","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":256},
+            {"Pais":"COL","Trimestre":"q2","Mes":"May","Capacidad":"10. Global Share Services","Subcapacidad":"10.1","Cantidad":29},
+            {"Pais":"COL","Trimestre":"q2","Mes":"May","Capacidad":"8. Data Workforce","Subcapacidad":"8.1","Cantidad":15},
+            {"Pais":"COL","Trimestre":"q2","Mes":"June","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":183},
+            {"Pais":"COL","Trimestre":"q2","Mes":"June","Capacidad":"8. Data Workforce","Subcapacidad":"8.1","Cantidad":27},
+            {"Pais":"COL","Trimestre":"q2","Mes":"June","Capacidad":"5. People","Subcapacidad":"5.1","Cantidad":24},
+            {"Pais":"COL","Trimestre":"q3","Mes":"July","Capacidad":"8. Data Workforce","Subcapacidad":"8.1","Cantidad":6244},
+            {"Pais":"COL","Trimestre":"q3","Mes":"July","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":335},
+            {"Pais":"COL","Trimestre":"q3","Mes":"July","Capacidad":"5. People","Subcapacidad":"5.1","Cantidad":14},
+            {"Pais":"COL","Trimestre":"q3","Mes":"July","Capacidad":"4. Financial","Subcapacidad":"4.1","Cantidad":2},
+
+            {"Pais":"PER","Trimestre":"q1","Mes":"January","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":56},
+            {"Pais":"PER","Trimestre":"q1","Mes":"February","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":122},
             {"Pais":"PER","Trimestre":"q1","Mes":"March","Capacidad":"8. Data Workforce","Subcapacidad":"8.1 Data Pipeline","Cantidad":176},
-            {"Pais":"PER","Trimestre":"q2","Mes":"April","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":15},
-            {"Pais":"PER","Trimestre":"q2","Mes":"May","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":38},
-            {"Pais":"PER","Trimestre":"q2","Mes":"June","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":34},
+            {"Pais":"PER","Trimestre":"q2","Mes":"April","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":134},
+            {"Pais":"PER","Trimestre":"q2","Mes":"May","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":30},
+            {"Pais":"PER","Trimestre":"q2","Mes":"June","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":36},
             {"Pais":"PER","Trimestre":"q3","Mes":"July","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":140}
         ];
 
         const datosTextosFallback = [
-            {"Pais":"COL","Trimestre":"q1","Titulo":"Ene - Mar","Analisis_HTML":"<p>Análisis Q1 procesado correctamente en base a Headcount.</p>"},
-            {"Pais":"COL","Trimestre":"q2","Titulo":"Abr - Jun","Analisis_HTML":"<p>Análisis Q2 procesado correctamente en base a Headcount.</p>"},
-            {"Pais":"COL","Trimestre":"q3","Titulo":"Julio","Analisis_HTML":"<p>Resultados iniciales correspondientes al mes de Julio.</p>"},
-            {"Pais":"PER","Trimestre":"q1","Titulo":"Marzo","Analisis_HTML":"<p>Análisis Q1 procesado correctamente.</p>"},
+            {"Pais":"COL","Trimestre":"q1","Titulo":"Ene - Mar","Analisis_HTML":"<p>Análisis Q1 procesado correctamente. Impacto del 1.29%.</p>"},
+            {"Pais":"COL","Trimestre":"q2","Titulo":"Abr - Jun","Analisis_HTML":"<p>Análisis Q2 procesado correctamente. Impacto del 0.42%.</p>"},
+            {"Pais":"COL","Trimestre":"q3","Titulo":"Julio","Analisis_HTML":"<p>Resultados iniciales de Julio con impacto del 8.64%.</p>"},
+            {"Pais":"PER","Trimestre":"q1","Titulo":"Ene - Mar","Analisis_HTML":"<p>Análisis Q1 procesado correctamente.</p>"},
             {"Pais":"PER","Trimestre":"q2","Titulo":"Abr - Jun","Analisis_HTML":"<p>Análisis Q2 procesado correctamente.</p>"},
-            {"Pais":"PER","Trimestre":"q3","Titulo":"Julio","Analisis_HTML":"<p>Resultados iniciales correspondientes al mes de Julio.</p>"}
+            {"Pais":"PER","Trimestre":"q3","Titulo":"Julio","Analisis_HTML":"<p>Resultados iniciales de Julio.</p>"}
         ];
 
-        const datosMetricasSeguros = typeof raw_metricas !== 'undefined' ? raw_metricas : datosMetricasFallback;
-        const datosDetallesSeguros = typeof raw_detalles !== 'undefined' ? raw_detalles : datosDetallesFallback;
-        const datosTextosSeguros = typeof raw_textos !== 'undefined' ? raw_textos : datosTextosFallback;
+        let safeMetricas = [], safeDetalles = [], safeTextos = [];
 
         function procesarDatosDeExcel() {
-            if(datosMetricasSeguros.length === 0) return; 
+            let baseM = typeof raw_metricas !== 'undefined' ? raw_metricas : datosMetricasFallback;
+            let baseD = typeof raw_detalles !== 'undefined' ? raw_detalles : datosDetallesFallback;
+            let baseT = typeof raw_textos !== 'undefined' ? raw_textos : datosTextosFallback;
+
+            if(!baseM || baseM.length === 0 || !baseD || baseD.length === 0) return;
+
+            safeMetricas = sanitizeData(baseM, 'metricas');
+            safeDetalles = sanitizeData(baseD, 'detalles');
+            safeTextos = sanitizeData(baseT, 'textos');
 
             const paises = { 'COL': colData, 'PER': perData };
-            const trimestresUnicos = [...new Set(datosMetricasSeguros.map(d => d.Trimestre))].sort();
+            const trimestresUnicos = [...new Set(safeMetricas.map(d => d.Trimestre))].sort();
             
             for (let p in paises) {
                 let pData = paises[p];
                 
                 trimestresUnicos.forEach(q => {
-                    let m = datosMetricasSeguros.filter(d => d.Pais === p && d.Trimestre === q);
-                    let d = datosDetallesSeguros.filter(d => d.Pais === p && d.Trimestre === q);
-                    let t = datosTextosSeguros.filter(d => d.Pais === p && d.Trimestre === q)[0] || {Titulo: q.toUpperCase(), Analisis_HTML: 'Pendiente de análisis'};
+                    let m = safeMetricas.filter(d => d.Pais === p && d.Trimestre === q);
+                    let d = safeDetalles.filter(d => d.Pais === p && d.Trimestre === q);
+                    let t = safeTextos.filter(d => d.Pais === p && d.Trimestre === q)[0] || {Titulo: q.toUpperCase(), Analisis_HTML: 'Pendiente de análisis'};
                     
                     if (m.length === 0) return;
-
                     if (!availableQuarters.includes(q)) availableQuarters.push(q);
 
-                    let meses = [...new Set(m.map(x => x.Mes))];
+                    let rawMeses = [];
+                    m.forEach(x => rawMeses.push(x.Mes));
+                    d.forEach(x => rawMeses.push(x.Mes));
+                    let meses = [...new Set(rawMeses)].filter(Boolean);
                     
-                    // COMPATIBILIDAD: Calcular Headcount si el Excel usado es una versión antigua
-                    let sumaErroresTotales = 0;
-                    let sumaHeadcountQ = 0;
+                    const monthOrder = ['ene','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+                    meses.sort((a,b) => monthOrder.indexOf(a) - monthOrder.indexOf(b));
+
+                    let totalErroresPorMes = new Array(meses.length).fill(0);
+                    let hcPorMes = new Array(meses.length).fill(0);
                     
-                    m.forEach(mesData => {
-                        sumaErroresTotales += mesData.Total_Errores;
-                        let hc = mesData.Headcount;
-                        
-                        // Si no existe Headcount pero sí Porcentaje (Excel viejo), calculamos el HC matemáticamente
-                        if (!hc && mesData.Porcentaje) {
-                            let pctMath = (mesData.Porcentaje > 0 && mesData.Porcentaje < 1) ? mesData.Porcentaje : (mesData.Porcentaje / 100);
-                            hc = pctMath > 0 ? (mesData.Total_Errores / pctMath) : 0;
+                    // 1. Extraer HC y Total de Errores STRICTAMENTE de Hoja 1 (Metricas)
+                    m.forEach(row => {
+                        let idx = meses.indexOf(row.Mes);
+                        if(idx !== -1) {
+                            totalErroresPorMes[idx] += row.Total_Errores;
+                            
+                            let hc = row.Headcount;
+                            if (!hc && row.Porcentaje) {
+                                let pctMath = (row.Porcentaje > 0 && row.Porcentaje < 1) ? row.Porcentaje : (row.Porcentaje / 100);
+                                hc = pctMath > 0 ? (row.Total_Errores / pctMath) : 0;
+                            }
+                            hcPorMes[idx] += hc;
                         }
-                        
-                        mesData.HeadcountNormalizado = hc || 0; // Guardamos el HC normalizado
-                        sumaHeadcountQ += mesData.HeadcountNormalizado;
                     });
-                    
+
+                    // 2. Agrupar capacidades STRICTAMENTE de Hoja 2 (Detalles)
+                    let capacities = {};
+                    let subCapacities = {};
+                    d.forEach(row => {
+                        let idx = meses.indexOf(row.Mes);
+                        if(idx !== -1) {
+                            if(!capacities[row.Capacidad]) capacities[row.Capacidad] = new Array(meses.length).fill(0);
+                            capacities[row.Capacidad][idx] += row.Cantidad;
+                            
+                            if(!subCapacities[row.Subcapacidad]) subCapacities[row.Subcapacidad] = new Array(meses.length).fill(0);
+                            subCapacities[row.Subcapacidad][idx] += row.Cantidad;
+                        }
+                    });
+
                     pData[q] = {
                         title: t.Titulo,
                         labels: meses,
-                        barData: m.map(x => x.Total_Errores),
-                        // Matemática Base (Mes a Mes): (Errores / Headcount) * 100
-                        lineDataPercent: m.map(x => {
-                            let val = x.HeadcountNormalizado > 0 ? (x.Total_Errores / x.HeadcountNormalizado) * 100 : 0;
-                            return Number(val.toFixed(2));
-                        }),
-                        capacities: {},
-                        subCapacities: {},
+                        barData: totalErroresPorMes, // De Hoja 1
+                        hcData: hcPorMes, // De Hoja 1
+                        lineDataPercent: totalErroresPorMes.map((err, idx) => hcPorMes[idx] > 0 ? Number(((err / hcPorMes[idx]) * 100).toFixed(2)) : 0),
+                        capacities: capacities, // De Hoja 2
+                        subCapacities: subCapacities, // De Hoja 2
                         analysis: t.Analisis_HTML
                     };
 
-                    // Matemática Promedio Ventana (Total Errores del Q / Total HC del Q)
-                    pData[q].total = sumaErroresTotales.toLocaleString();
-                    pData[q].percent = sumaHeadcountQ > 0 ? ((sumaErroresTotales / sumaHeadcountQ) * 100).toFixed(2) + '%' : '0.00%';
-
-                    let capsUnicas = [...new Set(d.map(x => x.Capacidad))];
-                    let subCapsUnicas = [...new Set(d.map(x => x.Subcapacidad))];
-
-                    capsUnicas.forEach(cap => pData[q].capacities[cap] = new Array(meses.length).fill(0));
-                    subCapsUnicas.forEach(sub => pData[q].subCapacities[sub] = new Array(meses.length).fill(0));
-
-                    d.forEach(fila => {
-                        let indiceMes = meses.indexOf(fila.Mes);
-                        if (indiceMes !== -1) {
-                            pData[q].subCapacities[fila.Subcapacidad][indiceMes] += fila.Cantidad;
-                            pData[q].capacities[fila.Capacidad][indiceMes] += fila.Cantidad;
-                        }
-                    });
+                    let totalErr = totalErroresPorMes.reduce((a,b)=>a+b, 0);
+                    let totalHC = hcPorMes.reduce((a,b)=>a+b, 0);
+                    pData[q].total = totalErr.toLocaleString();
+                    pData[q].percent = totalHC > 0 ? ((totalErr / totalHC) * 100).toFixed(2) + '%' : '0.00%';
                 });
             }
         }
 
         procesarDatosDeExcel();
 
-        // --- Annual Data Aggregation (AHORA POR Q - TOTALIZADO MATEMÁTICO) ---
-        function buildAnnualData(sourceData, countryName) {
+        // --- SISTEMA DUAL PARA EL ANUAL (POR MES Y POR CUARTIL) ---
+        function buildAnnualData(sourceData, countryName, mode) {
             let annual = {
-                title: 'Consolidado Anual',
-                labels: [],
-                barData: [],
-                lineDataPercent: [],
-                capacities: {},
-                subCapacities: {},
-                total: 0,
-                percent: '0.00%',
-                analysis: `<p>Visualización del consolidado anual de errores de nómina para <strong>${countryName}</strong>.</p>
-                           <p>El porcentaje representa la sumatoria total de errores sobre el Headcount acumulado del trimestre.</p>`
+                title: mode === 'mes' ? 'Consolidado Anual (Mes a Mes)' : 'Consolidado Anual (Por Trimestre)',
+                labels: [], barData: [], hcData: [], lineDataPercent: [], capacities: {}, subCapacities: {}, total: 0, percent: '0.00%'
             };
-
-            let totalErrors = 0;
-            let totalHeadcount = 0; 
+            let totalErrors = 0, totalHeadcount = 0;
+            let allCaps = new Set(), allSubCaps = new Set();
             
-            let allCaps = new Set();
-            let allSubCaps = new Set();
-            for (const [q, data] of Object.entries(sourceData)) {
-                if (q !== 'anual') {
-                    if (data.capacities) Object.keys(data.capacities).forEach(k => allCaps.add(k));
-                    if (data.subCapacities) Object.keys(data.subCapacities).forEach(k => allSubCaps.add(k));
-                }
-            }
-            
+            let sortedQs = Object.keys(sourceData).filter(q => !q.startsWith('anual')).sort();
+            sortedQs.forEach(q => {
+                if (sourceData[q].capacities) Object.keys(sourceData[q].capacities).forEach(k => allCaps.add(k));
+                if (sourceData[q].subCapacities) Object.keys(sourceData[q].subCapacities).forEach(k => allSubCaps.add(k));
+            });
             allCaps.forEach(c => annual.capacities[c] = []);
             allSubCaps.forEach(sc => annual.subCapacities[sc] = []);
 
-            for (const [q, data] of Object.entries(sourceData)) {
-                if (q === 'anual') continue;
-                
-                annual.labels.push(q.toUpperCase());
-                
-                let qRaw = datosMetricasSeguros.filter(d => d.Pais === (countryName==='Colombia'?'COL':'PER') && d.Trimestre === q);
-                let qErrors = 0;
-                let qHC = 0;
-                
-                qRaw.forEach(mesData => {
-                    qErrors += mesData.Total_Errores;
-                    // COMPATIBILIDAD: Deducción del HC
-                    let hc = mesData.Headcount;
-                    if (!hc && mesData.Porcentaje) {
-                        let pctMath = (mesData.Porcentaje > 0 && mesData.Porcentaje < 1) ? mesData.Porcentaje : (mesData.Porcentaje / 100);
-                        hc = pctMath > 0 ? (mesData.Total_Errores / pctMath) : 0;
-                    }
-                    qHC += hc || 0;
+            if (mode === 'mes') {
+                let monthMap = {};
+                sortedQs.forEach(q => {
+                    let dataQ = sourceData[q];
+                    dataQ.labels.forEach((m, idx) => {
+                        if(!monthMap[m]) monthMap[m] = { err: 0, hc: 0, caps: {}, subcaps: {} };
+                        monthMap[m].err += dataQ.barData[idx]; // Desde Metricas
+                        monthMap[m].hc += dataQ.hcData[idx];   // Desde Metricas
+                        allCaps.forEach(cap => monthMap[m].caps[cap] = (monthMap[m].caps[cap]||0) + (dataQ.capacities[cap] ? dataQ.capacities[cap][idx] : 0));
+                        allSubCaps.forEach(sc => monthMap[m].subcaps[sc] = (monthMap[m].subcaps[sc]||0) + (dataQ.subCapacities[sc] ? dataQ.subCapacities[sc][idx] : 0));
+                    });
                 });
+                const monthOrder = ['ene','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+                let sortedMonths = Object.keys(monthMap).sort((a,b) => monthOrder.indexOf(a) - monthOrder.indexOf(b));
 
-                annual.barData.push(qErrors);
-                totalErrors += qErrors;
-                totalHeadcount += qHC;
-                
-                let qPct = qHC > 0 ? (qErrors / qHC) * 100 : 0;
-                annual.lineDataPercent.push(Number(qPct.toFixed(2)));
-
-                allCaps.forEach(cap => {
-                    let sumCap = data.capacities[cap] ? data.capacities[cap].reduce((a,b) => a+b, 0) : 0;
-                    annual.capacities[cap].push(sumCap);
+                sortedMonths.forEach(m => {
+                    annual.labels.push(m);
+                    annual.barData.push(monthMap[m].err);
+                    annual.hcData.push(monthMap[m].hc);
+                    totalErrors += monthMap[m].err;
+                    totalHeadcount += monthMap[m].hc;
+                    annual.lineDataPercent.push(monthMap[m].hc > 0 ? Number(((monthMap[m].err / monthMap[m].hc) * 100).toFixed(2)) : 0);
+                    allCaps.forEach(cap => annual.capacities[cap].push(monthMap[m].caps[cap]));
+                    allSubCaps.forEach(sc => annual.subCapacities[sc].push(monthMap[m].subcaps[sc]));
                 });
-
-                allSubCaps.forEach(sc => {
-                    let sumSc = data.subCapacities[sc] ? data.subCapacities[sc].reduce((a,b) => a+b, 0) : 0;
-                    annual.subCapacities[sc].push(sumSc);
+            } else {
+                sortedQs.forEach(q => {
+                    annual.labels.push(`Cuartil ${q.replace('q','')}`);
+                    let qErrors = sourceData[q].barData.reduce((a,b)=>a+b, 0); // Desde Metricas
+                    let qHC = sourceData[q].hcData.reduce((a,b)=>a+b, 0);       // Desde Metricas
+                    annual.barData.push(qErrors);
+                    annual.hcData.push(qHC);
+                    totalErrors += qErrors;
+                    totalHeadcount += qHC;
+                    annual.lineDataPercent.push(qHC > 0 ? Number(((qErrors / qHC) * 100).toFixed(2)) : 0);
+                    allCaps.forEach(cap => annual.capacities[cap].push(sourceData[q].capacities[cap] ? sourceData[q].capacities[cap].reduce((a,b)=>a+b,0) : 0));
+                    allSubCaps.forEach(sc => annual.subCapacities[sc].push(sourceData[q].subCapacities[sc] ? sourceData[q].subCapacities[sc].reduce((a,b)=>a+b,0) : 0));
                 });
             }
-            
-            let weightedImpact = totalHeadcount > 0 ? (totalErrors / totalHeadcount) * 100 : 0;
+
             annual.total = totalErrors.toLocaleString();
-            annual.percent = weightedImpact.toFixed(2) + '%';
-            
+            annual.percent = totalHeadcount > 0 ? ((totalErrors / totalHeadcount) * 100).toFixed(2) + '%' : '0.00%';
+            annual.analysis = `<p>Visualización del consolidado anual de errores de nómina para <strong>${countryName}</strong>.</p>
+                               <p>El porcentaje representa la sumatoria total de errores sobre el Headcount acumulado (${totalHeadcount.toLocaleString()}).</p>`;
             return annual;
         }
 
-        if(Object.keys(colData).length > 0) colData.anual = buildAnnualData(colData, 'Colombia');
-        if(Object.keys(perData).length > 0) perData.anual = buildAnnualData(perData, 'Perú');
+        if(Object.keys(colData).length > 0) {
+            colData.anual_mes = buildAnnualData(colData, 'Colombia', 'mes');
+            colData.anual_q = buildAnnualData(colData, 'Colombia', 'q');
+        }
+        if(Object.keys(perData).length > 0) {
+            perData.anual_mes = buildAnnualData(perData, 'Perú', 'mes');
+            perData.anual_q = buildAnnualData(perData, 'Perú', 'q');
+        }
 
-        // --- Inyectar Botones Dinámicamente ---
+        // --- INYECCIÓN DE BOTONES ---
         function generarBotonesFiltro() {
             const container = document.getElementById('global-filters-container');
-            availableQuarters.forEach(q => {
-                let m = datosMetricasSeguros.filter(d => d.Trimestre === q);
-                let mesesUnicos = [...new Set(m.map(x => x.Mes))];
+            container.innerHTML = ''; 
+
+            let btnAnualMes = document.createElement('button');
+            btnAnualMes.id = 'btn-global-anual_mes';
+            btnAnualMes.className = 'global-tab-btn flex-1 xl:flex-none px-4 py-2.5 rounded-lg text-sm font-bold transition-all bg-indigo-600 text-white shadow-sm ring-2 ring-indigo-300';
+            btnAnualMes.innerHTML = `Anual (Meses)`;
+            btnAnualMes.onclick = () => updateGlobalData('anual_mes');
+            container.appendChild(btnAnualMes);
+
+            let btnAnualQ = document.createElement('button');
+            btnAnualQ.id = 'btn-global-anual_q';
+            btnAnualQ.className = 'global-tab-btn flex-1 xl:flex-none px-4 py-2.5 rounded-lg text-sm font-bold transition-all text-slate-600 hover:bg-slate-200 ring-transparent';
+            btnAnualQ.innerHTML = `Anual (Cuartiles)`;
+            btnAnualQ.onclick = () => updateGlobalData('anual_q');
+            container.appendChild(btnAnualQ);
+
+            availableQuarters.sort().forEach(q => {
+                let d = colData[q] || perData[q];
                 let labelExtra = '';
-                if(mesesUnicos.length > 0) {
-                    let firstM = monthNamesMap[mesesUnicos[0]] || mesesUnicos[0];
-                    let lastM = monthNamesMap[mesesUnicos[mesesUnicos.length-1]] || mesesUnicos[mesesUnicos.length-1];
+                if(d && d.labels && d.labels.length > 0) {
+                    let firstM = monthNamesMap[d.labels[0]] || d.labels[0];
+                    let lastM = monthNamesMap[d.labels[d.labels.length-1]] || d.labels[d.labels.length-1];
                     labelExtra = firstM !== lastM ? ` (${firstM}-${lastM})` : ` (${firstM})`;
                 }
-
                 const btn = document.createElement('button');
                 btn.id = `btn-global-${q}`;
-                btn.className = 'global-tab-btn flex-1 xl:flex-none px-5 py-2.5 rounded-lg text-sm font-bold transition-all text-slate-600 hover:bg-slate-200 ring-transparent';
+                btn.className = 'global-tab-btn flex-1 xl:flex-none px-4 py-2.5 rounded-lg text-sm font-bold transition-all text-slate-600 hover:bg-slate-200 ring-transparent';
                 btn.innerHTML = `${q.toUpperCase()}${labelExtra}`;
                 btn.onclick = () => updateGlobalData(q);
                 container.appendChild(btn);
@@ -546,7 +649,6 @@
         }
         generarBotonesFiltro();
 
-        // --- Table Rendering Logic ---
         function renderTable(country, q) {
             const data = country === 'col' ? colData[q] : perData[q];
             const thead = document.getElementById(`${country}-table-head`);
@@ -625,12 +727,12 @@
             tbody.innerHTML = bodyHTML;
         }
 
-        // --- Chart Configurations & Initialization ---
         let chartColBar, chartColLine, chartPerBar, chartColSubLine, chartPerLine, chartPerSubLine;
 
+        // ESTILO EXACTO DEL MOCKUP: Barra azul con recuadro azul, Línea morada con recuadro morado
         const defaultBarOptions = {
             responsive: true, maintainAspectRatio: false,
-            layout: { padding: { top: 30 } },
+            layout: { padding: { top: 40 } },
             interaction: { mode: 'index', intersect: false },
             scales: {
                 x: { grid: { display: false } },
@@ -650,12 +752,20 @@
                 legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } },
                 tooltip: { backgroundColor: 'rgba(15, 23, 42, 0.9)', padding: 12, cornerRadius: 8 },
                 datalabels: {
-                    anchor: 'end',
-                    align: function(context) { return context.dataset.type === 'line' ? 'bottom' : 'top'; },
-                    offset: 8,
-                    color: '#475569',
-                    font: { weight: 'bold', size: 13 },
+                    anchor: function(context) { return context.dataset.type === 'line' ? 'center' : 'end'; },
+                    align: function(context) { return context.dataset.type === 'line' ? 'top' : 'bottom'; },
+                    offset: function(context) { return context.dataset.type === 'line' ? 8 : 4; },
+                    color: 'white',
+                    backgroundColor: function(context) { 
+                        if (context.dataset.label === 'Target') return 'transparent'; 
+                        return context.dataset.type === 'line' ? '#a21caf' : '#38bdf8'; 
+                    },
+                    borderRadius: 4,
+                    padding: { top: 2, bottom: 2, left: 6, right: 6 },
+                    font: { weight: 'bold', size: 12 },
                     formatter: function(value, context) {
+                        if (context.dataset.label === 'Target') return ''; 
+                        if (value === 0 || value === null) return '';
                         if (context.dataset.type === 'line') return Number(value).toFixed(2) + '%';
                         return value.toLocaleString();
                     }
@@ -665,7 +775,7 @@
 
         const defaultLineOptions = {
             responsive: true, maintainAspectRatio: false,
-            layout: { padding: { top: 20, right: 10 } },
+            layout: { padding: { top: 30, right: 15 } },
             interaction: { mode: 'index', intersect: false },
             scales: {
                 x: { grid: { display: false } },
@@ -678,7 +788,13 @@
             plugins: { 
                 legend: { position: 'bottom', labels: { usePointStyle: true, padding: 15, font: {size: 11} } },
                 tooltip: { backgroundColor: 'rgba(15, 23, 42, 0.9)' },
-                datalabels: { display: false } 
+                datalabels: { 
+                    display: true,
+                    align: 'top',
+                    color: '#64748b',
+                    font: { size: 10, weight: 'bold' },
+                    formatter: function(value) { return value > 0 ? value.toLocaleString() : ''; }
+                } 
             }
         };
 
@@ -692,8 +808,9 @@
             return {
                 labels: formatLabels(d.labels),
                 datasets: [
-                    { label: 'Cant Errores', data: d.barData, backgroundColor: '#38bdf8', borderRadius: 6, yAxisID: 'y', order: 2 },
-                    { label: '% Errores Nomina', data: d.lineDataPercent, type: 'line', borderColor: '#a21caf', backgroundColor: '#a21caf', borderWidth: 3, pointRadius: 5, yAxisID: 'y1', order: 1 }
+                    { label: 'Target', data: d.labels.map(()=> 0.80), type: 'line', borderColor: '#16a34a', borderDash: [6,4], borderWidth: 3, pointRadius: 0, yAxisID: 'y1', order: 0 },
+                    { label: 'Cant Errores', data: d.barData, backgroundColor: '#38bdf8', borderRadius: 4, yAxisID: 'y', order: 2 },
+                    { label: '% Errores Nomina', data: d.lineDataPercent, type: 'line', borderColor: '#a21caf', backgroundColor: '#a21caf', borderWidth: 3, pointRadius: 6, yAxisID: 'y1', order: 1 }
                 ]
             };
         }
@@ -745,8 +862,9 @@
             return {
                 labels: formatLabels(d.labels),
                 datasets: [
+                    { label: 'Target', data: d.labels.map(()=> 1.00), type: 'line', borderColor: '#16a34a', borderDash: [6,4], borderWidth: 3, pointRadius: 0, yAxisID: 'y1', order: 0 },
                     { label: 'Cant Errores', data: d.barData, backgroundColor: '#7dd3fc', borderColor: '#0284c7', borderWidth: 1, borderRadius: 4, yAxisID: 'y', order: 2 },
-                    { label: '% Errores Nomina', data: d.lineDataPercent, type: 'line', borderColor: '#9d174d', backgroundColor: '#9d174d', borderWidth: 3, pointRadius: 5, yAxisID: 'y1', order: 1 }
+                    { label: '% Errores Nomina', data: d.lineDataPercent, type: 'line', borderColor: '#9d174d', backgroundColor: '#9d174d', borderWidth: 3, pointRadius: 6, yAxisID: 'y1', order: 1 }
                 ]
             };
         }
@@ -771,7 +889,7 @@
 
         function updateColText(q) {
             if(!colData[q]) return;
-            document.getElementById('col-analysis-title').innerText = `Análisis ${q.toUpperCase()} - ${colData[q].title}`;
+            document.getElementById('col-analysis-title').innerText = `Análisis - ${colData[q].title}`;
             document.getElementById('col-analysis-text').innerHTML = colData[q].analysis;
             document.getElementById('col-total-num').innerText = colData[q].total;
             document.getElementById('col-total-percent').innerText = colData[q].percent;
@@ -779,7 +897,7 @@
 
         function updatePerText(q) {
             if(!perData[q]) return;
-            document.getElementById('per-analysis-title').innerText = `Análisis ${q.toUpperCase()} - ${perData[q].title}`;
+            document.getElementById('per-analysis-title').innerText = `Análisis - ${perData[q].title}`;
             document.getElementById('per-analysis-text').innerHTML = perData[q].analysis;
             document.getElementById('per-total-num').innerText = perData[q].total;
             document.getElementById('per-total-percent').innerText = perData[q].percent;
@@ -819,7 +937,7 @@
             const floatingWidget = document.getElementById('floating-filter');
             const filterText = document.getElementById('active-filter-text');
             
-            if (quarter === 'anual') {
+            if (quarter.startsWith('anual')) {
                 floatingWidget.classList.add('hidden');
             } else {
                 floatingWidget.classList.remove('hidden');
@@ -831,23 +949,23 @@
         }
 
         window.onload = function() {
-            // COLOMBIA
+            if(Object.keys(colData).length === 0 && Object.keys(perData).length === 0) return;
+
             const canvasColBar = document.getElementById('colBarChart');
-            if (canvasColBar && colData['anual']) chartColBar = new Chart(canvasColBar.getContext('2d'), { type: 'bar', data: getColBarDataConfig('anual'), options: defaultBarOptions });
+            if (canvasColBar && colData['anual_mes']) chartColBar = new Chart(canvasColBar.getContext('2d'), { type: 'bar', data: getColBarDataConfig('anual_mes'), options: defaultBarOptions });
             const canvasColLine = document.getElementById('colLineChart');
-            if (canvasColLine && colData['anual']) chartColLine = new Chart(canvasColLine.getContext('2d'), { type: 'line', data: getColLineDataConfig('anual'), options: defaultLineOptions });
+            if (canvasColLine && colData['anual_mes']) chartColLine = new Chart(canvasColLine.getContext('2d'), { type: 'line', data: getColLineDataConfig('anual_mes'), options: defaultLineOptions });
             const canvasColSubLine = document.getElementById('colSubLineChart');
-            if (canvasColSubLine && colData['anual']) chartColSubLine = new Chart(canvasColSubLine.getContext('2d'), { type: 'line', data: getSubLineDataConfig('col', 'anual'), options: defaultLineOptions });
+            if (canvasColSubLine && colData['anual_mes']) chartColSubLine = new Chart(canvasColSubLine.getContext('2d'), { type: 'line', data: getSubLineDataConfig('col', 'anual_mes'), options: defaultLineOptions });
 
-            // PERÚ
             const canvasPerBar = document.getElementById('perBarChart');
-            if (canvasPerBar && perData['anual']) chartPerBar = new Chart(canvasPerBar.getContext('2d'), { type: 'bar', data: getPerBarDataConfig('anual'), options: defaultBarOptions });
+            if (canvasPerBar && perData['anual_mes']) chartPerBar = new Chart(canvasPerBar.getContext('2d'), { type: 'bar', data: getPerBarDataConfig('anual_mes'), options: defaultBarOptions });
             const canvasPerLine = document.getElementById('perLineChart');
-            if (canvasPerLine && perData['anual']) chartPerLine = new Chart(canvasPerLine.getContext('2d'), { type: 'line', data: getPerLineDataConfig('anual'), options: defaultLineOptions });
+            if (canvasPerLine && perData['anual_mes']) chartPerLine = new Chart(canvasPerLine.getContext('2d'), { type: 'line', data: getPerLineDataConfig('anual_mes'), options: defaultLineOptions });
             const canvasPerSubLine = document.getElementById('perSubLineChart');
-            if (canvasPerSubLine && perData['anual']) chartPerSubLine = new Chart(canvasPerSubLine.getContext('2d'), { type: 'line', data: getSubLineDataConfig('per', 'anual'), options: defaultLineOptions });
+            if (canvasPerSubLine && perData['anual_mes']) chartPerSubLine = new Chart(canvasPerSubLine.getContext('2d'), { type: 'line', data: getSubLineDataConfig('per', 'anual_mes'), options: defaultLineOptions });
 
-            updateGlobalData('anual');
+            updateGlobalData('anual_mes'); // Inicia por defecto en vista Anual (Meses)
         };
     </script>
 </body>
