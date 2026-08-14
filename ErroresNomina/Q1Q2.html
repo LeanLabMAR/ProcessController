@@ -24,17 +24,30 @@
 </head>
 <body class="antialiased pb-20">
 
-    <!-- Navigation -->
+    <!-- Navigation Actualizada -->
     <nav class="bg-slate-900 text-white sticky top-0 z-50 shadow-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center gap-6">
-                    <div class="flex items-center gap-3">
-                        <i class="ph-fill ph-chart-pie-slice text-2xl text-indigo-400"></i>
-                        <span class="font-bold text-lg tracking-wide">Payroll Analytics</span>
-                    </div>
-                    <a href="https://leanlabmar.github.io/ProcessController/LandingPage/LandingPageAuto.html" class="hidden md:flex items-center gap-2 text-sm font-medium text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 px-4 py-1.5 rounded-full transition-colors border border-slate-700">
+            <div class="flex items-center h-16 gap-8 overflow-x-auto custom-scrollbar">
+                <!-- Logo -->
+                <div class="flex items-center gap-3 shrink-0">
+                    <i class="ph-fill ph-chart-pie-slice text-2xl text-indigo-400"></i>
+                    <span class="font-bold text-lg tracking-wide hidden sm:block">Payroll Analytics</span>
+                </div>
+                
+                <!-- Botones de Navegación -->
+                <div class="flex items-center gap-3 shrink-0">
+                    <a href="https://leanlabmar.github.io/ProcessController/LandingPage/LandingPageAuto.html" class="flex items-center gap-2 text-sm font-medium text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 px-4 py-1.5 rounded-full transition-colors border border-slate-700">
                         <i class="ph ph-arrow-left"></i> Informe General
+                    </a>
+                    
+                    <div class="h-6 w-px bg-slate-700 mx-1"></div> <!-- Separador -->
+
+                    <a href="#colombia" class="flex items-center gap-2 text-sm font-medium text-slate-100 hover:text-white bg-blue-600/20 hover:bg-blue-600/40 border border-blue-500/30 px-4 py-1.5 rounded-full transition-colors">
+                        Colombia
+                    </a>
+                    
+                    <a href="#peru" class="flex items-center gap-2 text-sm font-medium text-slate-100 hover:text-white bg-rose-600/20 hover:bg-rose-600/40 border border-rose-500/30 px-4 py-1.5 rounded-full transition-colors">
+                        Perú
                     </a>
                 </div>
             </div>
@@ -49,7 +62,7 @@
             <div class="relative z-10 md:w-2/3">
                 <h1 class="text-3xl md:text-5xl font-bold mb-4">Informe de Errores de Nómina</h1>
                 <p class="text-blue-100 text-lg mb-6 leading-relaxed">
-                    Análisis detallado del comportamiento, volumen y origen de las incidencias en los procesos de nómina para las geografías de <strong>Colombia</strong> y <strong>Perú</strong>.
+                    Análisis detallado del comportamiento, volumen y origen de las incidencias en los procesos de nómina para las geografías de <strong>Colombia</strong> y <strong>Perú</strong>. Este dashboard interactivo permite evaluar el desempeño y visualizar la responsabilidad de cada capacidad.
                 </p>
             </div>
         </div>
@@ -62,7 +75,8 @@
                 <i class="ph-fill ph-funnel text-xl text-indigo-500"></i> Segmentación Global:
             </div>
             <!-- Contenedor dinámico -->
-            <div id="global-filters-container" class="flex flex-wrap gap-2 bg-slate-100 p-1.5 rounded-xl inline-flex w-full xl:w-auto"></div>
+            <div id="global-filters-container" class="flex flex-wrap gap-2 bg-slate-100 p-1.5 rounded-xl inline-flex w-full xl:w-auto">
+            </div>
         </div>
     </div>
 
@@ -151,8 +165,7 @@
 
             <!-- Right Side -->
             <div class="lg:col-span-1">
-                <!-- Se agregó pb-20 para asegurar que el scroll fluya bien -->
-                <div class="sticky top-32 space-y-6 pb-20">
+                <div class="sticky top-32 space-y-6">
                     <div class="grid grid-cols-2 gap-4">
                         <div class="bg-blue-50 border border-blue-100 rounded-2xl p-4 text-center">
                             <p class="text-blue-600 text-xs font-bold uppercase tracking-wider mb-1">Total Errores</p>
@@ -298,7 +311,7 @@
     <script src="datos_nomina.js"></script>
 
     <script>
-        // --- FUNCIONES DE UI ---
+        // Funcionalidad de colapsar tablas
         function toggleSection(id) {
             const section = document.getElementById(id);
             const icon = document.getElementById('icon-' + id);
@@ -311,19 +324,17 @@
             }
         }
 
+        // LÓGICA DE FILTROS INTERNOS (Mostrar/Ocultar Botones)
         function clearInternalFilters() {
-            // Oculta los botones
             let btns = ['btn-clear-col-cap', 'btn-clear-col-subcap', 'btn-clear-per-cap', 'btn-clear-per-subcap'];
             btns.forEach(id => {
                 let btn = document.getElementById(id);
                 if(btn) btn.classList.add('hidden');
             });
-            // NOTA: Aquí iría tu lógica real de JS para resetear la data de las gráficas
             console.log("Filtros removidos");
         }
 
         function simulateTableClick() {
-            // Simulación visual: al dar clic en la fila, muestra los botones rojos
             let btns = ['btn-clear-col-cap', 'btn-clear-col-subcap', 'btn-clear-per-cap', 'btn-clear-per-subcap'];
             btns.forEach(id => {
                 let btn = document.getElementById(id);
@@ -331,8 +342,6 @@
             });
         }
 
-
-        // --- LÓGICA CORE DE DATOS Y CHART.JS ---
         Chart.register(ChartDataLabels);
 
         let colData = {};
@@ -363,6 +372,7 @@
             return s;
         }
 
+        // SISTEMA DE SANITIZACIÓN
         function sanitizeData(arr, type) {
             if(!arr || !Array.isArray(arr)) return [];
             return arr.map(obj => {
@@ -455,9 +465,9 @@
         ];
 
         const datosTextosFallback = [
-            {"Pais":"COL","Trimestre":"q1","Titulo":"Ene - Mar","Analisis_HTML":"<p>Análisis Q1 procesado correctamente.</p>"},
-            {"Pais":"COL","Trimestre":"q2","Titulo":"Abr - Jun","Analisis_HTML":"<p>Análisis Q2 procesado correctamente.</p>"},
-            {"Pais":"COL","Trimestre":"q3","Titulo":"Julio","Analisis_HTML":"<p>Resultados de Julio procesados.</p>"},
+            {"Pais":"COL","Trimestre":"q1","Titulo":"Ene - Mar","Analisis_HTML":"<p>Análisis Q1 procesado correctamente. Impacto del 1.29%.</p>"},
+            {"Pais":"COL","Trimestre":"q2","Titulo":"Abr - Jun","Analisis_HTML":"<p>Análisis Q2 procesado correctamente. Impacto del 0.42%.</p>"},
+            {"Pais":"COL","Trimestre":"q3","Titulo":"Julio","Analisis_HTML":"<p>Resultados iniciales de Julio con impacto del 8.64%.</p>"},
             {"Pais":"PER","Trimestre":"q1","Titulo":"Ene - Mar","Analisis_HTML":"<p>Análisis Q1 procesado correctamente.</p>"},
             {"Pais":"PER","Trimestre":"q2","Titulo":"Abr - Jun","Analisis_HTML":"<p>Análisis Q2 procesado correctamente.</p>"},
             {"Pais":"PER","Trimestre":"q3","Titulo":"Julio","Analisis_HTML":"<p>Resultados iniciales de Julio.</p>"}
@@ -501,6 +511,7 @@
                     let totalErroresPorMes = new Array(meses.length).fill(0);
                     let hcPorMes = new Array(meses.length).fill(0);
                     
+                    // TOTALES PRINCIPALES DIRECTOS DE HOJA 1
                     m.forEach(row => {
                         let idx = meses.indexOf(row.Mes);
                         if(idx !== -1) {
@@ -514,6 +525,7 @@
                         }
                     });
 
+                    // DESGLOSES EXCLUSIVOS DE HOJA 2
                     let capacities = {};
                     let subCapacities = {};
                     d.forEach(row => {
