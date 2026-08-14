@@ -91,16 +91,6 @@
     </nav>
 
     <div class="p-4 md:p-6 relative">
-        <div id="internal-filter-badge" class="hidden fixed bottom-6 right-6 bg-brand-dark text-white p-4 rounded-xl shadow-2xl z-50 flex-col gap-2 max-w-sm border border-gray-700">
-            <div class="flex justify-between items-center border-b border-gray-600 pb-2 mb-2">
-                <span class="font-bold text-sm"><i class="fa-solid fa-filter mr-2 text-brand-accent"></i>Filtro Interno Activo</span>
-            </div>
-            <div id="internal-filter-list" class="text-xs text-gray-300 flex flex-col gap-1"></div>
-            <button onclick="clearInternalFilters()" class="mt-2 w-full bg-red-600 hover:bg-red-500 text-white font-bold py-1.5 rounded text-xs transition">
-                <i class="fa-solid fa-xmark mr-1"></i> Quitar Filtros Internos
-            </button>
-        </div>
-
         <header class="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div class="flex items-center gap-4">
                 <i class="fa-solid fa-chart-pie text-4xl text-brand-purple-dark hidden md:block"></i>
@@ -114,9 +104,6 @@
             </div>
             
             <div class="flex flex-wrap gap-2" id="country-tabs">
-                <a href="https://leanlabmar.github.io/ProcessController/LandingPage/LandingPageAuto.html" class="hidden md:flex items-center gap-2 text-sm font-medium text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 px-4 py-1.5 rounded-full transition-colors border border-slate-700">
-                        <i class="ph ph-arrow-left"></i> Informe General
-                    </a>
                 <div id="tab-colombia" class="nav-pill active flex items-center" onclick="switchCountry('Colombia')">
                     <img src="https://flagcdn.com/w20/co.png" class="w-4 h-auto mr-2 rounded-sm border border-gray-300" alt="CO"> Colombia
                 </div>
@@ -152,13 +139,14 @@
                     </div>
 
                     <div class="md:col-span-8 flex flex-col gap-4">
-                        <div>
-                            <label class="block text-xs font-semibold mb-2 text-brand-slate uppercase tracking-wide">Tipo de Justificación</label>
-                            <div class="flex flex-wrap gap-2" id="tipo-slicer"></div>
-                        </div>
+                        
                         <div>
                             <label class="block text-xs font-semibold mb-2 text-brand-slate uppercase tracking-wide">Selección de Mes</label>
                             <div class="flex flex-wrap gap-2" id="mes-slicer"></div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold mb-2 text-brand-slate uppercase tracking-wide">Tipo de Justificación</label>
+                            <div class="flex flex-wrap gap-2" id="tipo-slicer"></div>
                         </div>
                         <div>
                             <label class="block text-xs font-semibold mb-2 text-brand-slate uppercase tracking-wide">Estado de la Justificación</label>
@@ -208,7 +196,14 @@
 
         <div id="seccion-adicion" class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6 scroll-mt">
             <div class="card lg:col-span-4 overflow-hidden flex flex-col">
-                <h2 class="font-bold text-md mb-3 text-brand-dark border-b pb-2"><i class="fa-solid fa-arrow-trend-up mr-2 text-brand-purple"></i>Detalle Adición (Hrs)</h2>
+                <div class="flex justify-between items-center border-b pb-2 mb-3">
+                    <h2 class="font-bold text-md text-brand-dark flex items-center">
+                        <i class="fa-solid fa-arrow-trend-up mr-2 text-brand-purple"></i>Detalle Adición (Hrs)
+                    </h2>
+                    <button onclick="clearInternalFilters()" class="btn-clear-internal hidden bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-xs shadow-sm transition">
+                        <i class="fa-solid fa-xmark mr-1"></i> Quitar Filtros
+                    </button>
+                </div>
                 <div class="overflow-y-auto flex-grow" style="max-height: 400px;">
                     <table class="w-full pbi-table" id="tableAdicionCliente">
                         <thead><tr><th>Cliente</th><th class="text-right">Horas</th></tr></thead>
@@ -230,7 +225,14 @@
 
         <div id="seccion-reduccion" class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6 scroll-mt">
             <div class="card lg:col-span-4 overflow-hidden flex flex-col">
-                <h2 class="font-bold text-md mb-3 text-brand-dark border-b pb-2"><i class="fa-solid fa-arrow-trend-down mr-2 text-brand-purple"></i>Detalle Reducción (Hrs)</h2>
+                <div class="flex justify-between items-center border-b pb-2 mb-3">
+                    <h2 class="font-bold text-md text-brand-dark flex items-center">
+                        <i class="fa-solid fa-arrow-trend-down mr-2 text-brand-purple"></i>Detalle Reducción (Hrs)
+                    </h2>
+                    <button onclick="clearInternalFilters()" class="btn-clear-internal hidden bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-xs shadow-sm transition">
+                        <i class="fa-solid fa-xmark mr-1"></i> Quitar Filtros
+                    </button>
+                </div>
                 <div class="overflow-y-auto flex-grow" style="max-height: 400px;">
                     <table class="w-full pbi-table" id="tableReduccionCliente">
                         <thead><tr><th>Cliente</th><th class="text-right">Horas</th></tr></thead>
@@ -253,9 +255,14 @@
         <div id="seccion-pareto" class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6 scroll-mt">
             
             <div class="card lg:col-span-5 overflow-hidden flex flex-col">
-                <h2 class="font-bold text-md mb-3 text-brand-dark border-b pb-2 flex items-center">
-                    <i class="fa-solid fa-list-check mr-2 text-brand-purple"></i>Justificaciones Adición
-                </h2>
+                <div class="flex justify-between items-center border-b pb-2 mb-3">
+                    <h2 class="font-bold text-md text-brand-dark flex items-center">
+                        <i class="fa-solid fa-list-check mr-2 text-brand-purple"></i>Justificaciones Adición
+                    </h2>
+                    <button onclick="clearInternalFilters()" class="btn-clear-internal hidden bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-xs shadow-sm transition">
+                        <i class="fa-solid fa-xmark mr-1"></i> Quitar Filtros
+                    </button>
+                </div>
                 <div class="overflow-y-auto flex-grow" style="max-height: 400px;">
                     <table class="w-full pbi-table" id="tableJustAdicion">
                         <thead><tr><th>Justificación</th><th class="text-right">Horas</th><th class="text-right">% Pareto</th></tr></thead>
@@ -275,9 +282,14 @@
             </div>
 
             <div class="card lg:col-span-5 overflow-hidden flex flex-col">
-                <h2 class="font-bold text-md mb-3 text-brand-dark border-b pb-2 flex items-center">
-                    <i class="fa-solid fa-list-check mr-2 text-brand-purple"></i>Justificaciones Reducción
-                </h2>
+                <div class="flex justify-between items-center border-b pb-2 mb-3">
+                    <h2 class="font-bold text-md text-brand-dark flex items-center">
+                        <i class="fa-solid fa-list-check mr-2 text-brand-purple"></i>Justificaciones Reducción
+                    </h2>
+                    <button onclick="clearInternalFilters()" class="btn-clear-internal hidden bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-xs shadow-sm transition">
+                        <i class="fa-solid fa-xmark mr-1"></i> Quitar Filtros
+                    </button>
+                </div>
                 <div class="overflow-y-auto flex-grow" style="max-height: 400px;">
                     <table class="w-full pbi-table" id="tableJustReduccion">
                         <thead><tr><th>Justificación</th><th class="text-right">Horas</th><th class="text-right">% Pareto</th></tr></thead>
@@ -295,9 +307,7 @@
                     <div id="container-chartParetoReduccion" class="relative h-64 md:h-80"><canvas id="chartParetoReduccion"></canvas></div>
                 </div>
             </div>
-
         </div>
-
     </div>
 
     <script>
@@ -486,7 +496,7 @@
 
         function setInternalFilter(type, value) {
             internalFilters[type] = value;
-            renderInternalFilterBadge();
+            updateClearFilterButtons();
             processAndRenderData();
         }
 
@@ -495,29 +505,19 @@
             internalFilters.client = null;
             internalFilters.mes = null;
             internalFilters.justificacion = null;
-            renderInternalFilterBadge();
+            updateClearFilterButtons();
             processAndRenderData();
         }
 
-        function renderInternalFilterBadge() {
-            const badge = document.getElementById('internal-filter-badge');
-            const list = document.getElementById('internal-filter-list');
-            list.innerHTML = '';
-            
-            let hasFilters = false;
-            
-            if(internalFilters.vp) { list.innerHTML += `<div><span class="font-bold text-gray-400">VP:</span> ${internalFilters.vp}</div>`; hasFilters = true; }
-            if(internalFilters.mes) { list.innerHTML += `<div><span class="font-bold text-gray-400">Mes:</span> ${internalFilters.mes}</div>`; hasFilters = true; }
-            if(internalFilters.client) { list.innerHTML += `<div><span class="font-bold text-gray-400">Cliente:</span> ${internalFilters.client}</div>`; hasFilters = true; }
-            if(internalFilters.justificacion) { list.innerHTML += `<div><span class="font-bold text-gray-400">Justificación:</span> ${internalFilters.justificacion}</div>`; hasFilters = true; }
-
-            if(hasFilters) {
-                badge.classList.remove('hidden');
-                badge.classList.add('flex');
-            } else {
-                badge.classList.add('hidden');
-                badge.classList.remove('flex');
-            }
+        function updateClearFilterButtons() {
+            let hasFilters = internalFilters.vp || internalFilters.client || internalFilters.mes || internalFilters.justificacion;
+            document.querySelectorAll('.btn-clear-internal').forEach(btn => {
+                if(hasFilters) {
+                    btn.classList.remove('hidden');
+                } else {
+                    btn.classList.add('hidden');
+                }
+            });
         }
 
         function getDynamicColors() {
