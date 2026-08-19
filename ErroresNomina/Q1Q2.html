@@ -24,7 +24,7 @@
 </head>
 <body class="antialiased pb-20">
 
-    <!-- Navigation Actualizada -->
+    <!-- Navigation -->
     <nav class="bg-slate-900 text-white sticky top-0 z-50 shadow-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center h-16 gap-8 overflow-x-auto custom-scrollbar">
@@ -74,9 +74,7 @@
             <div class="flex items-center gap-2 text-slate-700 font-bold whitespace-nowrap">
                 <i class="ph-fill ph-funnel text-xl text-indigo-500"></i> Segmentación Global:
             </div>
-            <!-- Contenedor dinámico -->
-            <div id="global-filters-container" class="flex flex-wrap gap-2 bg-slate-100 p-1.5 rounded-xl inline-flex w-full xl:w-auto">
-            </div>
+            <div id="global-filters-container" class="flex flex-wrap gap-2 bg-slate-100 p-1.5 rounded-xl inline-flex w-full xl:w-auto"></div>
         </div>
     </div>
 
@@ -137,7 +135,7 @@
                 <!-- Subcap Chart -->
                 <div class="glass-card p-5 rounded-2xl mt-6">
                     <h3 class="text-lg font-bold text-slate-800 mb-1">Tendencia: Subcapacidades Críticas <span class="text-sm font-normal text-slate-500">(Unidades)</span></h3>
-                    <p class="text-xs text-slate-500 mb-4">Top 6 de subcapacidades con mayor volumen de incidencias en el periodo.</p>
+                    <p class="text-xs text-slate-500 mb-4">Top 10 de subcapacidades con mayor volumen de incidencias en el periodo.</p>
                     <div class="relative h-[360px] w-full">
                         <canvas id="colSubLineChart"></canvas>
                     </div>
@@ -165,7 +163,7 @@
 
             <!-- Right Side -->
             <div class="lg:col-span-1">
-                <div class="sticky top-32 space-y-6">
+                <div class="sticky top-32 space-y-6 pb-20">
                     <div class="grid grid-cols-2 gap-4">
                         <div class="bg-blue-50 border border-blue-100 rounded-2xl p-4 text-center">
                             <p class="text-blue-600 text-xs font-bold uppercase tracking-wider mb-1">Total Errores</p>
@@ -255,7 +253,7 @@
                 <!-- Subcap Chart -->
                 <div class="glass-card p-5 rounded-2xl mt-6">
                     <h3 class="text-lg font-bold text-slate-800 mb-1">Tendencia: Subcapacidades Críticas <span class="text-sm font-normal text-slate-500">(Unidades)</span></h3>
-                    <p class="text-xs text-slate-500 mb-4">Top 6 de subcapacidades con mayor volumen de incidencias en el periodo.</p>
+                    <p class="text-xs text-slate-500 mb-4">Top 10 de subcapacidades con mayor volumen de incidencias en el periodo.</p>
                     <div class="relative h-[360px] w-full">
                         <canvas id="perSubLineChart"></canvas>
                     </div>
@@ -450,11 +448,27 @@
             {"Pais":"COL","Trimestre":"q1","Mes":"January","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":290},
             {"Pais":"COL","Trimestre":"q1","Mes":"February","Capacidad":"8. Data Workforce","Subcapacidad":"8.1 Data Pipeline","Cantidad":1943},
             {"Pais":"COL","Trimestre":"q1","Mes":"February","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":362},
+            {"Pais":"COL","Trimestre":"q1","Mes":"February","Capacidad":"5. People","Subcapacidad":"5.1 HC","Cantidad":5},
+            {"Pais":"COL","Trimestre":"q1","Mes":"February","Capacidad":"10. Global Share Services","Subcapacidad":"10.1","Cantidad":2},
+            {"Pais":"COL","Trimestre":"q1","Mes":"February","Capacidad":"4. Financial","Subcapacidad":"4.1","Cantidad":2},
             {"Pais":"COL","Trimestre":"q1","Mes":"March","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":316},
+            {"Pais":"COL","Trimestre":"q1","Mes":"March","Capacidad":"5. People","Subcapacidad":"5.1","Cantidad":15},
+            {"Pais":"COL","Trimestre":"q1","Mes":"March","Capacidad":"10. Global Share Services","Subcapacidad":"10.1","Cantidad":10},
+            {"Pais":"COL","Trimestre":"q1","Mes":"March","Capacidad":"8. Data Workforce","Subcapacidad":"8.1","Cantidad":7},
+            {"Pais":"COL","Trimestre":"q1","Mes":"March","Capacidad":"3. Office","Subcapacidad":"3.1","Cantidad":7},
             {"Pais":"COL","Trimestre":"q2","Mes":"April","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":415},
+            {"Pais":"COL","Trimestre":"q2","Mes":"April","Capacidad":"5. People","Subcapacidad":"5.1","Cantidad":6},
             {"Pais":"COL","Trimestre":"q2","Mes":"May","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":256},
+            {"Pais":"COL","Trimestre":"q2","Mes":"May","Capacidad":"10. Global Share Services","Subcapacidad":"10.1","Cantidad":29},
+            {"Pais":"COL","Trimestre":"q2","Mes":"May","Capacidad":"8. Data Workforce","Subcapacidad":"8.1","Cantidad":15},
             {"Pais":"COL","Trimestre":"q2","Mes":"June","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":183},
+            {"Pais":"COL","Trimestre":"q2","Mes":"June","Capacidad":"8. Data Workforce","Subcapacidad":"8.1","Cantidad":27},
+            {"Pais":"COL","Trimestre":"q2","Mes":"June","Capacidad":"5. People","Subcapacidad":"5.1","Cantidad":24},
             {"Pais":"COL","Trimestre":"q3","Mes":"July","Capacidad":"8. Data Workforce","Subcapacidad":"8.1","Cantidad":6244},
+            {"Pais":"COL","Trimestre":"q3","Mes":"July","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":335},
+            {"Pais":"COL","Trimestre":"q3","Mes":"July","Capacidad":"5. People","Subcapacidad":"5.1","Cantidad":14},
+            {"Pais":"COL","Trimestre":"q3","Mes":"July","Capacidad":"4. Financial","Subcapacidad":"4.1","Cantidad":2},
+
             {"Pais":"PER","Trimestre":"q1","Mes":"January","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":56},
             {"Pais":"PER","Trimestre":"q1","Mes":"February","Capacidad":"1. Operations","Subcapacidad":"1.1 Client Operations","Cantidad":122},
             {"Pais":"PER","Trimestre":"q1","Mes":"March","Capacidad":"8. Data Workforce","Subcapacidad":"8.1 Data Pipeline","Cantidad":176},
@@ -465,8 +479,8 @@
         ];
 
         const datosTextosFallback = [
-            {"Pais":"COL","Trimestre":"q1","Titulo":"Ene - Mar","Analisis_HTML":"<p>Análisis Q1 procesado correctamente. Impacto del 1.29%.</p>"},
-            {"Pais":"COL","Trimestre":"q2","Titulo":"Abr - Jun","Analisis_HTML":"<p>Análisis Q2 procesado correctamente. Impacto del 0.42%.</p>"},
+            {"Pais":"COL","Trimestre":"q1","Titulo":"Ene - Mar","Analisis_HTML":"<p>Análisis Q1 procesado correctamente. Impacto del 1.29% en base a HC de métricas.</p>"},
+            {"Pais":"COL","Trimestre":"q2","Titulo":"Abr - Jun","Analisis_HTML":"<p>Análisis Q2 procesado correctamente. Impacto del 0.42% en base a HC de métricas.</p>"},
             {"Pais":"COL","Trimestre":"q3","Titulo":"Julio","Analisis_HTML":"<p>Resultados iniciales de Julio con impacto del 8.64%.</p>"},
             {"Pais":"PER","Trimestre":"q1","Titulo":"Ene - Mar","Analisis_HTML":"<p>Análisis Q1 procesado correctamente.</p>"},
             {"Pais":"PER","Trimestre":"q2","Titulo":"Abr - Jun","Analisis_HTML":"<p>Análisis Q2 procesado correctamente.</p>"},
@@ -487,35 +501,43 @@
             safeTextos = sanitizeData(baseT, 'textos');
 
             const paises = { 'COL': colData, 'PER': perData };
-            const trimestresUnicos = [...new Set(safeMetricas.map(d => d.Trimestre))].sort();
+            
+            let trimestresUnicos = [...new Set(safeMetricas.map(d => d.Trimestre))].filter(Boolean).sort();
             
             for (let p in paises) {
                 let pData = paises[p];
                 
                 trimestresUnicos.forEach(q => {
                     let m = safeMetricas.filter(d => d.Pais === p && d.Trimestre === q);
-                    let d = safeDetalles.filter(d => d.Pais === p && d.Trimestre === q);
-                    let t = safeTextos.filter(d => d.Pais === p && d.Trimestre === q)[0] || {Titulo: q.toUpperCase(), Analisis_HTML: 'Pendiente de análisis'};
+                    let dArr = safeDetalles.filter(d => d.Pais === p && d.Trimestre === q);
+                    let tArr = safeTextos.find(d => d.Pais === p && d.Trimestre === q) || {Titulo: q.toUpperCase(), Analisis_HTML: 'Pendiente de análisis'};
                     
-                    if (m.length === 0) return;
+                    if (m.length === 0 && dArr.length === 0) return;
                     if (!availableQuarters.includes(q)) availableQuarters.push(q);
 
                     let rawMeses = [];
                     m.forEach(x => rawMeses.push(x.Mes));
-                    d.forEach(x => rawMeses.push(x.Mes));
+                    dArr.forEach(x => rawMeses.push(x.Mes));
                     let meses = [...new Set(rawMeses)].filter(Boolean);
                     
                     const monthOrder = ['ene','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
-                    meses.sort((a,b) => monthOrder.indexOf(a) - monthOrder.indexOf(b));
+                    meses.sort((a,b) => {
+                        let idxA = monthOrder.findIndex(mo => String(a).toLowerCase().includes(mo));
+                        let idxB = monthOrder.findIndex(mo => String(b).toLowerCase().includes(mo));
+                        if (idxA === -1) idxA = 999;
+                        if (idxB === -1) idxB = 999;
+                        return idxA - idxB;
+                    });
 
                     let totalErroresPorMes = new Array(meses.length).fill(0);
                     let hcPorMes = new Array(meses.length).fill(0);
                     
-                    // TOTALES PRINCIPALES DIRECTOS DE HOJA 1
+                    // 1. OBTENER TOTALES PRINCIPALES DE HOJA 1
                     m.forEach(row => {
                         let idx = meses.indexOf(row.Mes);
                         if(idx !== -1) {
                             totalErroresPorMes[idx] += row.Total_Errores;
+                            
                             let hc = row.Headcount;
                             if (!hc && row.Porcentaje) {
                                 let pctMath = (row.Porcentaje > 0 && row.Porcentaje < 1) ? row.Porcentaje : (row.Porcentaje / 100);
@@ -525,10 +547,10 @@
                         }
                     });
 
-                    // DESGLOSES EXCLUSIVOS DE HOJA 2
+                    // 2. OBTENER DESGLOSES DE HOJA 2
                     let capacities = {};
                     let subCapacities = {};
-                    d.forEach(row => {
+                    dArr.forEach(row => {
                         let idx = meses.indexOf(row.Mes);
                         if(idx !== -1) {
                             if(!capacities[row.Capacidad]) capacities[row.Capacidad] = new Array(meses.length).fill(0);
@@ -540,14 +562,14 @@
                     });
 
                     pData[q] = {
-                        title: t.Titulo,
+                        title: tArr.Titulo,
                         labels: meses,
                         barData: totalErroresPorMes, 
                         hcData: hcPorMes, 
                         lineDataPercent: totalErroresPorMes.map((err, idx) => hcPorMes[idx] > 0 ? Number(((err / hcPorMes[idx]) * 100).toFixed(2)) : 0),
                         capacities: capacities, 
                         subCapacities: subCapacities, 
-                        analysis: t.Analisis_HTML
+                        analysis: tArr.Analisis_HTML
                     };
 
                     let totalErr = totalErroresPorMes.reduce((a,b)=>a+b, 0);
@@ -589,7 +611,13 @@
                     });
                 });
                 const monthOrder = ['ene','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
-                let sortedMonths = Object.keys(monthMap).sort((a,b) => monthOrder.indexOf(a) - monthOrder.indexOf(b));
+                let sortedMonths = Object.keys(monthMap).sort((a,b) => {
+                    let idxA = monthOrder.findIndex(mo => String(a).toLowerCase().includes(mo));
+                    let idxB = monthOrder.findIndex(mo => String(b).toLowerCase().includes(mo));
+                    if (idxA === -1) idxA = 999;
+                    if (idxB === -1) idxB = 999;
+                    return idxA - idxB;
+                });
 
                 sortedMonths.forEach(m => {
                     annual.labels.push(m);
@@ -730,7 +758,10 @@
                 return b[1].reduce((sum, val) => sum + val, 0) - a[1].reduce((sum, val) => sum + val, 0);
             });
 
-            for (const [name, values] of sortedSubCaps) {
+            // LIMITAR EL RANKING A TOP 10 SUBCAPACIDADES
+            const topSubCaps = sortedSubCaps.slice(0, 10);
+
+            for (const [name, values] of topSubCaps) {
                 const rowTotal = values.reduce((a, b) => a + b, 0);
                 if (rowTotal === 0) continue; 
 
@@ -816,7 +847,8 @@
             }
         };
 
-        const baseColors = ['#f97316', '#16a34a', '#0ea5e9', '#1e3a8a', '#9333ea', '#F54927', '#eab308'];
+        // Paleta ampliada a 10 colores para soportar el Top 10 sin repetir rápido
+        const baseColors = ['#f97316', '#16a34a', '#0ea5e9', '#1e3a8a', '#9333ea', '#F54927', '#eab308', '#ec4899', '#14b8a6', '#64748b'];
         function getDynamicColor(index) { return baseColors[index % baseColors.length]; }
         function formatLabels(labels) { return labels.map(l => monthNamesMap[l] || l); }
 
@@ -862,7 +894,8 @@
             }
             
             datasets.sort((a, b) => b.totalErrors - a.totalErrors);
-            const topDatasets = datasets.slice(0, 6);
+            // LIMITAR EL GRÁFICO AL TOP 10 DE SUBCAPACIDADES
+            const topDatasets = datasets.slice(0, 10);
             
             topDatasets.forEach((dataset, index) => {
                 dataset.borderColor = getDynamicColor(index);
