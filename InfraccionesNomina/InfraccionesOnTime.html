@@ -563,9 +563,15 @@
 
             updateDynamicTitles();
 
-            const filteredClientes = dataClientes.filter(row => {
-                if(!row.VP || !row.Horas) return false; 
-                
+           // Busca este bloque en la función processAndRenderData()
+        const filteredClientes = dataClientes.filter(row => {
+            // Si no hay horas, ignorar
+            if(!row.Horas) return false; 
+    
+            // Si el VP está en blanco, asignarle un nombre en vez de eliminar la fila
+            if(!row.VP || row.VP.trim() === "") row.VP = "Sin VP Asignado";
+            if(!row.Client || row.Client.trim() === "") row.Client = "Sin Cliente";
+
                 let pass = (globalState.vp === 'Todas' || row.VP === globalState.vp) &&
                            (globalState.client === 'Todas' || row.Client === globalState.client) &&
                            (globalState.tipo === 'Todas' || row.Tipo === globalState.tipo) &&
