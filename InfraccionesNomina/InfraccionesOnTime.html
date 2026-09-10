@@ -100,13 +100,13 @@
                         Consolidado Colombia
                     </h1>
                     <p class="text-brand-slate text-sm font-medium mt-1">Visión Ejecutiva de Justificaciones</p>
-                <!-- NUEVA ETIQUETA DE FECHA DE ACTUALIZACIÓN -->
-                        <div class="mt-3">
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-white text-brand-slate border border-gray-300 shadow-sm">
+                    
+                    <div class="mt-3">
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-white text-brand-slate border border-gray-300 shadow-sm">
                             <i class="fa-regular fa-clock mr-1.5 text-brand-purple"></i> 
-                            Última actualización: 9 de Septiembre 2026
-                            </span>
-                        </div>
+                            Última actualización: 10 de Septiembre 2026
+                        </span>
+                    </div>
                 </div>
             </div>
             
@@ -143,10 +143,15 @@
                                 <option value="Todas">Todas</option>
                             </select>
                         </div>
+                        <div>
+                            <label class="block text-xs font-semibold mb-1 text-brand-slate uppercase tracking-wide">Filtro Justificación</label>
+                            <select id="justFilter" class="w-full bg-gray-50 border border-gray-300 text-brand-dark text-sm p-2 rounded cursor-pointer filter-select focus:ring-2 focus:ring-brand-purple outline-none transition">
+                                <option value="Todas">Todas</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="md:col-span-8 flex flex-col gap-4">
-                        
                         <div>
                             <label class="block text-xs font-semibold mb-2 text-brand-slate uppercase tracking-wide">Selección de Mes</label>
                             <div class="flex flex-wrap gap-2" id="mes-slicer"></div>
@@ -329,7 +334,8 @@
             client: 'Todas',
             tipo: 'Todas',
             mes: 'Todos',
-            estado: 'Todas'
+            estado: 'Todas',
+            justificacion: 'Todas'
         };
 
         const internalFilters = {
@@ -377,9 +383,11 @@
             globalState.tipo = 'Todas';
             globalState.mes = 'Todos';
             globalState.estado = 'Todas';
+            globalState.justificacion = 'Todas';
             
             document.getElementById('vpFilter').value = 'Todas';
             document.getElementById('clientFilter').value = 'Todas';
+            document.getElementById('justFilter').value = 'Todas';
             
             clearInternalFilters();
         }
@@ -399,12 +407,12 @@
         }
 
         function initFilters(reset = true) {
-            const { dataClientes } = getActiveDatasets();
-            if(dataClientes.length === 0) return;
+            const { dataClientes, dataJust } = getActiveDatasets();
+            if(!dataClientes || dataClientes.length === 0) return;
 
             if(reset) {
                 globalState.vp = 'Todas'; globalState.client = 'Todas'; globalState.tipo = 'Todas';
-                globalState.mes = 'Todos'; globalState.estado = 'Todas';
+                globalState.mes = 'Todos'; globalState.estado = 'Todas'; globalState.justificacion = 'Todas';
             }
 
             const populateSelect = (id, dataSet, stateKey) => {
@@ -430,6 +438,7 @@
 
             const uniqueVPs = [...new Set(dataClientes.map(item => item.VP))].filter(Boolean).sort();
             const uniqueClients = [...new Set(dataClientes.map(item => item.Client))].filter(Boolean).sort();
+            const uniqueJust = [...new Set(dataJust.map(item => item.Justificacion))].filter(Boolean).sort();
             
             uniqueTipos = [...new Set(dataClientes.map(item => item.Tipo))].filter(Boolean).sort();
             uniqueMonths = [...new Set(dataClientes.map(item => item.Mes))].filter(Boolean).sort((a, b) => getMonthWeight(a) - getMonthWeight(b));
@@ -437,6 +446,7 @@
 
             populateSelect('vpFilter', uniqueVPs, 'vp');
             populateSelect('clientFilter', uniqueClients, 'client');
+            populateSelect('justFilter', uniqueJust, 'justificacion');
 
             renderSlicers();
 
@@ -446,6 +456,7 @@
                 newSelect.addEventListener('change', (e) => {
                     if(e.target.id === 'vpFilter') globalState.vp = e.target.value;
                     if(e.target.id === 'clientFilter') globalState.client = e.target.value;
+                    if(e.target.id === 'justFilter') globalState.justificacion = e.target.value;
                     processAndRenderData();
                 });
             });
@@ -551,6 +562,7 @@
             if(globalState.tipo !== 'Todas') activeFilters.push(`Tipo: ${globalState.tipo}`);
             if(globalState.vp !== 'Todas') activeFilters.push(`VP: ${globalState.vp.split(' ')[0]}`); 
             if(globalState.client !== 'Todas') activeFilters.push(`Cli: ${globalState.client}`);
+            if(globalState.justificacion !== 'Todas') activeFilters.push(`Just: Filtro Activo`);
             
             if(internalFilters.vp) activeFilters.push(`(Filtro: ${internalFilters.vp.split(' ')[0]})`);
             if(internalFilters.client) activeFilters.push(`(Filtro: ${internalFilters.client})`);
@@ -570,14 +582,11 @@
 
             updateDynamicTitles();
 
-           // Busca este bloque en la función processAndRenderData()
-        const filteredClientes = dataClientes.filter(row => {
-            // Si no hay horas, ignorar
-            if(!row.Horas) return false; 
-    
-            // Si el VP está en blanco, asignarle un nombre en vez de eliminar la fila
-            if(!row.VP || row.VP.trim() === "") row.VP = "Sin VP Asignado";
-            if(!row.Client || row.Client.trim() === "") row.Client = "Sin Cliente";
+            const filteredClientes = dataClientes.filter(row => {
+                if(!row.Horas) return false; 
+                
+                if(!row.VP || row.VP.trim() === "") row.VP = "Sin VP Asignado";
+                if(!row.Client || row.Client.trim() === "") row.Client = "Sin Cliente";
 
                 let pass = (globalState.vp === 'Todas' || row.VP === globalState.vp) &&
                            (globalState.client === 'Todas' || row.Client === globalState.client) &&
@@ -597,7 +606,8 @@
                 let pass = (globalState.vp === 'Todas' || row.VP === globalState.vp) &&
                            (globalState.tipo === 'Todas' || row.Tipo === globalState.tipo) &&
                            (globalState.mes === 'Todos' || row.Mes === globalState.mes) &&
-                           (globalState.estado === 'Todas' || row.Estado === globalState.estado);
+                           (globalState.estado === 'Todas' || row.Estado === globalState.estado) &&
+                           (globalState.justificacion === 'Todas' || row.Justificacion === globalState.justificacion);
                 
                 if(internalFilters.vp && row.VP !== internalFilters.vp) pass = false;
                 if(internalFilters.mes && row.Mes !== internalFilters.mes) pass = false;
@@ -612,11 +622,9 @@
             let totAdicion = 0, totReduccion = 0;
             let vpData = {}, mesData = {}, clientAdicion = {}, clientReduccion = {};
 
+            // 1. Clientes y Totales Adición/Reducción (Siempre desde filteredClientes)
             filteredClientes.forEach(row => {
                 const h = parseFloat(row.Horas) || 0;
-                vpData[row.VP] = (vpData[row.VP] || 0) + h;
-                mesData[row.Mes] = (mesData[row.Mes] || 0) + h;
-
                 const tipo = (row.Tipo || '').toLowerCase();
                 if(tipo.includes('adicion') || tipo.includes('adición')) {
                     clientAdicion[row.Client] = (clientAdicion[row.Client] || 0) + h;
@@ -626,6 +634,27 @@
                     totReduccion += h;
                 }
             });
+
+            // 2. VP y Mes dinámicos según el filtro de Justificación
+            if (globalState.justificacion !== 'Todas' || internalFilters.justificacion) {
+                // Si hay una justificación seleccionada, VP y Mes se alimentan de filteredJust
+                filteredJust.forEach(row => {
+                    const h = parseFloat(row.Horas) || 0;
+                    if(row.VP) vpData[row.VP] = (vpData[row.VP] || 0) + h;
+                    if(row.Mes) mesData[row.Mes] = (mesData[row.Mes] || 0) + h;
+                });
+                
+                // Actualizar Total Horas del KPI superior con el total de esa justificación
+                const totalJustHoras = filteredJust.reduce((acc, curr) => acc + (parseFloat(curr.Horas) || 0), 0);
+                document.getElementById('kpiTotalHoras').innerText = formatNum(totalJustHoras);
+            } else {
+                // Si no hay filtro de justificación, se alimenta del consolidado general de clientes
+                filteredClientes.forEach(row => {
+                    const h = parseFloat(row.Horas) || 0;
+                    vpData[row.VP] = (vpData[row.VP] || 0) + h;
+                    mesData[row.Mes] = (mesData[row.Mes] || 0) + h;
+                });
+            }
 
             document.getElementById('kpiTotalAdiciones').innerText = formatNum(totAdicion);
             document.getElementById('kpiTotalReducciones').innerText = formatNum(totReduccion);
