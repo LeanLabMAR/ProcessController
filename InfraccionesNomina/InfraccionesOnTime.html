@@ -12,7 +12,7 @@
     <script>
         window.addEventListener('error', function(e) {
             if(e.filename && e.filename.includes('datos_dashboard.js')) {
-                alert("Error al cargar datos_dashboard.js. Verifica si la macro de Excel generó caracteres inválidos. Detalle: " + e.message);
+                alert("Error al cargar datos_dashboard.js. Verifica la macro. Detalle: " + e.message);
             }
         });
     </script>
@@ -22,54 +22,22 @@
 
     <script>
         tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'brand-dark': '#1e1c2a',
-                        'brand-purple-dark': '#382a5c',
-                        'brand-purple': '#5a547c',
-                        'brand-slate': '#7a849c',
-                        'brand-bg': '#f4f5f7'
-                    },
-                    fontFamily: { sans: ['Inter', 'sans-serif'] }
-                }
-            }
+            theme: { extend: { colors: { 'brand-dark': '#1e1c2a', 'brand-purple-dark': '#382a5c', 'brand-purple': '#5a547c', 'brand-slate': '#7a849c', 'brand-bg': '#f4f5f7' }, fontFamily: { sans: ['Inter', 'sans-serif'] } } }
         }
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        html { scroll-behavior: smooth; }
-        body { background-color: #f4f5f7; color: #1e1c2a; }
-        .scroll-mt { scroll-margin-top: 80px; }
-
-        .pbi-table th {
-            background-color: var(--dynamic-color, #382a5c); color: white; padding: 12px 10px;
-            text-align: left; font-size: 0.85rem; font-weight: 600;
-            position: sticky; top: 0; z-index: 10; transition: background-color 0.3s;
-        }
+        html { scroll-behavior: smooth; } body { background-color: #f4f5f7; color: #1e1c2a; } .scroll-mt { scroll-margin-top: 80px; }
+        .pbi-table th { background-color: var(--dynamic-color, #382a5c); color: white; padding: 12px 10px; text-align: left; font-size: 0.85rem; font-weight: 600; position: sticky; top: 0; z-index: 10; transition: background-color 0.3s; }
         .pbi-table td { padding: 10px; font-size: 0.85rem; border-bottom: 1px solid #e2e8f0; cursor: pointer; }
-        .pbi-table tr:nth-child(even) { background-color: #f8fafc; }
-        .pbi-table tr:nth-child(odd) { background-color: #ffffff; }
+        .pbi-table tr:nth-child(even) { background-color: #f8fafc; } .pbi-table tr:nth-child(odd) { background-color: #ffffff; }
         .pbi-table tr:hover { background-color: #e2e8f0; transition: background-color 0.2s; }
-        
-        .card {
-            background: white; border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            border: 1px solid #e2e8f0; padding: 20px;
-        }
-        .nav-pill {
-            background-color: #cbd5e1; color: #475569; border-radius: 8px;
-            padding: 8px 20px; font-size: 0.95rem; font-weight: 600;
-            cursor: pointer; transition: all 0.2s;
-        }
+        .card { background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); border: 1px solid #e2e8f0; padding: 20px; }
+        .nav-pill { background-color: #cbd5e1; color: #475569; border-radius: 8px; padding: 8px 20px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
         .nav-pill.active { background-color: #382a5c; color: white; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .nav-pill:hover:not(.active) { background-color: #94a3b8; color: white; }
-
-        ::-webkit-scrollbar { width: 8px; height: 10px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-        
+        ::-webkit-scrollbar { width: 8px; height: 10px; } ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; } ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         canvas { cursor: pointer; }
     </style>
 </head>
@@ -100,7 +68,6 @@
                         Consolidado Colombia
                     </h1>
                     <p class="text-brand-slate text-sm font-medium mt-1">Visión Ejecutiva de Justificaciones</p>
-                    
                     <div class="mt-3">
                         <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-white text-brand-slate border border-gray-300 shadow-sm">
                             <i class="fa-regular fa-clock mr-1.5 text-brand-purple"></i> 
@@ -133,21 +100,15 @@
                     <div class="md:col-span-4 flex flex-col gap-3">
                         <div>
                             <label class="block text-xs font-semibold mb-1 text-brand-slate uppercase tracking-wide">Filtro VP</label>
-                            <select id="vpFilter" class="w-full bg-gray-50 border border-gray-300 text-brand-dark text-sm p-2 rounded cursor-pointer filter-select focus:ring-2 focus:ring-brand-purple outline-none transition">
-                                <option value="Todas">Todas</option>
-                            </select>
+                            <select id="vpFilter" class="w-full bg-gray-50 border border-gray-300 text-brand-dark text-sm p-2 rounded cursor-pointer filter-select focus:ring-2 focus:ring-brand-purple outline-none transition"><option value="Todas">Todas</option></select>
                         </div>
                         <div>
                             <label class="block text-xs font-semibold mb-1 text-brand-slate uppercase tracking-wide">Filtro Cliente</label>
-                            <select id="clientFilter" class="w-full bg-gray-50 border border-gray-300 text-brand-dark text-sm p-2 rounded cursor-pointer filter-select focus:ring-2 focus:ring-brand-purple outline-none transition">
-                                <option value="Todas">Todas</option>
-                            </select>
+                            <select id="clientFilter" class="w-full bg-gray-50 border border-gray-300 text-brand-dark text-sm p-2 rounded cursor-pointer filter-select focus:ring-2 focus:ring-brand-purple outline-none transition"><option value="Todas">Todas</option></select>
                         </div>
                         <div>
                             <label class="block text-xs font-semibold mb-1 text-brand-slate uppercase tracking-wide">Filtro Justificación</label>
-                            <select id="justFilter" class="w-full bg-gray-50 border border-gray-300 text-brand-dark text-sm p-2 rounded cursor-pointer filter-select focus:ring-2 focus:ring-brand-purple outline-none transition">
-                                <option value="Todas">Todas</option>
-                            </select>
+                            <select id="justFilter" class="w-full bg-gray-50 border border-gray-300 text-brand-dark text-sm p-2 rounded cursor-pointer filter-select focus:ring-2 focus:ring-brand-purple outline-none transition"><option value="Todas">Todas</option></select>
                         </div>
                     </div>
 
@@ -265,7 +226,6 @@
         </div>
 
         <div id="seccion-pareto" class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6 scroll-mt">
-            
             <div class="card lg:col-span-5 overflow-hidden flex flex-col">
                 <div class="flex justify-between items-center border-b pb-2 mb-3">
                     <h2 class="font-bold text-md text-brand-dark flex items-center">
@@ -328,121 +288,66 @@
         const formatNum = (num) => new Intl.NumberFormat('es-CO').format(Math.round(num));
         const formatPerc = (num) => (Math.round(num * 100) / 100).toFixed(2) + '%';
         
-        const globalState = {
-            country: 'Colombia',
-            vp: 'Todas',
-            client: 'Todas',
-            tipo: 'Todas',
-            mes: 'Todos',
-            estado: 'Todas',
-            justificacion: 'Todas'
-        };
+        const globalState = { country: 'Colombia', vp: 'Todas', client: 'Todas', tipo: 'Todas', mes: 'Todos', estado: 'Todas', justificacion: 'Todas' };
+        const internalFilters = { vp: null, client: null, mes: null, justificacion: null };
 
-        const internalFilters = {
-            vp: null,
-            client: null,
-            mes: null,
-            justificacion: null
-        };
+        let uniqueTipos = [], uniqueMonths = [], uniqueEstados = [];
 
-        let uniqueTipos = [];
-        let uniqueMonths = [];
-        let uniqueEstados = [];
-
-        const monthOrder = {
-            'enero':1, 'febrero':2, 'marzo':3, 'abril':4, 'mayo':5, 'junio':6, 
-            'julio':7, 'agosto':8, 'septiembre':9, 'octubre':10, 'noviembre':11, 'diciembre':12
-        };
-        const getMonthWeight = (m) => {
-            let mLower = (m || '').toLowerCase();
-            for(let key in monthOrder) { if(mLower.includes(key)) return monthOrder[key]; }
-            return 99;
-        };
+        const monthOrder = { 'enero':1, 'febrero':2, 'marzo':3, 'abril':4, 'mayo':5, 'junio':6, 'julio':7, 'agosto':8, 'septiembre':9, 'octubre':10, 'noviembre':11, 'diciembre':12 };
+        const getMonthWeight = (m) => { let mLower = (m || '').toLowerCase(); for(let key in monthOrder) { if(mLower.includes(key)) return monthOrder[key]; } return 99; };
 
         function switchCountry(country) {
             globalState.country = country;
-            
             document.getElementById('tab-colombia').classList.toggle('active', country === 'Colombia');
             document.getElementById('tab-peru').classList.toggle('active', country === 'Peru');
-            
             const flagCode = country === 'Colombia' ? 'co' : 'pe';
             const countryName = country === 'Colombia' ? 'Colombia' : 'Perú';
-            
-            document.getElementById('main-title').innerHTML = `
-                <img src="https://flagcdn.com/w40/${flagCode}.png" class="inline-block w-8 md:w-10 h-auto mr-3 shadow-sm rounded-sm" alt="${countryName}"> 
-                Consolidado ${countryName}
-            `;
-            
-            initFilters(false); 
-            clearInternalFilters(); 
+            document.getElementById('main-title').innerHTML = `<img src="https://flagcdn.com/w40/${flagCode}.png" class="inline-block w-8 md:w-10 h-auto mr-3 shadow-sm rounded-sm" alt="${countryName}"> Consolidado ${countryName}`;
+            initFilters(false); clearInternalFilters(); 
         }
 
         function resetFilters() {
-            globalState.vp = 'Todas';
-            globalState.client = 'Todas';
-            globalState.tipo = 'Todas';
-            globalState.mes = 'Todos';
-            globalState.estado = 'Todas';
-            globalState.justificacion = 'Todas';
-            
-            document.getElementById('vpFilter').value = 'Todas';
-            document.getElementById('clientFilter').value = 'Todas';
-            document.getElementById('justFilter').value = 'Todas';
-            
+            globalState.vp = 'Todas'; globalState.client = 'Todas'; globalState.tipo = 'Todas'; globalState.mes = 'Todos'; globalState.estado = 'Todas'; globalState.justificacion = 'Todas';
+            document.getElementById('vpFilter').value = 'Todas'; document.getElementById('clientFilter').value = 'Todas'; document.getElementById('justFilter').value = 'Todas';
             clearInternalFilters();
         }
 
         function getActiveDatasets() {
-            if(globalState.country === 'Colombia') {
-                return { 
-                    dataClientes: typeof colombiaClientes !== 'undefined' ? colombiaClientes : [], 
-                    dataJust: typeof colombiaJustificaciones !== 'undefined' ? colombiaJustificaciones : [] 
-                };
-            } else {
-                return { 
-                    dataClientes: typeof peruClientes !== 'undefined' ? peruClientes : [], 
-                    dataJust: typeof peruJustificaciones !== 'undefined' ? peruJustificaciones : [] 
-                };
-            }
+            // AHORA LEE DIRECTAMENTE DEL ARREGLO UNIFICADO
+            if(globalState.country === 'Colombia') { return typeof colombiaData !== 'undefined' ? colombiaData : []; } 
+            else { return typeof peruData !== 'undefined' ? peruData : []; }
         }
 
         function initFilters(reset = true) {
-            const { dataClientes, dataJust } = getActiveDatasets();
-            if(!dataClientes || dataClientes.length === 0) return;
+            const data = getActiveDatasets();
+            if(!data || data.length === 0) return;
 
             if(reset) {
-                globalState.vp = 'Todas'; globalState.client = 'Todas'; globalState.tipo = 'Todas';
-                globalState.mes = 'Todos'; globalState.estado = 'Todas'; globalState.justificacion = 'Todas';
+                globalState.vp = 'Todas'; globalState.client = 'Todas'; globalState.tipo = 'Todas'; globalState.mes = 'Todos'; globalState.estado = 'Todas'; globalState.justificacion = 'Todas';
             }
 
             const populateSelect = (id, dataSet, stateKey) => {
                 const select = document.getElementById(id);
                 select.innerHTML = '<option value="Todas">Todas</option>';
                 let foundSelected = false;
-                
                 dataSet.filter(Boolean).forEach(item => {
                     const option = document.createElement('option');
-                    option.value = item;
-                    option.textContent = item;
-                    if(item === globalState[stateKey]) {
-                        option.selected = true;
-                        foundSelected = true;
-                    }
+                    option.value = item; option.textContent = item;
+                    if(item === globalState[stateKey]) { option.selected = true; foundSelected = true; }
                     select.appendChild(option);
                 });
-
                 if(!foundSelected && globalState[stateKey] !== 'Todas' && globalState[stateKey] !== 'Todos') {
                     globalState[stateKey] = id === 'monthFilter' ? 'Todos' : 'Todas';
                 }
             };
 
-            const uniqueVPs = [...new Set(dataClientes.map(item => item.VP))].filter(Boolean).sort();
-            const uniqueClients = [...new Set(dataClientes.map(item => item.Client))].filter(Boolean).sort();
-            const uniqueJust = [...new Set(dataJust.map(item => item.Justificacion))].filter(Boolean).sort();
+            const uniqueVPs = [...new Set(data.map(item => item.VP))].filter(Boolean).sort();
+            const uniqueClients = [...new Set(data.map(item => item.Client))].filter(Boolean).sort();
+            const uniqueJust = [...new Set(data.map(item => item.Justificacion))].filter(Boolean).sort();
             
-            uniqueTipos = [...new Set(dataClientes.map(item => item.Tipo))].filter(Boolean).sort();
-            uniqueMonths = [...new Set(dataClientes.map(item => item.Mes))].filter(Boolean).sort((a, b) => getMonthWeight(a) - getMonthWeight(b));
-            uniqueEstados = [...new Set(dataClientes.map(item => item.Estado))].filter(Boolean).sort();
+            uniqueTipos = [...new Set(data.map(item => item.Tipo))].filter(Boolean).sort();
+            uniqueMonths = [...new Set(data.map(item => item.Mes))].filter(Boolean).sort((a, b) => getMonthWeight(a) - getMonthWeight(b));
+            uniqueEstados = [...new Set(data.map(item => item.Estado))].filter(Boolean).sort();
 
             populateSelect('vpFilter', uniqueVPs, 'vp');
             populateSelect('clientFilter', uniqueClients, 'client');
@@ -463,94 +368,40 @@
         }
 
         function renderSlicers() {
-            const tipoContainer = document.getElementById('tipo-slicer');
-            tipoContainer.innerHTML = '';
-            if(globalState.tipo !== 'Todas' && !uniqueTipos.includes(globalState.tipo)) globalState.tipo = 'Todas';
-            ['Todas', ...uniqueTipos].forEach(t => {
-                const btn = document.createElement('button');
-                btn.innerText = t;
-                if (globalState.tipo === t) {
-                    btn.className = 'px-4 py-1 text-sm font-bold rounded bg-brand-purple-dark text-white shadow-md transform scale-105 transition';
-                } else {
-                    btn.className = 'px-4 py-1 text-sm font-medium rounded bg-white text-brand-slate border border-gray-300 hover:bg-gray-100 hover:text-brand-dark transition';
-                }
-                btn.onclick = () => { globalState.tipo = t; renderSlicers(); processAndRenderData(); };
-                tipoContainer.appendChild(btn);
-            });
-
-            const mesContainer = document.getElementById('mes-slicer');
-            mesContainer.innerHTML = '';
-            if(globalState.mes !== 'Todos' && !uniqueMonths.includes(globalState.mes)) globalState.mes = 'Todos';
-            ['Todos', ...uniqueMonths].forEach(m => {
-                const btn = document.createElement('button');
-                btn.innerText = m;
-                if (globalState.mes === m) {
-                    btn.className = 'px-4 py-1 text-sm font-bold rounded bg-brand-purple-dark text-white shadow-md transform scale-105 transition';
-                } else {
-                    btn.className = 'px-4 py-1 text-sm font-medium rounded bg-white text-brand-slate border border-gray-300 hover:bg-gray-100 hover:text-brand-dark transition';
-                }
-                btn.onclick = () => { globalState.mes = m; renderSlicers(); processAndRenderData(); };
-                mesContainer.appendChild(btn);
-            });
-
-            const estadoContainer = document.getElementById('estado-slicer');
-            estadoContainer.innerHTML = '';
-            if(globalState.estado !== 'Todas' && !uniqueEstados.includes(globalState.estado)) globalState.estado = 'Todas';
-            ['Todas', ...uniqueEstados].forEach(e => {
-                const btn = document.createElement('button');
-                btn.innerText = e;
-                if (globalState.estado === e) {
-                    let bgCol = 'bg-brand-purple-dark';
-                    if(e.toLowerCase().includes('aprobadas')) bgCol = 'bg-emerald-600';
-                    if(e.toLowerCase().includes('denegadas')) bgCol = 'bg-red-600';
-                    btn.className = `px-4 py-1 text-sm font-bold rounded ${bgCol} text-white shadow-md transform scale-105 transition`;
-                } else {
-                    btn.className = 'px-4 py-1 text-sm font-medium rounded bg-white text-brand-slate border border-gray-300 hover:bg-gray-100 hover:text-brand-dark transition';
-                }
-                btn.onclick = () => { globalState.estado = e; renderSlicers(); processAndRenderData(); };
-                estadoContainer.appendChild(btn);
-            });
+            const createBtn = (containerId, arr, stateKey, colorClass, defaultVal) => {
+                const container = document.getElementById(containerId); container.innerHTML = '';
+                if(globalState[stateKey] !== defaultVal && !arr.includes(globalState[stateKey])) globalState[stateKey] = defaultVal;
+                [defaultVal, ...arr].forEach(val => {
+                    const btn = document.createElement('button'); btn.innerText = val;
+                    if (globalState[stateKey] === val) {
+                        let bgCol = colorClass;
+                        if(val.toLowerCase().includes('aprobadas')) bgCol = 'bg-emerald-600';
+                        if(val.toLowerCase().includes('denegadas')) bgCol = 'bg-red-600';
+                        btn.className = `px-4 py-1 text-sm font-bold rounded ${bgCol} text-white shadow-md transform scale-105 transition`;
+                    } else {
+                        btn.className = 'px-4 py-1 text-sm font-medium rounded bg-white text-brand-slate border border-gray-300 hover:bg-gray-100 hover:text-brand-dark transition';
+                    }
+                    btn.onclick = () => { globalState[stateKey] = val; renderSlicers(); processAndRenderData(); };
+                    container.appendChild(btn);
+                });
+            };
+            createBtn('tipo-slicer', uniqueTipos, 'tipo', 'bg-brand-purple-dark', 'Todas');
+            createBtn('mes-slicer', uniqueMonths, 'mes', 'bg-brand-purple-dark', 'Todos');
+            createBtn('estado-slicer', uniqueEstados, 'estado', 'bg-brand-purple-dark', 'Todas');
         }
 
-        function setInternalFilter(type, value) {
-            internalFilters[type] = value;
-            updateClearFilterButtons();
-            processAndRenderData();
-        }
-
-        function clearInternalFilters() {
-            internalFilters.vp = null;
-            internalFilters.client = null;
-            internalFilters.mes = null;
-            internalFilters.justificacion = null;
-            updateClearFilterButtons();
-            processAndRenderData();
-        }
-
+        function setInternalFilter(type, value) { internalFilters[type] = value; updateClearFilterButtons(); processAndRenderData(); }
+        function clearInternalFilters() { internalFilters.vp = null; internalFilters.client = null; internalFilters.mes = null; internalFilters.justificacion = null; updateClearFilterButtons(); processAndRenderData(); }
         function updateClearFilterButtons() {
             let hasFilters = internalFilters.vp || internalFilters.client || internalFilters.mes || internalFilters.justificacion;
-            document.querySelectorAll('.btn-clear-internal').forEach(btn => {
-                if(hasFilters) {
-                    btn.classList.remove('hidden');
-                } else {
-                    btn.classList.add('hidden');
-                }
-            });
+            document.querySelectorAll('.btn-clear-internal').forEach(btn => { if(hasFilters) btn.classList.remove('hidden'); else btn.classList.add('hidden'); });
         }
 
         function getDynamicColors() {
-            let mainColor = '#382a5c';   
-            let accentColor = '#5a547c'; 
-            let lineColor = '#1e1c2a'; 
-
+            let mainColor = '#382a5c'; let accentColor = '#5a547c'; let lineColor = '#1e1c2a'; 
             const est = globalState.estado.toLowerCase();
-
-            if (est.includes('aprobadas')) {
-                mainColor = '#059669'; accentColor = '#10b981'; lineColor = '#064e3b';
-            } else if (est.includes('denegadas')) {
-                mainColor = '#e11d48'; accentColor = '#f43f5e'; lineColor = '#881337';
-            }
-
+            if (est.includes('aprobadas')) { mainColor = '#059669'; accentColor = '#10b981'; lineColor = '#064e3b'; } 
+            else if (est.includes('denegadas')) { mainColor = '#e11d48'; accentColor = '#f43f5e'; lineColor = '#881337'; }
             document.documentElement.style.setProperty('--dynamic-color', mainColor);
             return { bar: accentColor, hover: mainColor, line: lineColor };
         }
@@ -570,61 +421,44 @@
             if(internalFilters.justificacion) activeFilters.push(`(Justificación Activa)`);
 
             const subtitleText = activeFilters.length > 0 ? activeFilters.join(' | ') : 'Sin Filtros';
-            
-            document.querySelectorAll('.dynamic-subtitle').forEach(el => {
-                el.innerText = subtitleText;
-            });
+            document.querySelectorAll('.dynamic-subtitle').forEach(el => el.innerText = subtitleText);
         }
 
         function processAndRenderData() {
-            const { dataClientes, dataJust } = getActiveDatasets();
-            if(!dataClientes || dataClientes.length === 0) return;
+            const data = getActiveDatasets();
+            if(!data || data.length === 0) return;
 
             updateDynamicTitles();
 
-            const filteredClientes = dataClientes.filter(row => {
+            // FILTRADO MAESTRO UNIFICADO
+            const filteredData = data.filter(row => {
                 if(!row.Horas) return false; 
-                
-                if(!row.VP || row.VP.trim() === "") row.VP = "Sin VP Asignado";
-                if(!row.Client || row.Client.trim() === "") row.Client = "Sin Cliente";
-
                 let pass = (globalState.vp === 'Todas' || row.VP === globalState.vp) &&
                            (globalState.client === 'Todas' || row.Client === globalState.client) &&
-                           (globalState.tipo === 'Todas' || row.Tipo === globalState.tipo) &&
-                           (globalState.mes === 'Todos' || row.Mes === globalState.mes) &&
-                           (globalState.estado === 'Todas' || row.Estado === globalState.estado);
-                
-                if(internalFilters.vp && row.VP !== internalFilters.vp) pass = false;
-                if(internalFilters.client && row.Client !== internalFilters.client) pass = false;
-                if(internalFilters.mes && row.Mes !== internalFilters.mes) pass = false;
-
-                return pass;
-            });
-
-            const filteredJust = dataJust.filter(row => {
-                if(!row.Mes) return false;
-                let pass = (globalState.vp === 'Todas' || row.VP === globalState.vp) &&
                            (globalState.tipo === 'Todas' || row.Tipo === globalState.tipo) &&
                            (globalState.mes === 'Todos' || row.Mes === globalState.mes) &&
                            (globalState.estado === 'Todas' || row.Estado === globalState.estado) &&
                            (globalState.justificacion === 'Todas' || row.Justificacion === globalState.justificacion);
                 
                 if(internalFilters.vp && row.VP !== internalFilters.vp) pass = false;
+                if(internalFilters.client && row.Client !== internalFilters.client) pass = false;
                 if(internalFilters.mes && row.Mes !== internalFilters.mes) pass = false;
                 if(internalFilters.justificacion && row.Justificacion !== internalFilters.justificacion) pass = false;
-                
+
                 return pass;
             });
-            
-            const totalHoras = filteredClientes.reduce((acc, curr) => acc + (parseFloat(curr.Horas) || 0), 0);
+
+            const totalHoras = filteredData.reduce((acc, curr) => acc + (parseFloat(curr.Horas) || 0), 0);
             document.getElementById('kpiTotalHoras').innerText = formatNum(totalHoras);
 
             let totAdicion = 0, totReduccion = 0;
             let vpData = {}, mesData = {}, clientAdicion = {}, clientReduccion = {};
 
-            // 1. Clientes y Totales Adición/Reducción (Siempre desde filteredClientes)
-            filteredClientes.forEach(row => {
+            filteredData.forEach(row => {
                 const h = parseFloat(row.Horas) || 0;
+                vpData[row.VP] = (vpData[row.VP] || 0) + h;
+                mesData[row.Mes] = (mesData[row.Mes] || 0) + h;
+
                 const tipo = (row.Tipo || '').toLowerCase();
                 if(tipo.includes('adicion') || tipo.includes('adición')) {
                     clientAdicion[row.Client] = (clientAdicion[row.Client] || 0) + h;
@@ -634,27 +468,6 @@
                     totReduccion += h;
                 }
             });
-
-            // 2. VP y Mes dinámicos según el filtro de Justificación
-            if (globalState.justificacion !== 'Todas' || internalFilters.justificacion) {
-                // Si hay una justificación seleccionada, VP y Mes se alimentan de filteredJust
-                filteredJust.forEach(row => {
-                    const h = parseFloat(row.Horas) || 0;
-                    if(row.VP) vpData[row.VP] = (vpData[row.VP] || 0) + h;
-                    if(row.Mes) mesData[row.Mes] = (mesData[row.Mes] || 0) + h;
-                });
-                
-                // Actualizar Total Horas del KPI superior con el total de esa justificación
-                const totalJustHoras = filteredJust.reduce((acc, curr) => acc + (parseFloat(curr.Horas) || 0), 0);
-                document.getElementById('kpiTotalHoras').innerText = formatNum(totalJustHoras);
-            } else {
-                // Si no hay filtro de justificación, se alimenta del consolidado general de clientes
-                filteredClientes.forEach(row => {
-                    const h = parseFloat(row.Horas) || 0;
-                    vpData[row.VP] = (vpData[row.VP] || 0) + h;
-                    mesData[row.Mes] = (mesData[row.Mes] || 0) + h;
-                });
-            }
 
             document.getElementById('kpiTotalAdiciones').innerText = formatNum(totAdicion);
             document.getElementById('kpiTotalReducciones').innerText = formatNum(totReduccion);
@@ -666,7 +479,7 @@
 
             const calcPareto = (tipoBusqueda) => {
                 let justData = {};
-                filteredJust.filter(j => (j.Tipo || '').toLowerCase().includes(tipoBusqueda.toLowerCase())).forEach(row => {
+                filteredData.filter(j => (j.Tipo || '').toLowerCase().includes(tipoBusqueda.toLowerCase())).forEach(row => {
                     justData[row.Justificacion] = (justData[row.Justificacion] || 0) + (parseFloat(row.Horas) || 0);
                 });
                 let sorted = Object.entries(justData).sort((a,b) => b[1] - a[1]);
@@ -688,35 +501,16 @@
         }
 
         function renderTable(tbodyId, data, isPareto = false, filterType = 'client') {
-            const tbody = document.querySelector(`#${tbodyId} tbody`);
-            tbody.innerHTML = '';
-            let total = 0;
-            
+            const tbody = document.querySelector(`#${tbodyId} tbody`); tbody.innerHTML = ''; let total = 0;
             data.forEach(item => {
                 const tr = document.createElement('tr');
-                let val1 = item[0] || item.justificacion;
-                let val2 = item[1] || item.horas;
-                total += val2;
-                
+                let val1 = item[0] || item.justificacion; let val2 = item[1] || item.horas; total += val2;
                 let html = `<td>${val1}</td><td class="text-right font-medium text-gray-700">${formatNum(val2)}</td>`;
                 if(isPareto) html += `<td class="text-right text-brand-slate font-medium">${formatPerc(item.pareto)}</td>`;
-                
-                tr.innerHTML = html;
-                
-                tr.onclick = () => {
-                    setInternalFilter(filterType, val1);
-                };
-                
-                tbody.appendChild(tr);
+                tr.innerHTML = html; tr.onclick = () => { setInternalFilter(filterType, val1); }; tbody.appendChild(tr);
             });
             const tfootTd = document.querySelector(`#${tbodyId} tfoot tr td:nth-child(2)`);
             if(tfootTd) tfootTd.innerText = formatNum(total);
-        }
-
-        function createChart(canvasId, config) {
-            if(charts[canvasId]) charts[canvasId].destroy();
-            const ctx = document.getElementById(canvasId).getContext('2d');
-            charts[canvasId] = new Chart(ctx, config);
         }
 
         function renderVisuals(vpData, mesData, adClient, redClient, parAd, parRed) {
@@ -736,33 +530,15 @@
 
             const commonOptions = {
                 responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
-                plugins: { legend: { display: false }, datalabels: { display: false },
-                tooltip: { backgroundColor: 'rgba(30, 28, 42, 0.9)', titleFont: { size: 13, family: 'Inter' }, bodyFont: { size: 14, family: 'Inter', weight: 'bold' }, padding: 10, callbacks: { label: function(c) { return ' Horas: ' + formatNum(c.parsed.y); } } } },
-                scales: { 
-                    y: { beginAtZero: true, grid: { borderDash: [3, 3] }, title: { display: true, text: 'Horas (Hrs)', font: { size: 12, weight: 'bold', family: 'Inter' } } }, 
-                    x: { ticks: { autoSkip: false, maxRotation: 45, minRotation: 45, font: { size: 11, family: 'Inter' } }, grid: { display: false } } 
-                },
-                layout: { padding: { top: 35 } } 
+                plugins: { legend: { display: false }, datalabels: { display: false }, tooltip: { backgroundColor: 'rgba(30, 28, 42, 0.9)', titleFont: { size: 13, family: 'Inter' }, bodyFont: { size: 14, family: 'Inter', weight: 'bold' }, padding: 10, callbacks: { label: function(c) { return ' Horas: ' + formatNum(c.parsed.y); } } } },
+                scales: { y: { beginAtZero: true, grid: { borderDash: [3, 3] }, title: { display: true, text: 'Horas (Hrs)', font: { size: 12, weight: 'bold', family: 'Inter' } } }, x: { ticks: { autoSkip: false, maxRotation: 45, minRotation: 45, font: { size: 11, family: 'Inter' } }, grid: { display: false } } }, layout: { padding: { top: 35 } } 
             };
 
-            const generateOnClick = (filterKey) => {
-                return (e, elements, chart) => {
-                    if (elements.length > 0) {
-                        const index = elements[0].index;
-                        const label = chart.data.labels[index];
-                        setInternalFilter(filterKey, label);
-                    }
-                };
-            };
+            const generateOnClick = (filterKey) => { return (e, elements, chart) => { if (elements.length > 0) { const label = chart.data.labels[elements[0].index]; setInternalFilter(filterKey, label); } }; };
 
             const simpleBarConfig = (dataArr, col, hoverCol, filterKey) => ({
-                type: 'bar',
-                data: { labels: dataArr.map(d => d[0]), datasets: [{ data: dataArr.map(d => d[1]), backgroundColor: col, hoverBackgroundColor: hoverCol, borderRadius: 4 }] },
-                options: { 
-                    ...commonOptions, 
-                    onClick: generateOnClick(filterKey),
-                    plugins: { ...commonOptions.plugins, datalabels: { display: true, anchor: 'end', align: 'top', font: { weight: 'bold' }, color: '#1e1c2a', formatter: (val) => formatNum(val) } } 
-                }
+                type: 'bar', data: { labels: dataArr.map(d => d[0]), datasets: [{ data: dataArr.map(d => d[1]), backgroundColor: col, hoverBackgroundColor: hoverCol, borderRadius: 4 }] },
+                options: { ...commonOptions, onClick: generateOnClick(filterKey), plugins: { ...commonOptions.plugins, datalabels: { display: true, anchor: 'end', align: 'top', font: { weight: 'bold' }, color: '#1e1c2a', formatter: (val) => formatNum(val) } } }
             });
 
             if(charts['chartVPHours']) charts['chartVPHours'].destroy();
@@ -772,37 +548,14 @@
             charts['chartMesHours'] = new Chart(document.getElementById('chartMesHours').getContext('2d'), simpleBarConfig(mesData, palette.bar, palette.hover, 'mes'));
 
             if(charts['chartAdicionClient']) charts['chartAdicionClient'].destroy();
-            charts['chartAdicionClient'] = new Chart(document.getElementById('chartAdicionClient').getContext('2d'), {
-                ...simpleBarConfig(adClient, palette.bar, palette.hover, 'client'),
-                options: { ...commonOptions, onClick: generateOnClick('client'), layout: { padding: { top: 35 } }, plugins: { ...commonOptions.plugins, datalabels: { display: true, anchor: 'end', align: 'top', color: '#1e1c2a', font: { size: 10, weight: 'bold' }, formatter: (val) => formatNum(val) } }, scales: { ...commonOptions.scales, x: { ...commonOptions.scales.x, ticks: { ...commonOptions.scales.x.ticks, maxRotation: 90, minRotation: 90 } } } }
-            });
+            charts['chartAdicionClient'] = new Chart(document.getElementById('chartAdicionClient').getContext('2d'), { ...simpleBarConfig(adClient, palette.bar, palette.hover, 'client'), options: { ...commonOptions, onClick: generateOnClick('client'), layout: { padding: { top: 35 } }, plugins: { ...commonOptions.plugins, datalabels: { display: true, anchor: 'end', align: 'top', color: '#1e1c2a', font: { size: 10, weight: 'bold' }, formatter: (val) => formatNum(val) } }, scales: { ...commonOptions.scales, x: { ...commonOptions.scales.x, ticks: { ...commonOptions.scales.x.ticks, maxRotation: 90, minRotation: 90 } } } } });
 
             if(charts['chartReduccionClient']) charts['chartReduccionClient'].destroy();
-            charts['chartReduccionClient'] = new Chart(document.getElementById('chartReduccionClient').getContext('2d'), {
-                ...simpleBarConfig(redClient, palette.bar, palette.hover, 'client'),
-                options: { ...commonOptions, onClick: generateOnClick('client'), layout: { padding: { top: 35 } }, plugins: { ...commonOptions.plugins, datalabels: { display: true, anchor: 'end', align: 'top', color: '#1e1c2a', font: { size: 10, weight: 'bold' }, formatter: (val) => formatNum(val) } }, scales: { ...commonOptions.scales, x: { ...commonOptions.scales.x, ticks: { ...commonOptions.scales.x.ticks, maxRotation: 90, minRotation: 90 } } } }
-            });
+            charts['chartReduccionClient'] = new Chart(document.getElementById('chartReduccionClient').getContext('2d'), { ...simpleBarConfig(redClient, palette.bar, palette.hover, 'client'), options: { ...commonOptions, onClick: generateOnClick('client'), layout: { padding: { top: 35 } }, plugins: { ...commonOptions.plugins, datalabels: { display: true, anchor: 'end', align: 'top', color: '#1e1c2a', font: { size: 10, weight: 'bold' }, formatter: (val) => formatNum(val) } }, scales: { ...commonOptions.scales, x: { ...commonOptions.scales.x, ticks: { ...commonOptions.scales.x.ticks, maxRotation: 90, minRotation: 90 } } } } });
 
             const paretoConfig = (paretoData) => ({
-                type: 'bar',
-                data: {
-                    labels: paretoData.map(d => d.justificacion),
-                    datasets: [
-                        { type: 'line', label: 'Pareto %', data: paretoData.map(d => d.pareto), borderColor: palette.line, backgroundColor: 'rgba(255, 255, 255, 0.9)', borderWidth: 3, pointBorderColor: palette.line, pointBorderWidth: 2, pointRadius: 4, pointHoverRadius: 6, yAxisID: 'y1', datalabels: { display: true, anchor: 'bottom', align: 'bottom', offset: 6, font: { weight: 'bold', size: 10 }, color: palette.line, backgroundColor: 'rgba(255, 255, 255, 0.85)', borderRadius: 4, formatter: (val) => formatPerc(val) } },
-                        { type: 'bar', label: 'Horas', data: paretoData.map(d => d.horas), backgroundColor: palette.bar, hoverBackgroundColor: palette.hover, borderRadius: 4, yAxisID: 'y', datalabels: { display: true, anchor: 'end', align: 'top', offset: 4, font: { weight: 'bold', size: 10 }, color: '#1e1c2a', formatter: (val) => formatNum(val) } }
-                    ]
-                },
-                options: {
-                    ...commonOptions,
-                    onClick: generateOnClick('justificacion'),
-                    layout: { padding: { top: 40 } },
-                    plugins: { ...commonOptions.plugins, tooltip: { backgroundColor: 'rgba(30, 28, 42, 0.9)', callbacks: { label: function(c) { return c.datasetIndex === 0 ? ' Pareto: ' + formatPerc(c.parsed.y) : ' Horas: ' + formatNum(c.parsed.y); } } } },
-                    scales: { 
-                        y: { type: 'linear', position: 'left', beginAtZero: true, title: { display: true, text: 'Horas (Hrs)', font: { size: 12, weight: 'bold', family: 'Inter' } } }, 
-                        y1: { type: 'linear', position: 'right', beginAtZero: true, max: 110, grid: { drawOnChartArea: false }, title: { display: true, text: '% Pareto', font: { size: 12, weight: 'bold', family: 'Inter' } } }, 
-                        x: { ...commonOptions.scales.x, ticks: { ...commonOptions.scales.x.ticks, maxRotation: 60, minRotation: 60 } } 
-                    }
-                }
+                type: 'bar', data: { labels: paretoData.map(d => d.justificacion), datasets: [ { type: 'line', label: 'Pareto %', data: paretoData.map(d => d.pareto), borderColor: palette.line, backgroundColor: 'rgba(255, 255, 255, 0.9)', borderWidth: 3, pointBorderColor: palette.line, pointBorderWidth: 2, pointRadius: 4, pointHoverRadius: 6, yAxisID: 'y1', datalabels: { display: true, anchor: 'bottom', align: 'bottom', offset: 6, font: { weight: 'bold', size: 10 }, color: palette.line, backgroundColor: 'rgba(255, 255, 255, 0.85)', borderRadius: 4, formatter: (val) => formatPerc(val) } }, { type: 'bar', label: 'Horas', data: paretoData.map(d => d.horas), backgroundColor: palette.bar, hoverBackgroundColor: palette.hover, borderRadius: 4, yAxisID: 'y', datalabels: { display: true, anchor: 'end', align: 'top', offset: 4, font: { weight: 'bold', size: 10 }, color: '#1e1c2a', formatter: (val) => formatNum(val) } } ] },
+                options: { ...commonOptions, onClick: generateOnClick('justificacion'), layout: { padding: { top: 40 } }, plugins: { ...commonOptions.plugins, tooltip: { backgroundColor: 'rgba(30, 28, 42, 0.9)', callbacks: { label: function(c) { return c.datasetIndex === 0 ? ' Pareto: ' + formatPerc(c.parsed.y) : ' Horas: ' + formatNum(c.parsed.y); } } } }, scales: { y: { type: 'linear', position: 'left', beginAtZero: true, title: { display: true, text: 'Horas (Hrs)', font: { size: 12, weight: 'bold', family: 'Inter' } } }, y1: { type: 'linear', position: 'right', beginAtZero: true, max: 110, grid: { drawOnChartArea: false }, title: { display: true, text: '% Pareto', font: { size: 12, weight: 'bold', family: 'Inter' } } }, x: { ...commonOptions.scales.x, ticks: { ...commonOptions.scales.x.ticks, maxRotation: 60, minRotation: 60 } } } }
             });
 
             if(charts['chartParetoAdicion']) charts['chartParetoAdicion'].destroy();
@@ -812,10 +565,7 @@
             charts['chartParetoReduccion'] = new Chart(document.getElementById('chartParetoReduccion').getContext('2d'), paretoConfig(parRed));
         }
 
-        window.onload = () => {
-            initFilters(true);
-            processAndRenderData();
-        };
+        window.onload = () => { initFilters(true); processAndRenderData(); };
     </script>
 </body>
 </html>
